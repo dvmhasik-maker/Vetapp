@@ -105,8 +105,6 @@ const Dashboard: React.FC = () => {
       </header>
 
       <main className="main-content">
-        <AdSlot className="top-ad" />
-
         <div className="tool-grid">
           {[...tools].sort((a, b) => a.name.localeCompare(b.name, 'ko')).map((tool) => (
             <Link key={tool.id} to={tool.path} className="tool-card">
@@ -119,6 +117,8 @@ const Dashboard: React.FC = () => {
             </Link>
           ))}
         </div>
+
+        <AdSlot className="mid-ad" />
 
         {/* PC Access & Shortcut Section */}
         <div className="pc-access-section">
@@ -240,11 +240,11 @@ const Dashboard: React.FC = () => {
       </footer>
 
       <style>{`
-        /* 상단 광고슬롯: 미게재 시 빈 공간 최소화 */
-        .top-ad {
+        /* 중간 광고슬롯: 미게재 시 빈 공간 최소화 */
+        .mid-ad {
           min-height: 0 !important;
-          margin-top: 0 !important;
-          margin-bottom: 0.25rem !important;
+          margin-top: 1rem !important;
+          margin-bottom: 0 !important;
         }
         .articles-section {
           margin-top: 2.5rem;
