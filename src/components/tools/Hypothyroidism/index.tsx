@@ -48,7 +48,6 @@ const Hypothyroidism: React.FC = () => {
       />
 
       <div className="tool-content-standard">
-        <AdSlot className="mb-6" />
 
         <div className="tab-container-tool">
           <button 

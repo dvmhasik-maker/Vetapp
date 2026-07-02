@@ -43,7 +43,6 @@ const Cushing = () => {
       />
 
       <div className="tool-content-standard">
-        <AdSlot className="mb-6" />
 
         <div className="tab-container-tool">
           <button 

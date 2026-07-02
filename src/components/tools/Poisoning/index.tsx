@@ -43,7 +43,6 @@ const Poisoning: React.FC = () => {
       />
 
       <div className="tool-content-standard">
-        <AdSlot className="mb-6" />
 
         {/* 축종 선택 탭 - 심초음파와 동일하게 카드 외부로 이동 */}
         <div className="tab-container-tool">

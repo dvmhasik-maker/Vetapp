@@ -103,7 +103,6 @@ const Parasites: React.FC = () => {
       />
 
       <div className="tool-content-standard">
-        <AdSlot className="mb-6" />
 
         <div className="tool-card-container">
           <div className="tool-card-title">📋 대상 기생충 선택</div>

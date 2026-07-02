@@ -47,7 +47,6 @@ const Echocardiography: React.FC = () => {
       />
 
       <div className="tool-content-standard">
-        <AdSlot className="mb-6" />
 
         <EchoForm
           species={species}

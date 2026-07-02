@@ -53,7 +53,6 @@ const FoodAmount: React.FC = () => {
       />
 
       <div className="tool-content-standard">
-        <AdSlot className="mb-6" />
 
         <div className="layout-grid-food">
           {/* Input Column */}

@@ -41,7 +41,6 @@ const FluidTherapy: React.FC = () => {
       />
 
       <div className="tool-content">
-        <AdSlot className="mb-6" />
 
         <div className="layout-grid-fluid">
           <FluidForm

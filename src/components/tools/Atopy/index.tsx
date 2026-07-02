@@ -50,7 +50,6 @@ const Atopy: React.FC = () => {
       />
 
       <div className="tool-content">
-        <AdSlot className="mb-6" />
 
         <AtopyForm 
           breeds={sortedBreeds}

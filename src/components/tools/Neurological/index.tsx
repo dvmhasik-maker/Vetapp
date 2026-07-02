@@ -43,7 +43,6 @@ const Neurological: React.FC = () => {
       />
 
       <div className="tool-content-standard">
-        <AdSlot className="mb-6" />
 
         <NeuroForm
           patient={patient}
