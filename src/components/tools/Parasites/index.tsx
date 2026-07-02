@@ -3,9 +3,9 @@ import { ChevronLeft, ShieldAlert, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useParasitesLogic } from './useParasitesLogic';
 import { parasiteData } from './data';
-import ParasiteGuide from './ParasiteGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const ParasiteMedia: React.FC<{ url: string; videoUrl?: string; alt: string; description: string; magnification: string }> = ({ url, videoUrl, alt, description, magnification }) => {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -72,6 +72,7 @@ const ParasiteMedia: React.FC<{ url: string; videoUrl?: string; alt: string; des
 };
 
 const Parasites: React.FC = () => {
+  useSEO('반려동물 외부 기생충 및 구충 관리 도구', '반려동물의 생활 환경과 기생충 노출 위험을 분석하여 적절한 구충제 처방과 관리 가이드를 확인하세요.');
   const {
     selectedParasite,
     resultRef,
@@ -95,6 +96,11 @@ const Parasites: React.FC = () => {
           <p>CAPC 가이드라인 종합 프로토콜</p>
         </div>
       </div>
+
+      <ToolArticleLink
+        articlePath="/articles/parasites"
+        description="심장사상충·지알디아·외부기생충의 임상 특징과 CAPC 기반 예방·치료 프로토콜을 정리한 가이드입니다."
+      />
 
       <div className="tool-content-standard">
         <AdSlot className="mb-6" />
@@ -176,10 +182,6 @@ const Parasites: React.FC = () => {
             </div>
           </div>
         )}
-
-        <CollapsibleInfo title="기생충 예방 및 치료 종합 가이드">
-          <ParasiteGuide />
-        </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
       </div>

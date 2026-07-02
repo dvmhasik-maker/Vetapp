@@ -4,11 +4,12 @@ import { useCushingLogic } from './useCushingLogic';
 import CushingForm from './CushingForm';
 import CushingResultView from './CushingResultView';
 import { CushingMode } from './types';
-import CushingGuide from './CushingGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const Cushing = () => {
+  useSEO('강아지 쿠싱 증후군 모니터링 도구', 'Trilostane 치료 중인 강아지의 ACTH 자극 시험 및 Pre-Pill Cortisol 결과를 해석하여 쿠싱 증후군 관리 효율을 높여보세요.');
   const {
     mode, setMode, patientInfo, handlePatientChange, values, setValues, setToxValue,
     executeAnalysis, result, setResult, resultRef, saveImg
@@ -35,6 +36,11 @@ const Cushing = () => {
           <p>Trilostane 치료 중 모니터링 (Ettinger 9th ed. 기반)</p>
         </div>
       </header>
+
+      <ToolArticleLink
+        articlePath="/articles/cushing"
+        description="쿠싱 증후군의 원인·증상, PDH vs AT 확진 검사 전략, 트릴로스탄 모니터링 프로토콜을 정리한 가이드입니다."
+      />
 
       <div className="tool-content-standard">
         <AdSlot className="mb-6" />
@@ -75,10 +81,6 @@ const Cushing = () => {
             />
           )}
         </div>
-
-        <CollapsibleInfo title="쿠싱 증후군 진단 및 모니터링 가이드">
-          <CushingGuide />
-        </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
       </div>

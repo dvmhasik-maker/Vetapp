@@ -4,11 +4,16 @@ import { Link } from 'react-router-dom';
 import { useAtopyLogic } from './useAtopyLogic';
 import AtopyForm from './components/AtopyForm';
 import AtopyResultView from './components/AtopyResultView';
-import AtopyGuide from './components/AtopyGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const Atopy: React.FC = () => {
+  useSEO(
+    '견종별 아토피 호발부위 분석',
+    '수의사를 위한 견종별 개 아토피성 피부염(CAD) 호발부위 분석기. 임상 진단 시 감별 진단 및 보호자 교육용 자료.'
+  );
+
   const {
     sortedBreeds,
     selectedBreed,
@@ -39,6 +44,11 @@ const Atopy: React.FC = () => {
         </div>
       </div>
 
+      <ToolArticleLink
+        articlePath="/articles/atopy"
+        description="Favrot 기준, 제외 진단 프로토콜, 아포퀠·사이토포인트·면역요법 선택 전략을 정리한 가이드입니다."
+      />
+
       <div className="tool-content">
         <AdSlot className="mb-6" />
 
@@ -54,10 +64,6 @@ const Atopy: React.FC = () => {
             resultRef={resultRef}
           />
         )}
-
-        <CollapsibleInfo title="수의학적 근거 및 아토피 진단 가이드">
-          <AtopyGuide />
-        </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
       </div>

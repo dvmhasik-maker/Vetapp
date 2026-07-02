@@ -34,37 +34,37 @@ const Terms: React.FC = () => {
             <div className="terms-points">
               <div className="point">
                 <CheckCircle2 size={16} />
-                <span>본 서비스는 수의사의 임상적 판단을 돕기 위한 <strong>보조 도구</strong>입니다.</span>
+                <span>본 서비스는 수의사의 임상적 판단을 돕기 위한 <strong>보조적인 참고 도구</strong>입니다.</span>
               </div>
               <div className="point">
                 <CheckCircle2 size={16} />
-                <span>서비스 결과는 학술적 가이드라인 기반이나, 최종 처방 책임은 이용자에게 있습니다.</span>
+                <span>서비스의 결과는 공인된 학술 가이드라인을 기반으로 하나, 최종적인 처방 및 치료 책임은 이용자인 <strong>담당 수의사</strong>에게 있습니다.</span>
               </div>
               <div className="point">
                 <AlertCircle size={16} className="text-amber-500" />
-                <span>이용으로 발생한 직간접적 손해에 대해 서비스는 법적 책임을 지지 않습니다.</span>
+                <span>서비스 이용으로 발생할 수 있는 직간접적인 의료적 결정에 대해 본 서비스 운영팀은 어떠한 법적 책임도 지지 않습니다.</span>
               </div>
             </div>
           </section>
 
           <section className="terms-section">
             <div className="terms-badge">제3조</div>
-            <h3>이용자의 의무</h3>
+            <h3>이용자의 의무 및 준수 사항</h3>
             <p>
-              이용자는 본 서비스를 합법적인 목적으로만 사용해야 하며, 시스템에 부하를 주거나 정상적인 운영을 방해하는 행위를 해서는 안 됩니다.
+              이용자는 본 서비스를 오직 수의학적 임상 및 학술적 목적으로만 사용해야 합니다. 서비스 시스템에 과도한 부하를 주거나 데이터를 무단 추출하는 행위는 금지됩니다.
             </p>
           </section>
 
           <section className="terms-section">
             <div className="terms-badge">제4조</div>
-            <h3>서비스의 변경 및 중단</h3>
+            <h3>운영 및 연락처</h3>
             <p>
-              서비스는 최신 의학 정보 반영 및 기능 개선을 위해 예고 없이 업데이트되거나 일시적으로 중단될 수 있습니다.
+              서비스의 기능은 최신 의학 정보 반영을 위해 예고 없이 업데이트될 수 있습니다. 본 약관과 관련한 문의사항은 <strong>vetapp.support@example.com</strong>으로 연락 주시기 바랍니다.
             </p>
           </section>
 
           <div className="terms-date">
-            공고 일자: 2026년 5월 29일
+            시행 일자: 2026년 5월 29일
           </div>
         </div>
       </div>

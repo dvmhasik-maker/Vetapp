@@ -31,6 +31,33 @@ const About: React.FC = () => {
             </p>
           </section>
 
+          <section className="about-section">
+            <div className="section-header">
+              <ShieldAlert size={20} className="text-blue-500" />
+              <h3>운영진 및 전문성</h3>
+            </div>
+            <p>
+              VETAPP은 임상 수의사와 소프트웨어 엔지니어가 함께 개발합니다. 
+              우리는 현장 수의사들이 직면하는 실질적인 문제들을 해결하기 위해 끊임없이 소통하며, 
+              모든 도구는 수의학 교과서 및 최신 학술 가이드라인을 기반으로 설계됩니다.
+            </p>
+          </section>
+
+          <section className="about-section">
+            <div className="section-header">
+              <CheckCircle size={20} className="text-blue-500" />
+              <h3>정보의 신뢰성</h3>
+            </div>
+            <p>
+              서비스 내 모든 연산 로직과 진단 가이드라인은 다음의 공인된 학술 자료를 참고하여 구축되었습니다:
+            </p>
+            <ul className="feature-list" style={{ marginTop: '0.5rem' }}>
+              <li>Ettinger's Textbook of Veterinary Internal Medicine</li>
+              <li>AAHA (American Animal Hospital Association) Guidelines</li>
+              <li>ACVIM (American College of Veterinary Internal Medicine) Consensus Statements</li>
+            </ul>
+          </section>
+
           <div className="features-grid">
             <div className="feature-item">
               <Layout size={24} className="text-indigo-500" />

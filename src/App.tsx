@@ -17,6 +17,18 @@ import Privacy from './components/legal/Privacy';
 import Terms from './components/legal/Terms';
 import Contact from './components/legal/Contact';
 
+// Articles
+import ArticlesIndex from './components/articles/ArticlesIndex';
+import FluidTherapyArticle from './components/articles/FluidTherapyArticle';
+import CushingArticle from './components/articles/CushingArticle';
+import HypothyroidismArticle from './components/articles/HypothyroidismArticle';
+import AtopyArticle from './components/articles/AtopyArticle';
+import EchocardiographyArticle from './components/articles/EchocardiographyArticle';
+import NeurologicalArticle from './components/articles/NeurologicalArticle';
+import ParasitesArticle from './components/articles/ParasitesArticle';
+import PoisoningArticle from './components/articles/PoisoningArticle';
+import FoodAmountArticle from './components/articles/FoodAmountArticle';
+
 function App() {
   return (
     <Router>
@@ -38,6 +50,18 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/contact" element={<Contact />} />
+
+        {/* Article Routes */}
+        <Route path="/articles" element={<ArticlesIndex />} />
+        <Route path="/articles/fluid-therapy" element={<FluidTherapyArticle />} />
+        <Route path="/articles/cushing" element={<CushingArticle />} />
+        <Route path="/articles/hypothyroidism" element={<HypothyroidismArticle />} />
+        <Route path="/articles/atopy" element={<AtopyArticle />} />
+        <Route path="/articles/echocardiography" element={<EchocardiographyArticle />} />
+        <Route path="/articles/neurological" element={<NeurologicalArticle />} />
+        <Route path="/articles/parasites" element={<ParasitesArticle />} />
+        <Route path="/articles/poisoning" element={<PoisoningArticle />} />
+        <Route path="/articles/food-amount" element={<FoodAmountArticle />} />
       </Routes>
     </Router>
   );

@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom';
-import { 
-  Stethoscope, 
-  Bug, 
-  Utensils, 
-  Droplets, 
-  Activity, 
-  Heart, 
-  AlertTriangle, 
+import {
+  Stethoscope,
+  Bug,
+  Utensils,
+  Droplets,
+  Activity,
+  Heart,
+  AlertTriangle,
   Layers,
   ShieldAlert,
   ChevronDown,
   Info,
-  Monitor
+  Monitor,
+  BookOpen,
+  ChevronRight
 } from 'lucide-react';
 import { useState } from 'react';
 import AdSlot from './common/AdSlot';
@@ -118,7 +120,7 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
 
-        {/* PC Access & Shortcut Section - Moved below tools */}
+        {/* PC Access & Shortcut Section */}
         <div className="pc-access-section">
           <div className="pc-access-card">
             <div className="pc-access-info">
@@ -137,6 +139,33 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Articles Section */}
+        <section className="articles-section">
+          <div className="articles-section-header">
+            <BookOpen size={20} className="articles-icon" />
+            <div>
+              <h2>수의학 임상 가이드</h2>
+              <p>최신 가이드라인 기반의 질환별 심화 학습 자료</p>
+            </div>
+            <Link to="/articles" className="articles-view-all">
+              전체 보기 <ChevronRight size={16} />
+            </Link>
+          </div>
+          <div className="articles-preview-grid">
+            {[
+              { path: '/articles/fluid-therapy', title: '수액 요법 완전 가이드', tag: '내과' },
+              { path: '/articles/cushing', title: '쿠싱 증후군 진단·치료', tag: '내분비' },
+              { path: '/articles/atopy', title: '아토피 피부염 관리 전략', tag: '피부과' },
+              { path: '/articles/echocardiography', title: '심초음파 지표 해석', tag: '심장' },
+            ].map((a) => (
+              <Link key={a.path} to={a.path} className="article-preview-card">
+                <span className="article-preview-tag">{a.tag}</span>
+                <span className="article-preview-title">{a.title}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* SEO & Info Section - Collapsible to avoid blocking UX */}
         <section className="dashboard-info-section">
@@ -198,6 +227,7 @@ const Dashboard: React.FC = () => {
         <div className="footer-content">
           <div className="footer-links">
             <Link to="/about">서비스 소개</Link>
+            <Link to="/articles">수의학 가이드</Link>
             <Link to="/privacy">개인정보처리방침</Link>
             <Link to="/terms">이용약관</Link>
             <Link to="/contact">문의하기</Link>
@@ -210,9 +240,94 @@ const Dashboard: React.FC = () => {
       </footer>
 
       <style>{`
-        .pc-access-section {
+        /* 상단 광고슬롯: 미게재 시 빈 공간 최소화 */
+        .top-ad {
+          min-height: 0 !important;
+          margin-top: 0 !important;
+          margin-bottom: 0.25rem !important;
+        }
+        .articles-section {
           margin-top: 2.5rem;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0;
+          background: #fff;
+          border: 1px solid #e2e8f0;
+          border-radius: 16px;
+          padding: 1.25rem 1.5rem;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .articles-section-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 1rem;
+        }
+        .articles-icon { color: #3b82f6; flex-shrink: 0; }
+        .articles-section-header h2 {
+          font-size: 1rem;
+          font-weight: 800;
+          color: #0f172a;
+          margin: 0 0 2px;
+        }
+        .articles-section-header p {
+          font-size: 0.8rem;
+          color: #64748b;
+          margin: 0;
+        }
+        .articles-view-all {
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: #3b82f6;
+          text-decoration: none;
+          flex-shrink: 0;
+          white-space: nowrap;
+        }
+        /* 모바일: 2열 / PC: 4열 */
+        .articles-preview-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.6rem;
+        }
+        @media (min-width: 1024px) {
+          .articles-preview-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+          }
+          .articles-section { padding: 1.5rem 2rem; }
+        }
+        .article-preview-card {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          padding: 0.75rem 1rem;
+          text-decoration: none;
+          transition: all 0.15s;
+        }
+        .article-preview-card:hover {
+          background: #eff6ff;
+          border-color: #bfdbfe;
+        }
+        .article-preview-tag {
+          font-size: 0.72rem;
+          font-weight: 800;
+          color: #3b82f6;
+        }
+        .article-preview-title {
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: #1e293b;
+          line-height: 1.4;
+          word-break: keep-all;
+        }
+        .pc-access-section {
+          margin-top: 2rem;
+          margin-bottom: 0;
         }
         
         .pc-access-card {

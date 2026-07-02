@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { useEchoLogic } from './useEchoLogic';
 import EchoForm from './EchoForm';
 import EchoResultView from './EchoResultView';
-import EchoGuide from './EchoGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const Echocardiography: React.FC = () => {
+  useSEO('수의학 심장초음파 계산기', '강아지와 고양이 심장초음파 데이터를 입력하여 좌심방/대동맥 비율(LA/Ao) 및 주요 심장 지표를 분석합니다.');
   const {
     species,
     setSpecies,
@@ -40,6 +41,11 @@ const Echocardiography: React.FC = () => {
         </div>
       </div>
 
+      <ToolArticleLink
+        articlePath="/articles/echocardiography"
+        description="LA/Ao·LVIDd·FS·EPSS 정상 범위와 ACVIM MMVD·HCM 병기 결정 기준을 정리한 가이드입니다."
+      />
+
       <div className="tool-content-standard">
         <AdSlot className="mb-6" />
 
@@ -63,10 +69,6 @@ const Echocardiography: React.FC = () => {
             resultRef={resultRef}
           />
         )}
-
-        <CollapsibleInfo title="심초음파 지표 해석 및 심부전 가이드">
-          <EchoGuide />
-        </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
       </div>

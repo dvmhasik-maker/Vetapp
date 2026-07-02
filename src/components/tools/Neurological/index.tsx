@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { useNeuroLogic } from './useNeuroLogic';
 import NeuroForm from './NeuroForm';
 import NeuroResultView from './NeuroResultView';
-import NeuroGuide from './NeuroGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const Neurological: React.FC = () => {
+  useSEO('수의학 신경계 검사 도구', '반려동물의 신경계 검사 결과를 입력하여 국소화 진단 및 신경학적 평가를 지원합니다.');
   const {
     patient,
     setPatient,
@@ -36,6 +37,11 @@ const Neurological: React.FC = () => {
         </div>
       </div>
 
+      <ToolArticleLink
+        articlePath="/articles/neurological"
+        description="UMN vs LMN 감별, 척수 해부학적 국소화 원칙, 심부통증 소실 시 응급 판단 기준을 정리한 가이드입니다."
+      />
+
       <div className="tool-content-standard">
         <AdSlot className="mb-6" />
 
@@ -56,10 +62,6 @@ const Neurological: React.FC = () => {
             resultRef={resultRef}
           />
         )}
-
-        <CollapsibleInfo title="신경계 검사 및 병변 국소화 가이드">
-          <NeuroGuide />
-        </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
       </div>

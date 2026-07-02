@@ -3,11 +3,12 @@ import { ChevronLeft, Dog, Cat, Calculator, Camera, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useFoodAmountLogic } from './useFoodAmountLogic';
 import { statusConfig, brandProductPreset } from './data';
-import FoodGuide from './FoodGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const FoodAmount: React.FC = () => {
+  useSEO('반려동물 일일 에너지 요구량(DER) 계산기', '환자의 RER과 DER을 산출하고, 사료의 칼로리 함량을 기반으로 최적의 하루 급여량을 정확하게 계산합니다.');
   const {
     species,
     setSpecies,
@@ -45,6 +46,11 @@ const FoodAmount: React.FC = () => {
           <p>임상 영양학 기반 정밀 급여 시뮬레이터</p>
         </div>
       </div>
+
+      <ToolArticleLink
+        articlePath="/articles/food-amount"
+        description="RER·DER 공식, 생애 단계별 에너지 계수, BCS 기반 급여량 조정 원칙을 정리한 가이드입니다."
+      />
 
       <div className="tool-content-standard">
         <AdSlot className="mb-6" />
@@ -232,10 +238,6 @@ const FoodAmount: React.FC = () => {
             )}
           </div>
         </div>
-
-        <CollapsibleInfo title="반려동물 영양 요구량 및 급여량 계산 가이드">
-          <FoodGuide />
-        </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
       </div>

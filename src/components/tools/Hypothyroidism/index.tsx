@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { useHypoLogic } from './useHypoLogic';
 import DiagnosisForm from './DiagnosisForm';
 import ResultView from './ResultView';
-import HypoGuide from './HypoGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const Hypothyroidism: React.FC = () => {
+  useSEO('강아지 갑상선 기능 저하증 진단 도구', '갑상선 호르몬 검사 수치와 임상 증상을 바탕으로 강아지 갑상선 기능 저하증 가능성을 체계적으로 평가하세요.');
   const {
     mode,
     setMode,
@@ -40,6 +41,11 @@ const Hypothyroidism: React.FC = () => {
           <p>Canine Hypothyroidism Diagnosis & Management Analyzer</p>
         </div>
       </div>
+
+      <ToolArticleLink
+        articlePath="/articles/hypothyroidism"
+        description="TT4·fT4·TSH 복합 지표 해석, ESS 감별 진단, Levothyroxine 투여와 모니터링 원칙을 정리한 가이드입니다."
+      />
 
       <div className="tool-content-standard">
         <AdSlot className="mb-6" />
@@ -81,10 +87,6 @@ const Hypothyroidism: React.FC = () => {
             resultRef={resultRef}
           />
         )}
-
-        <CollapsibleInfo title="갑상선기능저하증 진단 및 관리 가이드">
-          <HypoGuide />
-        </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
       </div>

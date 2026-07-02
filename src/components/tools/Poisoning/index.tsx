@@ -3,11 +3,12 @@ import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { usePoisoningLogic } from './usePoisoningLogic';
 import { toxinDatabase } from './data';
-import PoisoningGuide from './PoisoningGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const Poisoning: React.FC = () => {
+  useSEO('반려동물 독성 물질 중독 위험도 분석기', '섭취한 물질과 반려동물 체중에 따른 중독 위험성을 평가하고, 신속한 초기 대처 및 치료 가이드를 제공합니다.');
   const {
     species,
     setSpecies,
@@ -35,6 +36,11 @@ const Poisoning: React.FC = () => {
           <p>주요 중독 물질별 진단 및 치료 프로토콜</p>
         </div>
       </header>
+
+      <ToolArticleLink
+        articlePath="/articles/poisoning"
+        description="구토 유발 금기 상황과 주요 독성 물질(초콜릿·포도·자일리톨 등)별 위험성·응급 처치를 정리한 가이드입니다."
+      />
 
       <div className="tool-content-standard">
         <AdSlot className="mb-6" />
@@ -129,10 +135,6 @@ const Poisoning: React.FC = () => {
             </div>
           </div>
         )}
-
-        <CollapsibleInfo title="독성 물질 섭취 응급 처치 및 위험 가이드">
-          <PoisoningGuide />
-        </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
       </div>

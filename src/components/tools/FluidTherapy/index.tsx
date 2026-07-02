@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { useFluidLogic } from './useFluidLogic';
 import FluidForm from './FluidForm';
 import FluidResultView from './FluidResultView';
-import FluidGuide from './FluidGuide';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
+import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
+import { useSEO } from '../../common/useSEO';
 
 const FluidTherapy: React.FC = () => {
+  useSEO('수의학 수액 요법 계산기', '환자의 체중과 탈수 정도에 따른 유지량, 결핍량, 손실량을 계산하여 안전하고 효과적인 수액 처방을 계획하세요.');
   const {
     patient,
     setPatient,
@@ -34,6 +35,11 @@ const FluidTherapy: React.FC = () => {
         </div>
       </div>
 
+      <ToolArticleLink
+        articlePath="/articles/fluid-therapy"
+        description="수액 요법의 세 가지 핵심 요소(결핍량·유지량·지속 소실량), 전해질 보충, 과수액 예방까지 임상 원칙을 정리한 가이드입니다."
+      />
+
       <div className="tool-content">
         <AdSlot className="mb-6" />
 
@@ -52,10 +58,6 @@ const FluidTherapy: React.FC = () => {
             />
           )}
         </div>
-
-        <CollapsibleInfo title="정밀 수액 요법 및 탈수 교정 가이드">
-          <FluidGuide />
-        </CollapsibleInfo>
 
         {result && (
           <AdSlot className="mt-8" />
