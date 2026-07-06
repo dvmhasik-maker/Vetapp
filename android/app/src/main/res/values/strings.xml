@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">VetApp</string>
+    <string name="title_activity_main">VetApp</string>
+    <string name="package_name">com.dvmhasik.vetapp</string>
+    <string name="custom_url_scheme">com.dvmhasik.vetapp</string>
+</resources>
