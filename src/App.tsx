@@ -1,3 +1,4 @@
+import AndroidBackButton from './components/common/AndroidBackButton';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/common/ScrollToTop';
 import Dashboard from './components/Dashboard';
@@ -32,6 +33,7 @@ import FoodAmountArticle from './components/articles/FoodAmountArticle';
 function App() {
   return (
     <Router>
+      <AndroidBackButton />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Dashboard />} />
