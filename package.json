@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/toast": "^8.0.1",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.300.0",
     "react": "^18.2.0",
