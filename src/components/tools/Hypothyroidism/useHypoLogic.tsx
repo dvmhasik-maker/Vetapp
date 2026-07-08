@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { Mode, PatientData, ValueData, AnalysisResult } from './types';
 import React from 'react';
+import { saveImageFile } from '../../common/saveImageFile';
 
 export const useHypoLogic = () => {
   const [mode, setMode] = useState<Mode>('diag');
@@ -258,13 +259,10 @@ export const useHypoLogic = () => {
 
     html2canvas(patientCardRef.current!, { background: '#ffffff', scale: 2 } as any).then((ptCanvas: HTMLCanvasElement) => {
       html2canvas(target, { background: '#ffffff', scale: 2 } as any).then((mainCanvas: HTMLCanvasElement) => {
-        const combined = document.createElement('canvas');
         if (targetType === 'result') {
-          const link = document.createElement('a');
-          link.download = `${ptName}_${label}_${today}.jpg`;
-          link.href = mainCanvas.toDataURL('image/jpeg', 1.0);
-          link.click();
+          saveImageFile(mainCanvas.toDataURL('image/jpeg', 1.0), `${ptName}_${label}_${today}.jpg`);
         } else {
+          const combined = document.createElement('canvas');
           combined.width = mainCanvas.width;
           combined.height = ptCanvas.height + mainCanvas.height;
           const ctx = combined.getContext('2d');
@@ -273,10 +271,7 @@ export const useHypoLogic = () => {
             ctx.fillRect(0, 0, combined.width, combined.height);
             ctx.drawImage(ptCanvas, 0, 0);
             ctx.drawImage(mainCanvas, 0, ptCanvas.height);
-            const link = document.createElement('a');
-            link.download = `${ptName}_${label}_${today}.jpg`;
-            link.href = combined.toDataURL('image/jpeg', 1.0);
-            link.click();
+            saveImageFile(combined.toDataURL('image/jpeg', 1.0), `${ptName}_${label}_${today}.jpg`);
           }
         }
       });

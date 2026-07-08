@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import { NeuroResult, PatientData, RankResult } from './types';
 import { symptomData } from './data';
+import { saveImageFile } from '../../common/saveImageFile';
 
 export const useNeuroLogic = () => {
   const [patient, setPatient] = useState<PatientData>({
@@ -112,6 +114,13 @@ export const useNeuroLogic = () => {
     }, 100);
   };
 
+  const saveImg = () => {
+    if (!resultRef.current) return;
+    html2canvas(resultRef.current, { background: '#f8fafc', scale: 2 } as any).then(canvas => {
+      saveImageFile(canvas.toDataURL('image/jpeg', 0.9), `VETAPP_신경계분석_${patient.name || '환자'}_${new Date().getTime()}.jpg`);
+    });
+  };
+
   return {
     patient,
     setPatient,
@@ -121,6 +130,7 @@ export const useNeuroLogic = () => {
     resultRef,
     captureRef,
     localizeLesion,
-    resetSigns
+    resetSigns,
+    saveImg
   };
 };

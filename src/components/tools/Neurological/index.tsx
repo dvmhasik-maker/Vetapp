@@ -18,7 +18,8 @@ const Neurological: React.FC = () => {
     result,
     resultRef,
     localizeLesion,
-    resetSigns
+    resetSigns,
+    saveImg
   } = useNeuroLogic();
 
   return (
@@ -51,6 +52,7 @@ const Neurological: React.FC = () => {
           toggleSymptom={toggleSymptom}
           localizeLesion={localizeLesion}
           resetSigns={resetSigns}
+          saveImg={saveImg}
           result={Boolean(result)}
         />
 
