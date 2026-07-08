@@ -1,7 +1,7 @@
-import React, { useRef, useState, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, useState, useCallback, useEffect, useMemo, forwardRef, useImperativeHandle } from 'react';
 import { ZoomIn, ZoomOut, Maximize2, Lock, Unlock } from 'lucide-react';
 import { MainPointKey, MainPoints, Point, Step, HeartSizeResult } from './types';
-import { snapToPerpendicular, snapToLine, interpretVHS, interpretVLAS } from './calc';
+import { snapToPerpendicular, snapToLine, interpretVHS, interpretVLAS, dist, angleOf, cumulativeDistances } from './calc';
 
 interface ImageCanvasProps {
   imageSrc: string;
@@ -54,6 +54,57 @@ type DragTarget = { type: 'main'; key: MainPointKey } | { type: 'vertebra'; inde
 type GestureMode = 'pan' | 'pinch' | 'draw-sa' | 'aim-vertebra' | null;
 interface PreviewLine { start: Point; end: Point; isPerpendicular: boolean; }
 interface VertebraPreview { point: Point; isAligned: boolean; }
+
+interface AxisTick { start: Point; end: Point; }
+interface AxisTransposition {
+  lLine: { start: Point; end: Point } | null;
+  sLine: { start: Point; end: Point } | null;
+  lTicks: AxisTick[];
+  sTicks: AxisTick[];
+}
+
+// VHS는 실제로 L(장축)·S(단축) 길이를 각각 T4 앞쪽 경계에서 시작해 척추를 따라 재는 방식으로
+// 정의된다. 계산 결과가 나오면 그 두 길이를 척추선과 평행하게 옮겨 그려서, 방사선 사진 위에서
+// L·S가 각각 몇 개의 척추에 해당하는지 교과서 VHS 도해처럼 한눈에 보이게 한다.
+const computeAxisTransposition = (
+  vertebrae: Point[],
+  L: number | null,
+  S: number | null,
+  imgWidth: number
+): AxisTransposition => {
+  const empty: AxisTransposition = { lLine: null, sLine: null, lTicks: [], sTicks: [] };
+  if (vertebrae.length < 2 || imgWidth <= 0) return empty;
+
+  const origin = vertebrae[0];
+  const last = vertebrae[vertebrae.length - 1];
+  if (dist(origin, last) === 0) return empty;
+
+  const angle = angleOf(origin, last);
+  const dir = { x: Math.cos(angle), y: Math.sin(angle) };
+  const perp = { x: -dir.y, y: dir.x };
+  const along = (d: number, side: number): Point => ({
+    x: origin.x + dir.x * d + perp.x * side,
+    y: origin.y + dir.y * d + perp.y * side
+  });
+
+  const unit = imgWidth * 0.018;
+  const lSide = unit;
+  const sSide = unit * 2.4;
+  const tickHalf = unit * 0.4;
+  const cumulative = cumulativeDistances(vertebrae);
+
+  const buildTicks = (limit: number, side: number): AxisTick[] =>
+    cumulative
+      .filter(c => c > 0.01 && c < limit - 0.01)
+      .map(c => ({ start: along(c, side - tickHalf), end: along(c, side + tickHalf) }));
+
+  return {
+    lLine: L !== null ? { start: along(0, lSide), end: along(L, lSide) } : null,
+    sLine: S !== null ? { start: along(0, sSide), end: along(S, sSide) } : null,
+    lTicks: L !== null ? buildTicks(L, lSide) : [],
+    sTicks: S !== null ? buildTicks(S, sSide) : []
+  };
+};
 
 const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
   imageSrc, step, mainPoints, vertebrae, result, canFinishVertebrae, locked, onToggleLock,
@@ -376,6 +427,16 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
       ctx.restore();
     }
 
+    if (result) {
+      const expL = mainPoints.carina && mainPoints.apex ? dist(mainPoints.carina, mainPoints.apex) : null;
+      const expS = mainPoints.saStart && mainPoints.saEnd ? dist(mainPoints.saStart, mainPoints.saEnd) : null;
+      const axisT = computeAxisTransposition(vertebrae, expL, expS, naturalSize.width);
+      if (axisT.lLine) drawLine(axisT.lLine.start, axisT.lLine.end, '#ef4444', 2.5);
+      if (axisT.sLine) drawLine(axisT.sLine.start, axisT.sLine.end, '#2563eb', 2.5);
+      axisT.lTicks.forEach(t => drawLine(t.start, t.end, '#ef4444', 1.5));
+      axisT.sTicks.forEach(t => drawLine(t.start, t.end, '#2563eb', 1.5));
+    }
+
     const drawPoint = (p: Point, color: string, r: number, label: string, labelColor: string) => {
       ctx.save();
       ctx.beginPath();
@@ -505,6 +566,14 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
   // 배지는 뷰포트 모서리가 아니라 실제 원본 사진의 오른쪽 상단 모서리를 따라간다
   const imageTopRight = naturalSize ? toScreen({ x: naturalSize.width, y: 0 }) : null;
 
+  const L = mainPoints.carina && mainPoints.apex ? dist(mainPoints.carina, mainPoints.apex) : null;
+  const S = mainPoints.saStart && mainPoints.saEnd ? dist(mainPoints.saStart, mainPoints.saEnd) : null;
+  const axisTransposition = useMemo(
+    () => (result ? computeAxisTransposition(vertebrae, L, S, naturalSize?.width ?? 0) : null),
+    [result, vertebrae, L, S, naturalSize]
+  );
+  const toScreenLine = (l: { start: Point; end: Point }) => ({ start: toScreen(l.start), end: toScreen(l.end) });
+
   return (
     <div className="hsx-canvas-wrap">
       <div
@@ -551,6 +620,23 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
               fill="none" stroke="#f59e0b" strokeWidth={2} strokeDasharray="5 3"
             />
           )}
+
+          {axisTransposition?.lLine && (() => {
+            const l = toScreenLine(axisTransposition.lLine!);
+            return <line x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#ef4444" strokeWidth={2.5} />;
+          })()}
+          {axisTransposition?.sLine && (() => {
+            const l = toScreenLine(axisTransposition.sLine!);
+            return <line x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#2563eb" strokeWidth={2.5} />;
+          })()}
+          {axisTransposition?.lTicks.map((t, i) => {
+            const l = toScreenLine(t);
+            return <line key={`lt-${i}`} x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#ef4444" strokeWidth={1.5} opacity={0.75} />;
+          })}
+          {axisTransposition?.sTicks.map((t, i) => {
+            const l = toScreenLine(t);
+            return <line key={`st-${i}`} x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#2563eb" strokeWidth={1.5} opacity={0.75} />;
+          })}
 
           {previewScreen && (
             <g>
