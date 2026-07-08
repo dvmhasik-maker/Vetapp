@@ -36,6 +36,10 @@ const POINT_META: Record<MainPointKey, { label: string; color: string }> = {
 
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 
+// 결과 배지(화면 표시 + 저장 이미지)는 공간이 좁아 "의심" 없이 축약해서 보여준다.
+// ResultView 패널의 전체 판정 문구는 그대로 유지된다.
+const shortVerdict = (label: string) => label.replace(/의심/g, '').trim();
+
 const roundRect = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) => {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -47,7 +51,7 @@ const roundRect = (ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 };
 
 type DragTarget = { type: 'main'; key: MainPointKey } | { type: 'vertebra'; index: number };
-type GestureMode = 'pan' | 'pinch' | 'draw-sa' | null;
+type GestureMode = 'pan' | 'pinch' | 'draw-sa' | 'aim-vertebra' | null;
 interface PreviewLine { start: Point; end: Point; isPerpendicular: boolean; }
 interface VertebraPreview { point: Point; isAligned: boolean; }
 
@@ -178,6 +182,12 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
         g.mode = 'draw-sa';
         g.drawStart = imgFromContainerPoint(pts[0].x, pts[0].y);
         setPreviewLine({ start: g.drawStart, end: g.drawStart, isPerpendicular: false });
+      } else if (step === 'vertebrae' && !canFinishVertebrae && locked) {
+        // 화면이 잠긴 상태에서는 한 손가락 드래그가 원래 패닝을 하지 않으므로(잠금), 그 자리를
+        // "손가락으로 조준하며 정렬 미리보기를 보다가 떼면 찍는" 제스처로 대신 사용한다 —
+        // 터치 기기에는 마우스 호버가 없어 PC와 동일한 방식의 유도 가이드를 줄 수 없기 때문.
+        g.mode = 'aim-vertebra';
+        setVertebraPreview(alignToVertebraLine(imgFromContainerPoint(pts[0].x, pts[0].y)));
       } else {
         g.mode = 'pan';
       }
@@ -234,6 +244,9 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
       const rawEnd = imgFromContainerPoint(sx, sy);
       const snap = snapToPerpendicular(g.drawStart, rawEnd, mainPoints.carina, mainPoints.apex, 4);
       setPreviewLine({ start: g.drawStart, end: snap.end, isPerpendicular: snap.isPerpendicular });
+    } else if (g.mode === 'aim-vertebra') {
+      const rawPos = imgFromContainerPoint(sx, sy);
+      setVertebraPreview(alignToVertebraLine(rawPos));
     } else if (g.mode === 'pinch' && g.mid0 && g.dist0) {
       const pts = Array.from(g.pointers.values());
       if (pts.length < 2) return;
@@ -253,10 +266,13 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
     const g = gestureRef.current;
     const wasTap = g.mode === 'pan' && !g.moved && g.pointers.size === 1;
     const wasDraw = g.mode === 'draw-sa' && g.moved && g.pointers.size === 1;
+    const wasAim = g.mode === 'aim-vertebra' && g.pointers.size === 1;
     let tapPos = wasTap ? toImageCoords(e.clientX, e.clientY) : null;
     if (tapPos && step === 'vertebrae') {
       tapPos = alignToVertebraLine(tapPos).point;
     }
+    const aimPos = wasAim ? toImageCoords(e.clientX, e.clientY) : null;
+    const finalAimPos = aimPos ? alignToVertebraLine(aimPos).point : null;
     const finalLine = wasDraw && previewLine ? { start: previewLine.start, end: previewLine.end } : null;
 
     g.pointers.delete(e.pointerId);
@@ -266,8 +282,10 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
     startGestureFromPointers();
 
     if (tapPos && step !== 'done') onAddPoint(tapPos);
+    if (finalAimPos && step !== 'done') onAddPoint(finalAimPos);
     if (finalLine) onDrawShortAxis(finalLine.start, finalLine.end);
     setPreviewLine(null);
+    if (wasAim) setVertebraPreview(null);
   };
 
   const toScreen = (p: Point): Point => ({ x: p.x * zoom + pan.x, y: p.y * zoom + pan.y });
@@ -392,45 +410,79 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
       const vhsV = interpretVHS(result.species, result.vhs);
       const vlasV = result.vlas !== null ? interpretVLAS(result.species, result.vlas) : null;
       const rows: { label: string; value: string; verdict: string; color: string }[] = [
-        { label: 'VHS', value: result.vhs.toFixed(1), verdict: vhsV.label, color: vhsV.color }
+        { label: 'VHS', value: result.vhs.toFixed(1), verdict: shortVerdict(vhsV.label), color: vhsV.color }
       ];
       if (result.vlas !== null && vlasV) {
-        rows.push({ label: 'VLAS', value: result.vlas.toFixed(1), verdict: vlasV.label, color: vlasV.color });
+        rows.push({ label: 'VLAS', value: result.vlas.toFixed(1), verdict: shortVerdict(vlasV.label), color: vlasV.color });
       }
 
-      const boxW = 150 * k;
-      const rowH = 42 * k;
+      const labelFont = `700 ${11 * k}px sans-serif`;
+      const valueFont = `800 ${16 * k}px sans-serif`;
+      const verdictFont = `700 ${11 * k}px sans-serif`;
+      const colGap = 8 * k;
       const pad = 14 * k;
-      const boxH = pad * 2 + rows.length * rowH;
+      const rowH = 22 * k;
+      const dividerGap = 8 * k;
+
+      ctx.font = labelFont;
+      const labelW = Math.max(...rows.map(r => ctx.measureText(r.label).width));
+      ctx.font = valueFont;
+      const valueW = Math.max(...rows.map(r => ctx.measureText(r.value).width));
+      ctx.font = verdictFont;
+      const rowWidths = rows.map(r => labelW + colGap + valueW + colGap + ctx.measureText(r.verdict).width);
+
+      const boxW = pad * 2 + Math.max(...rowWidths);
+      const boxH = pad * 2 + rows.length * rowH + (rows.length > 1 ? dividerGap : 0);
       const margin = 12 * k;
       const bx = canvas.width - margin - boxW;
       const by = margin;
 
+      // 화면 배지와 같은 다크 글래스 느낌 (캔버스는 실제 블러를 지원하지 않아 반투명 채움 + 옅은 테두리로 근사한다)
       ctx.save();
-      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
       roundRect(ctx, bx, by, boxW, boxH, 10 * k);
       ctx.fill();
+      ctx.lineWidth = 1 * k;
+      ctx.strokeStyle = 'rgba(226, 232, 240, 0.22)';
+      roundRect(ctx, bx, by, boxW, boxH, 10 * k);
+      ctx.stroke();
+
+      const labelX = bx + pad;
+      const valueRightX = bx + pad + labelW + colGap + valueW;
+      const verdictX = valueRightX + colGap;
 
       let ty = by + pad;
-      rows.forEach(r => {
-        ctx.textBaseline = 'top';
-        ctx.font = `700 ${14 * k}px sans-serif`;
-        ctx.fillStyle = '#1e293b';
+      rows.forEach((r, i) => {
+        const cy = ty + rowH / 2;
+        ctx.textBaseline = 'middle';
+
+        ctx.font = labelFont;
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.55)';
         ctx.textAlign = 'left';
-        ctx.fillText(r.label, bx + pad, ty);
+        ctx.fillText(r.label, labelX, cy);
 
-        ctx.font = `800 ${16 * k}px sans-serif`;
+        ctx.font = valueFont;
         ctx.fillStyle = r.color;
         ctx.textAlign = 'right';
-        ctx.fillText(r.value, bx + boxW - pad, ty);
+        ctx.fillText(r.value, valueRightX, cy);
 
-        ty += 20 * k;
-        ctx.font = `700 ${11 * k}px sans-serif`;
+        ctx.font = verdictFont;
         ctx.fillStyle = r.color;
-        ctx.textAlign = 'right';
-        ctx.fillText(r.verdict, bx + boxW - pad, ty);
+        ctx.textAlign = 'left';
+        ctx.fillText(r.verdict, verdictX, cy);
 
-        ty += rowH - 20 * k;
+        ty += rowH;
+
+        if (i === 0 && rows.length > 1) {
+          const hy = ty + dividerGap / 2;
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.32)';
+          ctx.lineWidth = 1 * k;
+          ctx.beginPath();
+          ctx.moveTo(bx + pad, hy);
+          ctx.lineTo(bx + boxW - pad, hy);
+          ctx.stroke();
+          ty += dividerGap;
+        }
       });
       ctx.restore();
     }
@@ -590,18 +642,15 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
             className="hsx-result-badge"
             style={{ left: imageTopRight.x - 12, top: imageTopRight.y + 12, transform: 'translateX(-100%)' }}
           >
-            <div className="hsx-badge-row">
-              <span>VHS</span>
-              <strong style={{ color: vhsVerdict.color }}>{result.vhs.toFixed(1)}</strong>
-            </div>
-            <div className="hsx-badge-verdict" style={{ color: vhsVerdict.color }}>{vhsVerdict.label}</div>
+            <span className="hsx-badge-k">VHS</span>
+            <span className="hsx-badge-v" style={{ color: vhsVerdict.color }}>{result.vhs.toFixed(1)}</span>
+            <span className="hsx-badge-verdict" style={{ color: vhsVerdict.color }}>{shortVerdict(vhsVerdict.label)}</span>
             {result.vlas !== null && vlasVerdict && (
               <>
-                <div className="hsx-badge-row hsx-badge-row-2nd">
-                  <span>VLAS</span>
-                  <strong style={{ color: vlasVerdict.color }}>{result.vlas.toFixed(1)}</strong>
-                </div>
-                <div className="hsx-badge-verdict" style={{ color: vlasVerdict.color }}>{vlasVerdict.label}</div>
+                <span className="hsx-badge-hr" />
+                <span className="hsx-badge-k">VLAS</span>
+                <span className="hsx-badge-v" style={{ color: vlasVerdict.color }}>{result.vlas.toFixed(1)}</span>
+                <span className="hsx-badge-verdict" style={{ color: vlasVerdict.color }}>{shortVerdict(vlasVerdict.label)}</span>
               </>
             )}
           </div>
@@ -663,23 +712,33 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
         }
         .hsx-result-badge {
           position: absolute;
-          background: rgba(255,255,255,0.95);
-          border-radius: 10px;
-          padding: 10px 14px;
-          box-shadow: var(--shadow-md);
-          min-width: 130px;
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(226, 232, 240, 0.14);
+          border-radius: 12px;
+          padding: 8px 14px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+          display: grid;
+          grid-template-columns: auto auto auto;
+          column-gap: 10px;
+          row-gap: 6px;
+          align-items: baseline;
         }
-        .hsx-badge-row {
-          display: flex;
-          justify-content: space-between;
-          gap: 12px;
-          font-size: 0.85rem;
+        .hsx-badge-k {
+          font-size: 0.66rem;
           font-weight: 700;
-          color: #1e293b;
+          color: rgba(226, 232, 240, 0.55);
+          letter-spacing: 0.03em;
         }
-        .hsx-badge-row-2nd { margin-top: 8px; }
-        .hsx-badge-row strong { font-size: 1rem; }
-        .hsx-badge-verdict { font-size: 0.72rem; font-weight: 700; text-align: right; margin-top: 1px; }
+        .hsx-badge-v {
+          font-size: 0.94rem;
+          font-weight: 800;
+          font-variant-numeric: tabular-nums;
+          text-align: right;
+        }
+        .hsx-badge-verdict { font-size: 0.66rem; font-weight: 700; white-space: nowrap; }
+        .hsx-badge-hr { grid-column: 1 / -1; height: 1px; background: rgba(255, 255, 255, 0.32); }
 
         .hsx-zoom-controls {
           position: absolute;
