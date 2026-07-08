@@ -64,6 +64,11 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
   const [previewLine, setPreviewLine] = useState<PreviewLine | null>(null);
   const [vertebraPreview, setVertebraPreview] = useState<VertebraPreview | null>(null);
 
+  // 모바일에서 고해상도 사진을 작은 화면에 맞추면 fitToView 배율이 고정된 MIN_ZOOM(0.2)보다
+  // 작아질 수 있다. 이 경우 축소 시 clamp가 고정 하한에 걸려 화면맞춤 배율보다 더 축소하지
+  // 못하고 오히려 확대되어 버리므로, 실제 화면맞춤 배율까지는 항상 축소할 수 있도록 하한을 동적으로 낮춘다.
+  const minZoomRef = useRef(MIN_ZOOM);
+
   const gestureRef = useRef<{
     mode: GestureMode;
     pointers: Map<number, Point>;
@@ -83,6 +88,7 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
     if (!container) return;
     const rect = container.getBoundingClientRect();
     const scale = Math.min(rect.width / size.width, rect.height / size.height) * 0.95;
+    minZoomRef.current = Math.min(MIN_ZOOM, scale);
     setZoom(scale);
     setPan({
       x: (rect.width - size.width * scale) / 2,
@@ -126,7 +132,7 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
       const cy = e.clientY - rect.top;
       const factor = e.deltaY > 0 ? 0.9 : 1.1;
       setZoom(prevZoom => {
-        const newZoom = clamp(prevZoom * factor, MIN_ZOOM, MAX_ZOOM);
+        const newZoom = clamp(prevZoom * factor, minZoomRef.current, MAX_ZOOM);
         setPan(prevPan => {
           const imgX = (cx - prevPan.x) / prevZoom;
           const imgY = (cy - prevPan.y) / prevZoom;
@@ -234,7 +240,7 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
       const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
       const mid = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
       if (!locked) {
-        const newZoom = clamp(g.zoom0 * (d / g.dist0), MIN_ZOOM, MAX_ZOOM);
+        const newZoom = clamp(g.zoom0 * (d / g.dist0), minZoomRef.current, MAX_ZOOM);
         const imgAnchorX = (g.mid0.x - g.pan0.x) / g.zoom0;
         const imgAnchorY = (g.mid0.y - g.pan0.y) / g.zoom0;
         setZoom(newZoom);
@@ -294,7 +300,7 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
     const cx = rect.width / 2;
     const cy = rect.height / 2;
     setZoom(prevZoom => {
-      const newZoom = clamp(prevZoom * factor, MIN_ZOOM, MAX_ZOOM);
+      const newZoom = clamp(prevZoom * factor, minZoomRef.current, MAX_ZOOM);
       setPan(prevPan => {
         const imgX = (cx - prevPan.x) / prevZoom;
         const imgY = (cy - prevPan.y) / prevZoom;

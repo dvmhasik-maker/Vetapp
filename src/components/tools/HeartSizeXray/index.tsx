@@ -158,6 +158,10 @@ const HeartSizeXray: React.FC = () => {
 
         @media (max-width: 900px) {
           .hsx-main-grid { grid-template-columns: 1fr; }
+          .hsx-panel-col { display: contents; }
+          .hsx-panel, .hsx-upload { order: 1; }
+          .hsx-canvas-col { order: 2; }
+          .hsx-result { order: 3; }
         }
       `}</style>
     </div>
