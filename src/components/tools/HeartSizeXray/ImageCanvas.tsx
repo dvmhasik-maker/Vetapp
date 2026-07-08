@@ -36,6 +36,16 @@ const POINT_META: Record<MainPointKey, { label: string; color: string }> = {
 
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 
+// 다음 단계로 넘어가면 이전 단계에서 찍은 점(과 그 점으로 그려지는 선)은 고정해 실수로 바뀌지
+// 않게 한다. 척추 점은 예외로, vertebrae 단계 안에서는 여러 개를 이어서 찍고 조정해야 하므로
+// 그 단계가 끝나기(계산 완료) 전까지는 계속 드래그할 수 있어야 한다.
+const STEP_ORDER: Record<Step, number> = {
+  adjust: 0, carina: 1, apex: 2, shortAxis: 3, laBorder: 4, vertebrae: 5, done: 6
+};
+const OWNER_STEP: Record<MainPointKey, Step> = {
+  carina: 'carina', apex: 'apex', saStart: 'shortAxis', saEnd: 'shortAxis', laBorder: 'laBorder'
+};
+
 // 결과 배지(화면 표시 + 저장 이미지)는 공간이 좁아 "의심" 없이 축약해서 보여준다.
 // ResultView 패널의 전체 판정 문구는 그대로 유지된다.
 const shortVerdict = (label: string) => label.replace(/의심/g, '').trim();
@@ -59,20 +69,24 @@ interface AxisTick { start: Point; end: Point; }
 interface AxisTransposition {
   lLine: { start: Point; end: Point } | null;
   sLine: { start: Point; end: Point } | null;
+  vlasLine: { start: Point; end: Point } | null;
   lTicks: AxisTick[];
   sTicks: AxisTick[];
+  vlasTicks: AxisTick[];
 }
 
-// VHS는 실제로 L(장축)·S(단축) 길이를 각각 T4 앞쪽 경계에서 시작해 척추를 따라 재는 방식으로
-// 정의된다. 계산 결과가 나오면 그 두 길이를 척추선과 평행하게 옮겨 그려서, 방사선 사진 위에서
-// L·S가 각각 몇 개의 척추에 해당하는지 교과서 VHS 도해처럼 한눈에 보이게 한다.
+// VHS·VLAS는 실제로 L(장축)·S(단축)·LA(좌심방) 길이를 각각 T4 앞쪽 경계에서 시작해 척추를 따라
+// 재는 방식으로 정의된다. 계산 결과가 나오면 그 길이들을 척추선과 평행하게 옮겨 그려서, 방사선
+// 사진 위에서 각각 몇 개의 척추에 해당하는지 교과서 VHS 도해처럼 한눈에 보이게 한다. 클릭으로
+// 찍은 흉추 경계선 자체는 계산 후에는 감추고 이 옮겨 그린 선들이 그 자리를 대신한다.
 const computeAxisTransposition = (
   vertebrae: Point[],
   L: number | null,
   S: number | null,
+  LA: number | null,
   imgWidth: number
 ): AxisTransposition => {
-  const empty: AxisTransposition = { lLine: null, sLine: null, lTicks: [], sTicks: [] };
+  const empty: AxisTransposition = { lLine: null, sLine: null, vlasLine: null, lTicks: [], sTicks: [], vlasTicks: [] };
   if (vertebrae.length < 2 || imgWidth <= 0) return empty;
 
   const origin = vertebrae[0];
@@ -87,10 +101,14 @@ const computeAxisTransposition = (
     y: origin.y + dir.y * d + perp.y * side
   });
 
+  // 척추 경계 점·연결선은 계산 후 숨기고 이 세 선이 그 자리를 대신하므로, 더 이상 원래 척추선과
+  // 겹치지 않게 멀리 띄울 필요가 없다 — 원래 위치(side 0)에 가깝게 모아서 배치한다.
   const unit = imgWidth * 0.018;
-  const lSide = unit;
-  const sSide = unit * 2.4;
-  const tickHalf = unit * 0.4;
+  const spacingUnit = imgWidth * 0.006;
+  const lSide = 0;
+  const sSide = spacingUnit * 1;
+  const vlasSide = spacingUnit * 2;
+  const tickHalf = unit * 0.12;
   const cumulative = cumulativeDistances(vertebrae);
 
   const buildTicks = (limit: number, side: number): AxisTick[] =>
@@ -101,8 +119,10 @@ const computeAxisTransposition = (
   return {
     lLine: L !== null ? { start: along(0, lSide), end: along(L, lSide) } : null,
     sLine: S !== null ? { start: along(0, sSide), end: along(S, sSide) } : null,
+    vlasLine: LA !== null ? { start: along(0, vlasSide), end: along(LA, vlasSide) } : null,
     lTicks: L !== null ? buildTicks(L, lSide) : [],
-    sTicks: S !== null ? buildTicks(S, sSide) : []
+    sTicks: S !== null ? buildTicks(S, sSide) : [],
+    vlasTicks: LA !== null ? buildTicks(LA, vlasSide) : []
   };
 };
 
@@ -341,8 +361,17 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
 
   const toScreen = (p: Point): Point => ({ x: p.x * zoom + pan.x, y: p.y * zoom + pan.y });
 
+  const isPointLocked = (target: DragTarget): boolean => {
+    const ownerStep = target.type === 'vertebra' ? 'vertebrae' : OWNER_STEP[target.key];
+    return STEP_ORDER[step] > STEP_ORDER[ownerStep];
+  };
+
   const startDragPoint = (e: React.PointerEvent, target: DragTarget) => {
+    // stopPropagation을 먼저 해야 한다 — 잠긴 점이라고 바로 return하면 이벤트가 컨테이너로
+    // 새어나가 패닝 제스처가 시작되면서, 화면 잠금이 풀려 있을 때는 점이 고정되지 않고 화면과
+    // 함께 움직이는 것처럼 보였다.
     e.stopPropagation();
+    if (isPointLocked(target)) return;
     (e.target as Element).setPointerCapture(e.pointerId);
     draggingRef.current = target;
   };
@@ -414,7 +443,9 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
     if (mainPoints.saStart && mainPoints.saEnd) drawLine(mainPoints.saStart, mainPoints.saEnd, '#2563eb', 2.5);
     if (mainPoints.carina && mainPoints.laBorder) drawLine(mainPoints.carina, mainPoints.laBorder, '#8b5cf6', 2.5, [4, 4]);
 
-    if (vertebrae.length > 1) {
+    // 계산 전에는 클릭으로 찍은 흉추 경계선을 그대로 보여주고, 계산 후에는 아래에서 그 위치에
+    // 옮겨 그리는 장축·단축·VLAS 선이 대신하도록 숨긴다.
+    if (!result && vertebrae.length > 1) {
       ctx.save();
       ctx.strokeStyle = '#f59e0b';
       ctx.lineWidth = 2 * k;
@@ -430,14 +461,17 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
     if (result) {
       const expL = mainPoints.carina && mainPoints.apex ? dist(mainPoints.carina, mainPoints.apex) : null;
       const expS = mainPoints.saStart && mainPoints.saEnd ? dist(mainPoints.saStart, mainPoints.saEnd) : null;
-      const axisT = computeAxisTransposition(vertebrae, expL, expS, naturalSize.width);
-      if (axisT.lLine) drawLine(axisT.lLine.start, axisT.lLine.end, '#ef4444', 2.5);
-      if (axisT.sLine) drawLine(axisT.sLine.start, axisT.sLine.end, '#2563eb', 2.5);
-      axisT.lTicks.forEach(t => drawLine(t.start, t.end, '#ef4444', 1.5));
-      axisT.sTicks.forEach(t => drawLine(t.start, t.end, '#2563eb', 1.5));
+      const expLA = mainPoints.carina && mainPoints.laBorder ? dist(mainPoints.carina, mainPoints.laBorder) : null;
+      const axisT = computeAxisTransposition(vertebrae, expL, expS, expLA, naturalSize.width);
+      if (axisT.lLine) drawLine(axisT.lLine.start, axisT.lLine.end, '#f59e0b', 2.5);
+      if (axisT.sLine) drawLine(axisT.sLine.start, axisT.sLine.end, '#f59e0b', 2.5);
+      if (axisT.vlasLine) drawLine(axisT.vlasLine.start, axisT.vlasLine.end, '#27ae60', 2.5);
+      axisT.lTicks.forEach(t => drawLine(t.start, t.end, '#f59e0b', 1.5));
+      axisT.sTicks.forEach(t => drawLine(t.start, t.end, '#f59e0b', 1.5));
+      axisT.vlasTicks.forEach(t => drawLine(t.start, t.end, '#27ae60', 1.5));
     }
 
-    const drawPoint = (p: Point, color: string, r: number, label: string, labelColor: string) => {
+    const drawPoint = (p: Point, color: string, r: number, label: string, labelColor: string, labelBelow = false) => {
       ctx.save();
       ctx.beginPath();
       ctx.arc(p.x, p.y, r * k, 0, Math.PI * 2);
@@ -450,8 +484,8 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
         ctx.font = `700 ${11 * k}px sans-serif`;
         ctx.fillStyle = labelColor;
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'alphabetic';
-        ctx.fillText(label, p.x, p.y - 14 * k);
+        ctx.textBaseline = labelBelow ? 'top' : 'alphabetic';
+        ctx.fillText(label, p.x, labelBelow ? p.y + 12 * k : p.y - 14 * k);
       }
       ctx.restore();
     };
@@ -460,12 +494,14 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
       const p = mainPoints[key];
       if (!p) return;
       const meta = POINT_META[key];
-      drawPoint(p, meta.color, 6, meta.label, meta.color);
+      drawPoint(p, meta.color, 6, meta.label, meta.color, key === 'saStart' || key === 'saEnd');
     });
 
-    vertebrae.forEach((p, i) => {
-      drawPoint(p, '#f59e0b', 5, `T${4 + i}`, '#b45309');
-    });
+    if (!result) {
+      vertebrae.forEach((p, i) => {
+        drawPoint(p, '#f59e0b', 5, `T${4 + i}`, '#b45309');
+      });
+    }
 
     if (result) {
       const vhsV = interpretVHS(result.species, result.vhs);
@@ -568,9 +604,10 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
 
   const L = mainPoints.carina && mainPoints.apex ? dist(mainPoints.carina, mainPoints.apex) : null;
   const S = mainPoints.saStart && mainPoints.saEnd ? dist(mainPoints.saStart, mainPoints.saEnd) : null;
+  const LA = mainPoints.carina && mainPoints.laBorder ? dist(mainPoints.carina, mainPoints.laBorder) : null;
   const axisTransposition = useMemo(
-    () => (result ? computeAxisTransposition(vertebrae, L, S, naturalSize?.width ?? 0) : null),
-    [result, vertebrae, L, S, naturalSize]
+    () => (result ? computeAxisTransposition(vertebrae, L, S, LA, naturalSize?.width ?? 0) : null),
+    [result, vertebrae, L, S, LA, naturalSize]
   );
   const toScreenLine = (l: { start: Point; end: Point }) => ({ start: toScreen(l.start), end: toScreen(l.end) });
 
@@ -614,7 +651,7 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
               stroke="#8b5cf6" strokeWidth={2.5} strokeDasharray="4 4"
             />
           )}
-          {vertebraScreenPts.length > 1 && (
+          {!result && vertebraScreenPts.length > 1 && (
             <polyline
               points={vertebraScreenPts.map(p => `${p.x},${p.y}`).join(' ')}
               fill="none" stroke="#f59e0b" strokeWidth={2} strokeDasharray="5 3"
@@ -623,19 +660,27 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
 
           {axisTransposition?.lLine && (() => {
             const l = toScreenLine(axisTransposition.lLine!);
-            return <line x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#ef4444" strokeWidth={2.5} />;
+            return <line x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#f59e0b" strokeWidth={2.5} />;
           })()}
           {axisTransposition?.sLine && (() => {
             const l = toScreenLine(axisTransposition.sLine!);
-            return <line x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#2563eb" strokeWidth={2.5} />;
+            return <line x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#f59e0b" strokeWidth={2.5} />;
+          })()}
+          {axisTransposition?.vlasLine && (() => {
+            const l = toScreenLine(axisTransposition.vlasLine!);
+            return <line x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#27ae60" strokeWidth={2.5} />;
           })()}
           {axisTransposition?.lTicks.map((t, i) => {
             const l = toScreenLine(t);
-            return <line key={`lt-${i}`} x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#ef4444" strokeWidth={1.5} opacity={0.75} />;
+            return <line key={`lt-${i}`} x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#f59e0b" strokeWidth={1.5} opacity={0.75} />;
           })}
           {axisTransposition?.sTicks.map((t, i) => {
             const l = toScreenLine(t);
-            return <line key={`st-${i}`} x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#2563eb" strokeWidth={1.5} opacity={0.75} />;
+            return <line key={`st-${i}`} x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#f59e0b" strokeWidth={1.5} opacity={0.75} />;
+          })}
+          {axisTransposition?.vlasTicks.map((t, i) => {
+            const l = toScreenLine(t);
+            return <line key={`vt-${i}`} x1={l.start.x} y1={l.start.y} x2={l.end.x} y2={l.end.y} stroke="#27ae60" strokeWidth={1.5} opacity={0.75} />;
           })}
 
           {previewScreen && (
@@ -686,24 +731,30 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
             if (!p) return null;
             const sp2 = toScreen(p);
             const meta = POINT_META[key];
+            const labelBelow = key === 'saStart' || key === 'saEnd';
+            const pointLocked = isPointLocked({ type: 'main', key });
             return (
               <g key={key} transform={`translate(${sp2.x},${sp2.y})`}>
                 <circle
-                  r={16} fill="transparent" style={{ cursor: 'grab', touchAction: 'none', pointerEvents: 'auto' }}
+                  r={16} fill="transparent"
+                  style={{ cursor: pointLocked ? 'default' : 'grab', touchAction: 'none', pointerEvents: 'auto' }}
                   onPointerDown={e => startDragPoint(e, { type: 'main', key })}
                   onPointerMove={moveDragPoint}
                   onPointerUp={endDragPoint}
                   onPointerCancel={endDragPoint}
                 />
                 <circle r={6} fill={meta.color} stroke="#fff" strokeWidth={2} pointerEvents="none" />
-                <text y={-14} textAnchor="middle" fontSize={11} fontWeight={700} fill={meta.color} pointerEvents="none">
+                <text
+                  y={labelBelow ? 22 : -14}
+                  textAnchor="middle" fontSize={11} fontWeight={700} fill={meta.color} pointerEvents="none"
+                >
                   {meta.label}
                 </text>
               </g>
             );
           })}
 
-          {vertebrae.map((p, i) => {
+          {!result && vertebrae.map((p, i) => {
             const sp2 = toScreen(p);
             return (
               <g key={i} transform={`translate(${sp2.x},${sp2.y})`}>

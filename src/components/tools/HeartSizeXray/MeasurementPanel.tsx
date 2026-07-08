@@ -27,7 +27,7 @@ const STEP_INFO: Record<Step, { title: string; desc: string }> = {
     title: '④ 단축 (Short Axis)',
     desc: '심장 최대 폭 지점에서 반대쪽까지 마우스/손가락으로 드래그하세요. 장축(L)과 수직에 가까워지면 선이 초록색으로 바뀌며 정확히 수직으로 스냅됩니다.'
   },
-  laBorder: { title: '⑤ 좌심방 후벽 (VLAS)', desc: 'Carina에서 후대정맥(Caudal vena cava)이 심장 그림자와 만나는 교차점까지의 선을 위해, 그 지점을 클릭하세요.' },
+  laBorder: { title: '⑤ 좌심방 후벽 (VLAS)', desc: '후대정맥(Caudal vena cava)이 심장 그림자와 만나는 교차점을 클릭하여 Carina에서 교차점까지의 선을 완성하세요.' },
   vertebrae: {
     title: '⑥ 흉추 경계 클릭',
     desc: 'T4번 흉추의 앞쪽(머리쪽) 경계를 먼저 클릭하세요. 그다음부터는 뒤쪽(꼬리쪽)으로 이어지는 다음 척추(T5, T6…)의 앞쪽 경계를 순서대로 계속 클릭하세요. 두 번째 점부터는 기준선과 일직선에 가까우면 초록색으로 표시되며 자동으로 정렬됩니다.'
