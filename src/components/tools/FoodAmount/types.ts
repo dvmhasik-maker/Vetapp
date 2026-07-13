@@ -1,6 +1,10 @@
 export interface Product {
   name: string;
+  englishName?: string;
   kcal: number;
+  form?: 'dry' | 'wet';
+  packageSizeG?: number;
+  unit?: '캔' | '파우치' | '병' | '컵';
 }
 
 export interface BrandProducts {
@@ -21,6 +25,8 @@ export interface ResultData {
   status: string;
   rer: number;
   foodInfo: string;
-  cupInfo: string;
+  feedingUnitLabel: string;
+  feedingUnitSub: string;
+  feedingUnitValue: string;
   date: string;
 }

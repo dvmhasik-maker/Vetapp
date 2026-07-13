@@ -1,8 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import html2canvas from 'html2canvas';
-import { ResultData } from './types';
+import { ResultData, Product } from './types';
 import { statusConfig, brandProductPreset } from './data';
 import { saveImageFile } from '../../common/saveImageFile';
+
+const formatFeedingUnitCount = (count: number, unit: string): string => {
+  const quarters = Math.round(count * 4);
+  if (quarters <= 0) return `0${unit}`;
+  const whole = Math.floor(quarters / 4);
+  const remainder = quarters % 4;
+  const fractionText: Record<number, string> = { 1: '1/4', 2: '1/2', 3: '3/4' };
+  if (remainder === 0) return `${whole}${unit}`;
+  if (whole === 0) return `${fractionText[remainder]}${unit}`;
+  return `${whole}과 ${fractionText[remainder]}${unit}`;
+};
 
 export const useFoodAmountLogic = () => {
   const [species, setSpecies] = useState<'dog' | 'cat'>('dog');
@@ -11,16 +22,21 @@ export const useFoodAmountLogic = () => {
   const [petWeight, setPetWeight] = useState('');
   const [petStatus, setPetStatus] = useState<number>(1.6);
   const [brand, setBrand] = useState('royal_canin');
-  const [productKcal, setProductKcal] = useState<number>(0);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [result, setResult] = useState<ResultData | null>(null);
 
   const captureZoneRef = useRef<HTMLDivElement>(null);
   const resultColRef = useRef<HTMLDivElement>(null);
 
+  const visibleProducts = brandProductPreset[species][brand] || [];
+
   useEffect(() => {
     setPetStatus(species === 'dog' ? 1.6 : 1.2);
-    const firstProduct = brandProductPreset[species][brand]?.[0];
-    setProductKcal(firstProduct?.kcal || 0);
+  }, [species]);
+
+  useEffect(() => {
+    const products = brandProductPreset[species][brand] || [];
+    setSelectedProduct(products[0] || null);
   }, [species, brand]);
 
   const calculateNutrition = () => {
@@ -30,25 +46,42 @@ export const useFoodAmountLogic = () => {
       return;
     }
 
-    if (productKcal === 0) {
+    if (!selectedProduct) {
       alert("유효한 사료 제품을 선택해 주십시오.");
       return;
     }
 
+    const productKcal = selectedProduct.kcal;
     const rer = species === 'dog' ? (weight * 30) + 70 : weight * 40;
     const der = rer * petStatus;
     const totalFoodG = der / productKcal;
-    const paperCupConvert = totalFoodG / 75;
 
     const activeStatusText = statusConfig[species].find(s => s.val === petStatus)?.text || "기타";
-    const productList = brandProductPreset[species][brand];
-    const activeProductName = productList.find(p => p.kcal === productKcal)?.name || "선택된 사료";
+    const activeProductName = selectedProduct.name;
     const brandNameMap: Record<string, string> = {
+      natural_balance: "내추럴발란스",
+      healmedix: "닥터 힐메딕스",
       royal_canin: "로얄캐닌",
-      hills: "힐스",
-      healmedix: "힐메딕스",
-      velixer: "벨릭서"
+      velixer: "벨릭서",
+      hills: "힐스"
     };
+
+    let feedingUnitLabel: string;
+    let feedingUnitSub: string;
+    let feedingUnitValue: string;
+
+    if (selectedProduct.form === 'wet' && selectedProduct.packageSizeG) {
+      const unit = selectedProduct.unit || '캔';
+      const unitCount = totalFoodG / selectedProduct.packageSizeG;
+      feedingUnitLabel = `${unit} 환산`;
+      feedingUnitSub = `1${unit} ${selectedProduct.packageSizeG}g 기준`;
+      feedingUnitValue = formatFeedingUnitCount(unitCount, unit);
+    } else {
+      const paperCupConvert = totalFoodG / 75;
+      feedingUnitLabel = "계량컵 환산";
+      feedingUnitSub = "종이컵(약 75g) 기준";
+      feedingUnitValue = `약 ${paperCupConvert.toFixed(1)} 컵`;
+    }
 
     setResult({
       name: petName || "반려동물",
@@ -59,7 +92,9 @@ export const useFoodAmountLogic = () => {
       status: `${activeStatusText} [Factor: ${petStatus.toFixed(1)}]`,
       rer: Math.round(rer),
       foodInfo: `[${brandNameMap[brand]}] ${activeProductName}`,
-      cupInfo: `약 ${paperCupConvert.toFixed(1)} 컵`,
+      feedingUnitLabel,
+      feedingUnitSub,
+      feedingUnitValue,
       date: new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
     });
 
@@ -92,8 +127,9 @@ export const useFoodAmountLogic = () => {
     setPetStatus,
     brand,
     setBrand,
-    productKcal,
-    setProductKcal,
+    visibleProducts,
+    selectedProduct,
+    setSelectedProduct,
     result,
     captureZoneRef,
     resultColRef,

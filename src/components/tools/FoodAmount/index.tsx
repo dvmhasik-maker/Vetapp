@@ -2,7 +2,8 @@ import React from 'react';
 import { ChevronLeft, Dog, Cat, Calculator, Camera, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useFoodAmountLogic } from './useFoodAmountLogic';
-import { statusConfig, brandProductPreset } from './data';
+import { statusConfig } from './data';
+import ProductSearchSelect from './ProductSearchSelect';
 import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
@@ -22,8 +23,9 @@ const FoodAmount: React.FC = () => {
     setPetStatus,
     brand,
     setBrand,
-    productKcal,
-    setProductKcal,
+    visibleProducts,
+    selectedProduct,
+    setSelectedProduct,
     result,
     captureZoneRef,
     resultColRef,
@@ -133,24 +135,22 @@ const FoodAmount: React.FC = () => {
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                 >
+                  <option value="natural_balance">내추럴발란스 (Natural Balance)</option>
+                  <option value="healmedix">닥터 힐메딕스 (Dr. Healmedix)</option>
                   <option value="royal_canin">로얄캐닌 (Royal Canin)</option>
-                  <option value="hills">힐스 (Hill's)</option>
-                  <option value="healmedix">힐메딕스 (Healmedix)</option>
                   <option value="velixer">벨릭서 (Velixer)</option>
+                  <option value="hills">힐스 (Hill's)</option>
                 </select>
               </div>
 
               <div className="input-group-food">
                 <label className="input-label-food">사료 제품명</label>
-                <select 
-                  className="select-field-food"
-                  value={productKcal}
-                  onChange={(e) => setProductKcal(parseFloat(e.target.value))}
-                >
-                  {brandProductPreset[species][brand]?.map((p, idx) => (
-                    <option key={idx} value={p.kcal}>{p.name} [{p.kcal.toFixed(2)} kcal/g]</option>
-                  ))}
-                </select>
+                <ProductSearchSelect
+                  products={visibleProducts}
+                  value={selectedProduct}
+                  onChange={setSelectedProduct}
+                  placeholder="제품명을 검색하세요 (한글/영문)"
+                />
               </div>
 
               <button onClick={calculateNutrition} className="btn-calculate-food">
@@ -217,10 +217,10 @@ const FoodAmount: React.FC = () => {
                     </div>
                     <div className="detail-item-food highlight-row">
                       <div className="detail-label cup-label">
-                        계량컵 환산
-                        <small>종이컵(약 75g) 기준</small>
+                        {result.feedingUnitLabel}
+                        <small>{result.feedingUnitSub}</small>
                       </div>
-                      <span className="detail-value cup-value">{result.cupInfo}</span>
+                      <span className="detail-value cup-value">{result.feedingUnitValue}</span>
                     </div>
                   </div>
 
