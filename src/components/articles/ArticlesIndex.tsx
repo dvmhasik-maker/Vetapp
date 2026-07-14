@@ -85,12 +85,21 @@ const articles = [
     bg: '#f7fee7',
     border: '#d9f99d',
   },
+  {
+    path: '/articles/heart-size-xray',
+    title: '흉부 방사선 심장크기평가(VHS·VLAS) 완전 가이드',
+    description: '척추심장크기·척추좌심방크기 측정 원리, 정상범위, 심초음파와의 관계 및 한계',
+    tag: '영상진단',
+    color: '#0d9488',
+    bg: '#f0fdfa',
+    border: '#99f6e4',
+  },
 ];
 
 const ArticlesIndex: React.FC = () => {
   useSEO(
     '수의학 임상 가이드',
-    '수의사를 위한 수액 요법, 쿠싱, 갑상선기능저하증, 아토피, 심초음파, 신경계 질환, 기생충, 중독, 영양 관리 임상 가이드 모음'
+    '수의사를 위한 수액 요법, 쿠싱, 갑상선기능저하증, 아토피, 심초음파, 심장크기평가(VHS·VLAS), 신경계 질환, 기생충, 중독, 영양 관리 임상 가이드 모음'
   );
 
   return (

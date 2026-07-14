@@ -8,6 +8,7 @@ import FoodAmount from './components/tools/FoodAmount/index';
 import FluidTherapy from './components/tools/FluidTherapy/index';
 import Neurological from './components/tools/Neurological/index';
 import Echocardiography from './components/tools/Echocardiography/index';
+import HeartSizeXray from './components/tools/HeartSizeXray/index';
 import Poisoning from './components/tools/Poisoning/index';
 import Cushing from './components/tools/Cushing/index';
 import Atopy from './components/tools/Atopy/index';
@@ -29,6 +30,7 @@ import NeurologicalArticle from './components/articles/NeurologicalArticle';
 import ParasitesArticle from './components/articles/ParasitesArticle';
 import PoisoningArticle from './components/articles/PoisoningArticle';
 import FoodAmountArticle from './components/articles/FoodAmountArticle';
+import HeartSizeXrayArticle from './components/articles/HeartSizeXrayArticle';
 
 function App() {
   return (
@@ -43,6 +45,7 @@ function App() {
         <Route path="/fluid-therapy" element={<FluidTherapy />} />
         <Route path="/neurological" element={<Neurological />} />
         <Route path="/echocardiography" element={<Echocardiography />} />
+        <Route path="/heart-size-xray" element={<HeartSizeXray />} />
         <Route path="/poisoning" element={<Poisoning />} />
         <Route path="/cushing" element={<Cushing />} />
         <Route path="/atopy" element={<Atopy />} />
@@ -64,6 +67,7 @@ function App() {
         <Route path="/articles/parasites" element={<ParasitesArticle />} />
         <Route path="/articles/poisoning" element={<PoisoningArticle />} />
         <Route path="/articles/food-amount" element={<FoodAmountArticle />} />
+        <Route path="/articles/heart-size-xray" element={<HeartSizeXrayArticle />} />
       </Routes>
     </Router>
   );

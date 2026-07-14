@@ -18,7 +18,8 @@ const Neurological: React.FC = () => {
     result,
     resultRef,
     localizeLesion,
-    resetSigns
+    resetSigns,
+    saveImg
   } = useNeuroLogic();
 
   return (
@@ -51,6 +52,7 @@ const Neurological: React.FC = () => {
           toggleSymptom={toggleSymptom}
           localizeLesion={localizeLesion}
           resetSigns={resetSigns}
+          saveImg={saveImg}
           result={Boolean(result)}
         />
 
@@ -148,24 +150,6 @@ const Neurological: React.FC = () => {
           gap: 8px;
         }
         .btn-primary-action:hover { background: #2980b9; }
-
-        .btn-secondary-action {
-          width: 100%;
-          padding: 12px;
-          background: #1abc9c;
-          color: #fff;
-          border: none;
-          border-radius: 8px;
-          font-size: .9rem;
-          font-weight: 700;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          transition: background 0.2s;
-        }
-        .btn-secondary-action:hover { background: #16a085; }
 
         @media (min-width: 1024px) {
           .single-grid { grid-template-columns: 1fr 1fr; }

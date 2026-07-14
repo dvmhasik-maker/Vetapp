@@ -13,7 +13,8 @@ import {
   Info,
   Monitor,
   BookOpen,
-  ChevronRight
+  ChevronRight,
+  Ruler
 } from 'lucide-react';
 import { useState } from 'react';
 import AdSlot from './common/AdSlot';
@@ -90,6 +91,13 @@ const tools: Tool[] = [
     icon: <ShieldAlert size={28} />,
     path: '/atopy'
   },
+  {
+    id: 'heart-size-xray',
+    name: '심장크기평가',
+    description: '흉부 방사선 사진 랜드마크 클릭으로 VHS·VLAS 자동 측정',
+    icon: <Ruler size={28} />,
+    path: '/heart-size-xray'
+  },
 ];
 
 const Dashboard: React.FC = () => {
@@ -158,6 +166,7 @@ const Dashboard: React.FC = () => {
               { path: '/articles/cushing', title: '쿠싱 증후군 진단·치료', tag: '내분비' },
               { path: '/articles/atopy', title: '아토피 피부염 관리 전략', tag: '피부과' },
               { path: '/articles/echocardiography', title: '심초음파 지표 해석', tag: '심장' },
+              { path: '/articles/heart-size-xray', title: '심장크기평가(VHS·VLAS)', tag: '영상진단' },
             ].map((a) => (
               <Link key={a.path} to={a.path} className="article-preview-card">
                 <span className="article-preview-tag">{a.tag}</span>
@@ -285,7 +294,7 @@ const Dashboard: React.FC = () => {
           flex-shrink: 0;
           white-space: nowrap;
         }
-        /* 모바일: 2열 / PC: 4열 */
+        /* 모바일: 2열 / PC: 5열 */
         .articles-preview-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -293,7 +302,7 @@ const Dashboard: React.FC = () => {
         }
         @media (min-width: 1024px) {
           .articles-preview-grid {
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 0.75rem;
           }
           .articles-section { padding: 1.5rem 2rem; }

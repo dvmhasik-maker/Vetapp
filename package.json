@@ -1,7 +1,7 @@
 {
   "name": "vetapp",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,10 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@capacitor/android": "^8.4.0",
+    "@capacitor/android": "^8.4.1",
     "@capacitor/app": "^8.1.0",
-    "@capacitor/cli": "^8.4.0",
-    "@capacitor/core": "^8.4.0",
+    "@capacitor/core": "^8.4.1",
     "@capacitor/toast": "^8.0.1",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.300.0",
@@ -22,6 +21,7 @@
     "react-router-dom": "^7.15.1"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.4.1",
     "@types/html2canvas": "^0.5.35",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
