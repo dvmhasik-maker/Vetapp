@@ -67,7 +67,7 @@ const Privacy: React.FC = () => {
 
           <div className="legal-footer">
             <p>운영 책임자: VETAPP 기술 운영팀</p>
-            <p>문의: vetapp.support@example.com</p>
+            <p>문의: yeouidoah@naver.com</p>
             <p>시행 일자: 2026년 5월 29일</p>
           </div>
         </div>

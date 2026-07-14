@@ -59,7 +59,7 @@ const Terms: React.FC = () => {
             <div className="terms-badge">제4조</div>
             <h3>운영 및 연락처</h3>
             <p>
-              서비스의 기능은 최신 의학 정보 반영을 위해 예고 없이 업데이트될 수 있습니다. 본 약관과 관련한 문의사항은 <strong>vetapp.support@example.com</strong>으로 연락 주시기 바랍니다.
+              서비스의 기능은 최신 의학 정보 반영을 위해 예고 없이 업데이트될 수 있습니다. 본 약관과 관련한 문의사항은 <strong>yeouidoah@naver.com</strong>으로 연락 주시기 바랍니다.
             </p>
           </section>
 
