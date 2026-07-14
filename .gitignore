@@ -1,2 +1,16 @@
-node_modules
-dist
+# Node
+node_modules/
+dist/
+
+# IDE
+.vscode/
+.vs/
+
+# Android Studio
+android/.idea/
+android/.run/
+android/.gradle/
+android/local.properties
+
+# IntelliJ
+*.iml
