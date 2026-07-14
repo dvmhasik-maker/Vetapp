@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { Species, PatientInfo, DogInput, CatInput, EchoResult, EchoResultItem } from './types';
-import { saveImageFile } from '../../common/saveImageFile';
+import { saveImageFile, buildSaveFilename } from '../../common/saveImageFile';
 
 const initialPatientInfo: PatientInfo = {
   name: '',
@@ -301,7 +301,7 @@ export const useEchoLogic = () => {
 
     html2canvas(resultRef.current, { background: '#ffffff', scale: 2, useCORS: true, logging: false } as any)
       .then((canvas) => {
-        saveImageFile(canvas.toDataURL('image/jpeg', 0.9), `VETAPP_심초음파_분석_${new Date().getTime()}.jpg`);
+        saveImageFile(canvas.toDataURL('image/jpeg', 0.9), buildSaveFilename('심초음파분석', patientInfo.name));
       });
   };
 

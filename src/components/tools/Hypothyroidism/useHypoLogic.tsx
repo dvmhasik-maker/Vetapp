@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { Mode, PatientData, ValueData, AnalysisResult } from './types';
 import React from 'react';
-import { saveImageFile } from '../../common/saveImageFile';
+import { saveImageFile, buildSaveFilename } from '../../common/saveImageFile';
 
 export const useHypoLogic = () => {
   const [mode, setMode] = useState<Mode>('diag');
@@ -252,15 +252,14 @@ export const useHypoLogic = () => {
       return;
     }
 
-    const ptName = patient.name || '환자';
-    const today = new Date().toLocaleDateString('ko-KR').replace(/\. /g, '-').replace('.', '');
     const modeLabelStr = mode === 'diag' ? '진단' : '모니터링';
     const label = targetType === 'result' ? `${modeLabelStr}_결과화면` : `${modeLabelStr}_입력화면`;
+    const filename = buildSaveFilename(`갑상선기능저하증_${label}`, patient.name);
 
     html2canvas(patientCardRef.current!, { background: '#ffffff', scale: 2 } as any).then((ptCanvas: HTMLCanvasElement) => {
       html2canvas(target, { background: '#ffffff', scale: 2 } as any).then((mainCanvas: HTMLCanvasElement) => {
         if (targetType === 'result') {
-          saveImageFile(mainCanvas.toDataURL('image/jpeg', 1.0), `${ptName}_${label}_${today}.jpg`);
+          saveImageFile(mainCanvas.toDataURL('image/jpeg', 1.0), filename);
         } else {
           const combined = document.createElement('canvas');
           combined.width = mainCanvas.width;
@@ -271,7 +270,7 @@ export const useHypoLogic = () => {
             ctx.fillRect(0, 0, combined.width, combined.height);
             ctx.drawImage(ptCanvas, 0, 0);
             ctx.drawImage(mainCanvas, 0, ptCanvas.height);
-            saveImageFile(combined.toDataURL('image/jpeg', 1.0), `${ptName}_${label}_${today}.jpg`);
+            saveImageFile(combined.toDataURL('image/jpeg', 1.0), filename);
           }
         }
       });

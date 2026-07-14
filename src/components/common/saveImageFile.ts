@@ -3,6 +3,28 @@ const EXT_BY_MIME: Record<string, string> = {
   'image/png': '.png'
 };
 
+function sanitizeFilenamePart(part: string): string {
+  return part.trim().replace(/[\\/:*?"<>|]/g, '');
+}
+
+/**
+ * 저장 파일명을 'VETAPP_도구이름_환자명_날짜' 규칙으로 만든다.
+ * 환자명이 없으면 해당 부분을 제외하고 'VETAPP_도구이름_날짜'로 만든다.
+ */
+export function buildSaveFilename(toolName: string, patientName?: string, ext: string = 'jpg'): string {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+
+  const parts = ['VETAPP', sanitizeFilenamePart(toolName)];
+  const trimmedName = patientName?.trim();
+  if (trimmedName) parts.push(sanitizeFilenamePart(trimmedName));
+  parts.push(`${y}-${m}-${d}`);
+
+  return `${parts.join('_')}.${ext}`;
+}
+
 async function dataUrlToBlob(dataUrl: string): Promise<Blob> {
   const res = await fetch(dataUrl);
   return res.blob();

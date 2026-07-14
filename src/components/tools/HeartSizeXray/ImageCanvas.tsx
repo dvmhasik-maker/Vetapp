@@ -2,7 +2,7 @@ import React, { useRef, useState, useCallback, useEffect, useMemo, forwardRef, u
 import { ZoomIn, ZoomOut, Maximize2, Lock, Unlock } from 'lucide-react';
 import { MainPointKey, MainPoints, Point, Step, HeartSizeResult } from './types';
 import { snapToPerpendicular, snapToLine, interpretVHS, interpretVLAS, dist, angleOf, cumulativeDistances } from './calc';
-import { saveImageFile } from '../../common/saveImageFile';
+import { saveImageFile, buildSaveFilename } from '../../common/saveImageFile';
 
 interface ImageCanvasProps {
   imageSrc: string;
@@ -585,7 +585,7 @@ const ImageCanvas = forwardRef<ImageCanvasHandle, ImageCanvasProps>(({
       ctx.restore();
     }
 
-    saveImageFile(canvas.toDataURL('image/jpeg', 0.92), `VETAPP_분석방사선사진_${Date.now()}.jpg`);
+    saveImageFile(canvas.toDataURL('image/jpeg', 0.92), buildSaveFilename('분석방사선사진'));
   }, [naturalSize, mainPoints, vertebrae, result]);
 
   useImperativeHandle(ref, () => ({ exportImage }), [exportImage]);

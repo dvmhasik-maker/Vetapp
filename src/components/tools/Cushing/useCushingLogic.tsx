@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { CushingMode, PatientInfo, CushingValues, CushingResult } from './types';
 import html2canvas from 'html2canvas';
-import { saveImageFile } from '../../common/saveImageFile';
+import { saveImageFile, buildSaveFilename } from '../../common/saveImageFile';
 
 const initialPatientInfo: PatientInfo = { name: '', breed: '', sex: '', age: '' };
 const initialValues: CushingValues = { food: null, pupd: null, cortisol: '' };
@@ -159,7 +159,7 @@ export const useCushingLogic = () => {
   const saveImg = () => {
     if (!resultRef.current) return;
     html2canvas(resultRef.current, { background: '#f8fafc', scale: 2 } as any).then(canvas => {
-      saveImageFile(canvas.toDataURL('image/jpeg', 0.9), `VETAPP_쿠싱분석_${patientInfo.name || '환자'}_${new Date().getTime()}.jpg`);
+      saveImageFile(canvas.toDataURL('image/jpeg', 0.9), buildSaveFilename('쿠싱분석', patientInfo.name));
     });
   };
 

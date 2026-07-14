@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import { ResultData, Product } from './types';
 import { statusConfig, brandProductPreset } from './data';
-import { saveImageFile } from '../../common/saveImageFile';
+import { saveImageFile, buildSaveFilename } from '../../common/saveImageFile';
 
 const formatFeedingUnitCount = (count: number, unit: string): string => {
   const quarters = Math.round(count * 4);
@@ -109,7 +109,7 @@ export const useFoodAmountLogic = () => {
     if (!captureZoneRef.current) return;
     html2canvas(captureZoneRef.current, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff' } as any)
       .then((canvas: HTMLCanvasElement) => {
-        saveImageFile(canvas.toDataURL('image/jpeg', 0.9), `VET_정밀급여설계_${result?.name || '환자'}.jpg`);
+        saveImageFile(canvas.toDataURL('image/jpeg', 0.9), buildSaveFilename('정밀급여설계', petName));
       })
       .catch(() => alert("리포트 이미지 저장 중 시스템 오류가 발생했습니다."));
   };
