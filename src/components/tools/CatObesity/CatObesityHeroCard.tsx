@@ -29,7 +29,7 @@ const CatObesityHeroCard: React.FC<CatObesityHeroCardProps> = ({ result }) => {
       )}
 
       <style>{`
-        .cat-hero-slot { height: 100%; }
+        .cat-hero-slot { height: 100%; min-width: 0; }
         .cat-hero-card, .cat-hero-empty {
           height: 100%;
           box-sizing: border-box;

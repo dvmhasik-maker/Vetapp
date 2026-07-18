@@ -52,7 +52,7 @@ const CatObesityForm: React.FC<CatObesityFormProps> = ({
       </div>
 
       <style>{`
-        .cat-obesity-form-container { height: 100%; }
+        .cat-obesity-form-container { height: 100%; min-width: 0; }
         .cat-obesity-form-container > .tool-card-container {
           height: 100%;
           box-sizing: border-box;
