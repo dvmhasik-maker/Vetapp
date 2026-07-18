@@ -14,7 +14,8 @@ import {
   Monitor,
   BookOpen,
   ChevronRight,
-  Ruler
+  Ruler,
+  Cat
 } from 'lucide-react';
 import { useState } from 'react';
 import AdSlot from './common/AdSlot';
@@ -97,6 +98,13 @@ const tools: Tool[] = [
     description: '흉부 방사선 사진 랜드마크 클릭으로 VHS·VLAS 자동 측정',
     icon: <Ruler size={28} />,
     path: '/heart-size-xray'
+  },
+  {
+    id: 'cat-obesity',
+    name: '고양이비만도',
+    description: '몸통 둘레·뒷다리 길이로 계산하는 고양이 체지방률(FBMI)',
+    icon: <Cat size={28} />,
+    path: '/cat-obesity'
   },
 ];
 

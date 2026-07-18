@@ -94,12 +94,21 @@ const articles = [
     bg: '#f0fdfa',
     border: '#99f6e4',
   },
+  {
+    path: '/articles/cat-obesity',
+    title: '고양이 비만도(FBMI) 완전 가이드',
+    description: '체지방률 측정 원리, BCS와의 관계, 저체중 감별 진단과 비만 관리 프로토콜',
+    tag: '영양',
+    color: '#84cc16',
+    bg: '#f7fee7',
+    border: '#d9f99d',
+  },
 ];
 
 const ArticlesIndex: React.FC = () => {
   useSEO(
     '수의학 임상 가이드',
-    '수의사를 위한 수액 요법, 쿠싱, 갑상선기능저하증, 아토피, 심초음파, 심장크기평가(VHS·VLAS), 신경계 질환, 기생충, 중독, 영양 관리 임상 가이드 모음'
+    '수의사를 위한 수액 요법, 쿠싱, 갑상선기능저하증, 아토피, 심초음파, 심장크기평가(VHS·VLAS), 신경계 질환, 기생충, 중독, 영양 관리, 고양이 비만도(FBMI) 임상 가이드 모음'
   );
 
   return (

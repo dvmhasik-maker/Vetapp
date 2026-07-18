@@ -6,6 +6,7 @@ import ImageCanvas, { ImageCanvasHandle } from './ImageCanvas';
 import MeasurementPanel from './MeasurementPanel';
 import ResultView from './ResultView';
 import CollapsibleInfo from '../../common/CollapsibleInfo';
+import { GuideIntro, GuideSteps, GuideNote, GuideStyles } from '../../common/GuideKit';
 import ToolArticleLink from '../../common/ToolArticleLink';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
@@ -109,21 +110,48 @@ const HeartSizeXray: React.FC = () => {
         </div>
 
         <CollapsibleInfo title="측정 방법 안내 (VHS·VLAS)">
-          <p>
-            <strong>VHS(Vertebral Heart Scale)</strong>는 흉부 외측상 방사선 사진에서 심장의 장축(L, Carina~심첨)과
-            단축(S, 심장 최대 폭)을 측정한 뒤, T4 흉추 앞쪽 경계부터 척추를 따라 두 길이가 각각 몇 개의 척추에
-            해당하는지 환산하여 더한 값입니다. <strong>VLAS(Vertebral Left Atrial Size)</strong>는 Carina에서
-            좌심방 후벽까지의 선을 같은 방식으로 척추 단위로 환산한 값입니다.
-          </p>
-          <p>
-            먼저 화면을 확대·이동해 위치를 잡고 고정한 뒤 측정을 시작합니다. 단축은 드래그로 한 번에 긋습니다.
-            장축과 수직에 가까워지면 선이 초록색으로 바뀌며 정확히 수직으로 스냅됩니다. 흉추 경계는 T4번 앞쪽
-            경계부터 시작해 T5, T6…의 앞쪽 경계를 순서대로 클릭하며, 두 번째 점부터는 기준선과 일직선에 가까우면
-            초록색으로 표시되며 자동으로 정렬되어 오차를 줄여줍니다. 찍은 점은 드래그로 위치를 조정할 수 있습니다.
-          </p>
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-            ※ 견종·개체별 흉곽 형태 편차가 있으므로, 본 도구의 결과는 스크리닝 참고용입니다.
-          </p>
+          <GuideIntro>
+            <strong>VHS(Vertebral Heart Scale)</strong>는 심장의 장축(L, Carina~심첨)과 단축(S, 심장 최대 폭)을
+            측정한 뒤, T4 흉추 앞쪽 경계부터 척추를 따라 두 길이를 척추 개수로 환산해 더한 값입니다.{' '}
+            <strong>VLAS(Vertebral Left Atrial Size)</strong>는 Carina에서 좌심방 후벽까지의 선을 같은 방식으로
+            척추 단위로 환산한 값입니다.
+          </GuideIntro>
+
+          <GuideSteps
+            steps={[
+              {
+                icon: '🔍',
+                title: '화면 위치 고정',
+                desc: '방사선 사진을 확대·이동해 원하는 위치를 잡은 뒤 고정하고 측정을 시작합니다.'
+              },
+              {
+                icon: '↕️',
+                title: '장축(L) 지정 — Carina → 심첨',
+                desc: '기관분기부(Carina) 아래쪽 가장자리를 클릭한 뒤, 심장의 가장 아래쪽 꼭짓점(심첨)을 클릭해 장축을 완성합니다.'
+              },
+              {
+                icon: '↔️',
+                title: '단축(S) 측정',
+                desc: <>심장 최대 폭을 <strong>드래그로 한 번에</strong> 긋습니다. 장축과 수직에 가까워지면 선이 초록색으로 바뀌며 정확히 수직으로 스냅됩니다.</>
+              },
+              {
+                icon: '🫀',
+                title: '좌심방 후벽(VLAS) 지정',
+                desc: '후대정맥(Caudal vena cava)이 심장 그림자와 만나는 교차점을 클릭해 Carina~교차점 선을 완성합니다.'
+              },
+              {
+                icon: '🦴',
+                title: '흉추 경계 클릭',
+                desc: <>T4번 앞쪽 경계부터 시작해 T5, T6…의 앞쪽 경계를 순서대로 클릭합니다. 두 번째 점부터는 기준선과 일직선에 가까우면 초록색으로 표시되며 자동 정렬됩니다. 찍은 점은 <strong>드래그로 위치 조정</strong>이 가능합니다.</>
+              }
+            ]}
+          />
+
+          <GuideNote>
+            견종·개체별 흉곽 형태 편차가 있으므로, 본 도구의 결과는 스크리닝 참고용입니다.
+          </GuideNote>
+
+          <GuideStyles />
         </CollapsibleInfo>
 
         <AdSlot className="mt-8" />
