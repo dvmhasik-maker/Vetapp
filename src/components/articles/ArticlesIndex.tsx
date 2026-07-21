@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, BookOpen, ChevronRight } from 'lucide-react';
+import { ChevronLeft, BookOpen, ChevronRight, Wrench } from 'lucide-react';
 import { useSEO } from '../common/useSEO';
 
 const articles = [
@@ -105,6 +105,20 @@ const articles = [
   },
 ];
 
+const tools = [
+  { path: '/fluid-therapy', title: '수의학 수액 요법 계산기' },
+  { path: '/cushing', title: '강아지 쿠싱 증후군 모니터링 도구' },
+  { path: '/hypothyroidism', title: '강아지 갑상선 기능 저하증 진단 도구' },
+  { path: '/atopy', title: '견종별 아토피 호발부위 분석' },
+  { path: '/echocardiography', title: '수의학 심장초음파 계산기' },
+  { path: '/neurological', title: '수의학 신경계 검사 도구' },
+  { path: '/parasites', title: '반려동물 외부 기생충 및 구충 관리 도구' },
+  { path: '/poisoning', title: '반려동물 독성 물질 중독 위험도 분석기' },
+  { path: '/food-amount', title: '반려동물 일일 에너지 요구량(DER) 계산기' },
+  { path: '/heart-size-xray', title: '심장크기평가(VHS·VLAS) 계산기' },
+  { path: '/cat-obesity', title: '고양이 비만도(FBMI) 계산기' },
+];
+
 const ArticlesIndex: React.FC = () => {
   useSEO(
     '수의학 임상 가이드',
@@ -139,6 +153,21 @@ const ArticlesIndex: React.FC = () => {
               <div className="article-card-arrow">
                 읽기 <ChevronRight size={16} />
               </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="tool-card-container">
+        <div className="tools-section-header">
+          <Wrench size={18} />
+          <h2>관련 임상 계산 도구</h2>
+        </div>
+        <div className="tools-grid">
+          {tools.map((tool) => (
+            <Link key={tool.path} to={tool.path} className="tool-link-item">
+              {tool.title}
+              <ChevronRight size={15} />
             </Link>
           ))}
         </div>
@@ -251,6 +280,55 @@ const ArticlesIndex: React.FC = () => {
           .articles-hero h1 { font-size: 1.35rem; }
           .articles-hero p { font-size: 0.875rem; }
           .article-card { padding: 1rem 1.125rem; }
+        }
+
+        /* ── 도구 바로가기 섹션 ── */
+        .tools-section-header {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin: 2.5rem 0 1rem;
+          color: #0f172a;
+        }
+        .tools-section-header h2 {
+          font-size: 1.1rem;
+          font-weight: 800;
+        }
+        .tools-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 0.6rem;
+        }
+        @media (min-width: 640px) {
+          .tools-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (min-width: 1024px) {
+          .tools-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .tool-link-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          padding: 0.85rem 1.1rem;
+          font-size: 0.88rem;
+          font-weight: 600;
+          color: #334155;
+          text-decoration: none;
+          word-break: keep-all;
+          transition: all 0.2s;
+        }
+        .tool-link-item:hover {
+          border-color: #94a3b8;
+          background: #f1f5f9;
+          color: #0f172a;
+        }
+        .tool-link-item svg {
+          flex-shrink: 0;
+          color: #94a3b8;
         }
       `}</style>
     </div>
