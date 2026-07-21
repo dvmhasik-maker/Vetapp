@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://vetapp-b1i.pages.dev/sitemap.xml
+Sitemap: https://vetapp-b1i.pages.dev/vetapp-sitemap.xml
