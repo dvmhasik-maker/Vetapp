@@ -76,7 +76,7 @@ export const useCushingLogic = () => {
             note: 'Well controlled + cortisol < 1.5 ug/dL → Dosage unchanged, monitor for recurrence' };
         } else {
           banner = { theme: 'orange', icon: '⚠️', label: '용량 유지 · 재발 모니터링',
-            actions: ['임상적으로 잘 조절되고 있으나 cortisol이 목표보다 높음', '현재 용량 유지', '증상 재발 여부 주의 깊게 모니터링', '증상 재발 시 용량 증량 고려'],
+            actions: ['임상적으로 잘 조절되고 있으나 cortisol이 목표보다 높음', '현재 용량 유지', '증상 재발 여부 주의 깊게 모니터링', '증상 재발 시 용량 25~50% 증량 고려'],
             note: 'Well controlled + cortisol > 5.5 ug/dL → Dosage unchanged, monitor for recurrence' };
         }
       } else {
@@ -86,13 +86,13 @@ export const useCushingLogic = () => {
               actions: ['Trilostane의 작용 시간이 짧을 가능성', '더 빈번한 투여(예: SID→BID) 고려', '전문 심장/내분비내과 협진 검토'],
               note: 'Polyphagia·PU/PD + cortisol < 1.5 ug/dL → Short duration suspected, consider more frequent administration' };
           } else {
-            banner = { theme: 'orange', icon: '📈', label: '용량 증량 고려',
-              actions: ['Cushing 증상이 잔존하며 cortisol이 목표 범위 내', 'Trilostane 용량 증량 고려', '증량하여 2주 후 재평가'],
+            banner = { theme: 'orange', icon: '📈', label: '용량 증량 고려 (25~50%)',
+              actions: ['Cushing 증상이 잔존하며 cortisol이 목표 범위 내', 'Trilostane 용량 25~50% 증량 고려', '증량하여 2주 후 재평가'],
               note: 'HC signs + cortisol 1.5~5.5 ug/dL → Consider increasing dosage' };
           }
         } else {
-          banner = { theme: 'red', icon: '🔺', label: '용량 증량 필요',
-            actions: ['Cushing 증상 잔존 + cortisol 높음', 'Trilostane 용량 증량 필요', '증량하여 2주 후 재평가'],
+          banner = { theme: 'red', icon: '🔺', label: '용량 증량 필요 (25~50%)',
+            actions: ['Cushing 증상 잔존 + cortisol 높음', 'Trilostane 용량 25~50% 증량 필요', '증량하여 2주 후 재평가'],
             note: 'HC signs + Post cortisol > 5.5 ug/dL → Increase the dosage' };
         }
       }
@@ -111,16 +111,16 @@ export const useCushingLogic = () => {
 
       if (pClinCat === 'hc') {
         if (cortisol >= 5.5) {
-          banner = { theme: 'red', icon: '🔺', label: '투여 빈도 또는 용량 증량',
-            actions: ['Cushing 증상이 잔존하고 Pre-pill cortisol ≥ 5.5 ug/dL', '투여 빈도 증가(SID→BID) 또는 용량 증량 검토', '증량하여 10일 후 재평가'],
+          banner = { theme: 'red', icon: '🔺', label: '투여 빈도 또는 용량 증량 (25~50%)',
+            actions: ['Cushing 증상이 잔존하고 Pre-pill cortisol ≥ 5.5 ug/dL', '투여 빈도 증가(SID→BID) 또는 용량 25~50% 증량 검토', '증량하여 10일 후 재평가'],
             note: 'HC signs present + pre-pill cortisol ≥ 5.5 ug/dL → Increase dosing frequency or increase dosage' };
         } else if (cortisol >= 1.5 && cortisol < 5.5) {
-          banner = { theme: 'orange', icon: '🔄', label: '재평가 · 소량 증량 고려',
-            actions: ['Cushing 증상 잔존, cortisol이 중간 범위 (1.5 ~ 5.5 ug/dL)', '재평가 후 소량 증량 고려', '증량하여 10일 후 재평가'],
+          banner = { theme: 'orange', icon: '🔄', label: '재평가 · 소량 증량 고려 (10~25%)',
+            actions: ['Cushing 증상 잔존, cortisol이 중간 범위 (1.5 ~ 5.5 ug/dL)', '재평가 후 10~25% 소량 증량 고려', '증량하여 10일 후 재평가'],
             note: 'HC signs + pre-pill cortisol 1.5 ~ 5.5 ug/dL → Re-evaluate. Consider a small dosage increase' };
         } else {
-          banner = { theme: 'purple', icon: '🔍', label: '재평가 · 소량 감량 고려',
-            actions: ['Cushing 증상이 있으나 Pre-pill cortisol이 낮음 (< 1.5 ug/dL)', '과용량 가능성 재평가', '소량 감량 고려', '감량하여 10일 후 재평가'],
+          banner = { theme: 'purple', icon: '🔍', label: '재평가 · 소량 감량 고려 (10~25%)',
+            actions: ['Cushing 증상이 있으나 Pre-pill cortisol이 낮음 (< 1.5 ug/dL)', '과용량 가능성 재평가', '10~25% 소량 감량 고려', '감량하여 10일 후 재평가'],
             note: 'HC signs + pre-pill cortisol < 1.5 ug/dL → Re-evaluate. Consider lower dosage' };
         }
       } else if (pClinCat === 'poor') {
@@ -133,16 +133,16 @@ export const useCushingLogic = () => {
             actions: ['Pre-pill cortisol = 0 ug/dL', 'ACTH Stimulation Test (Pre & Post) 즉시 시행', 'Trilostane 중단 및 부신피질기능저하증 처치 고려'],
             note: 'pre-pill cortisol = 0 → Trilostane stop & ACTH stimulation test' };
         } else if (cortisol > 0 && cortisol <= 1.5) {
-          banner = { theme: 'yellow', icon: '⚠️', label: '재평가 · 감량 고려',
-            actions: ['Cushing 증상 소실되었으나 Pre-pill cortisol이 낮음 (0 < Cortisol ≤ 1.5 ug/dL)', '과용량 가능성 평가', '소량 감량 고려', '감량하여 10일 후 재평가'],
+          banner = { theme: 'yellow', icon: '⚠️', label: '재평가 · 감량 고려 (10~25%)',
+            actions: ['Cushing 증상 소실되었으나 Pre-pill cortisol이 낮음 (0 < Cortisol ≤ 1.5 ug/dL)', '과용량 가능성 평가', '10~25% 소량 감량 고려', '감량하여 10일 후 재평가'],
             note: 'HC resolved + pre-pill cortisol 0 < Cortisol ≤ 1.5 ug/dL → Re-evaluate. Consider lower dosage' };
         } else if (cortisol > 1.5 && cortisol <= 5.5) {
           banner = { theme: 'green', icon: '✅', label: '현재 용량 유지',
             actions: ['Cushing 증상 소실 + Pre-pill cortisol 목표 범위 내 (1.5 ~ 5.5 ug/dL)', '현재 Trilostane 용량 유지', '3개월 후 재평가'],
             note: 'HC resolved + pre-pill cortisol 1.5 ~ 5.5 ug/dL → Continue at current dosage' };
         } else {
-          banner = { theme: 'orange', icon: '📈', label: '소량 증량 고려',
-            actions: ['Cushing 증상은 소실되었으나 Pre-pill cortisol이 목표보다 높음 (> 5.5 ug/dL)', '소량 증량 고려', '증량하여 10일 후 재평가'],
+          banner = { theme: 'orange', icon: '📈', label: '소량 증량 고려 (10~25%)',
+            actions: ['Cushing 증상은 소실되었으나 Pre-pill cortisol이 목표보다 높음 (> 5.5 ug/dL)', '10~25% 소량 증량 고려', '증량하여 10일 후 재평가'],
             note: 'HC resolved + pre-pill cortisol > 5.5 ug/dL → Re-evaluate. Consider a small dosage increase' };
         }
       }

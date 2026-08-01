@@ -175,12 +175,12 @@ export const useHypoLogic = () => {
         } else if (isT4High) {
           resultClass = "warning";
           title = "📢 [용량 과다 위험] 분석 판정:";
-          actionMsg = "👉 호르몬 목표치 상한 초과로 Levothyroxine 투여량 감량 고려.";
+          actionMsg = "👉 호르몬 목표치 상한 초과로 Levothyroxine 투여량 10~25% 감량 고려.";
           guideHtml = (
             <>
               임상 증상은 개선되었으나, 약물 유효 농도가 타겟 범위를 과도하게 상회하여 의원성 갑상선기능항진증(빈맥, 헐떡임, 다음다뇨) 유발 위험이 있습니다.
               <ul>
-                <li><strong>권장 조치:</strong> 환자의 생체 대사 상태에 맞추어 현재 처방 용량의 약 10~25% 감량을 고려하고, 약 4주 후 투약 후 검사로 재평가하십시오.</li>
+                <li><strong>권장 조치:</strong> 환자의 생체 대사 상태에 맞추어 현재 처방 용량의 약 <strong>10~25% 감량</strong>을 고려하고, 약 4주 후 투약 후 검사로 재평가하십시오.</li>
               </ul>
             </>
           );
@@ -194,24 +194,24 @@ export const useHypoLogic = () => {
         if (isT4Low || isTshHigh) {
           resultClass = "danger";
           title = "📢 [용량 부족 소견] 분석 판정:";
-          actionMsg = "👉 호르몬 반응성 부족 확인으로 Levothyroxine 투여량 증량 고려.";
+          actionMsg = "👉 호르몬 반응성 부족 확인으로 Levothyroxine 투여량 10~25% 증량 고려.";
           guideHtml = (
             <>
               지속 투약 중임에도 불구하고 임상 징후 개선이 없고, 검사 결과 역시 호르몬 부족(Low T4) 및 자극호르몬 상승(High TSH)을 보입니다.
               <ul>
-                <li><strong>권장 조치:</strong> Levothyroxine 용량의 단계적 증량이 필요합니다. 단, 증량 조치 전에 보호자가 공복 투약 수칙 및 급여 스케줄을 철저히 준수했는지 먼저 점검하십시오.</li>
+                <li><strong>권장 조치:</strong> Levothyroxine 용량의 <strong>10~25% 단계적 증량</strong>이 필요합니다. 단, 증량 조치 전에 보호자가 공복 투약 수칙 및 급여 스케줄을 철저히 준수했는지 먼저 점검하십시오.</li>
               </ul>
             </>
           );
         } else if (isT4High) {
           resultClass = "danger";
           title = "📢 [독성 및 오진 의심] 분석 판정:";
-          actionMsg = "👉 호르몬 과다 상태이나 증상 미개선으로 즉시 감량 조치 및 타 질환 전면 감별 재실시.";
+          actionMsg = "👉 호르몬 과다 상태이나 증상 미개선으로 즉시 10~25% 감량 조치 및 타 질환 전면 감별 재실시.";
           guideHtml = (
             <>
               외관 증상은 개선되지 않았는데 체내 호르몬 수치만 과량 공급된 불일치 상태입니다. 약물 투여 과부하이거나 본 기저 증상의 본질이 갑상선 기능 문제가 아닐 확률이 지배적입니다.
               <ul>
-                <li><strong>권장 조치:</strong> 약물 용량을 즉시 감량하거나 일시 중단하고, 탈모 및 대사 저하의 실질적 원인이 쿠싱증후군, 피부 사상균증 등인지 전면 재진단하십시오.</li>
+                <li><strong>권장 조치:</strong> 약물 용량을 즉시 <strong>10~25% 감량</strong>하거나 일시 중단하고, 탈모 및 대사 저하의 실질적 원인이 쿠싱증후군, 피부 사상균증 등인지 전면 재진단하십시오.</li>
               </ul>
             </>
           );
