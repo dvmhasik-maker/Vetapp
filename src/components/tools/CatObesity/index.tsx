@@ -61,6 +61,8 @@ const CatObesity = () => {
           </button>
         )}
 
+        <AdSlot className="mt-8" />
+
         <ToolGuideSection>
           <GuideIntro>
             고양이를 <strong>서 있는 자세</strong>로, 고개는 들고 네 다리 모두 바닥과 수직이 되도록 한 상태에서 측정합니다.
@@ -98,8 +100,6 @@ const CatObesity = () => {
 
           <GuideStyles />
         </ToolGuideSection>
-
-        <AdSlot className="mt-8" />
       </div>
 
       <style>{`

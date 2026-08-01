@@ -109,6 +109,8 @@ const HeartSizeXray: React.FC = () => {
           </div>
         </div>
 
+        <AdSlot className="mt-8" />
+
         <ToolGuideSection>
           <GuideIntro>
             <strong>VHS(Vertebral Heart Scale)</strong>는 심장의 장축(L, Carina~심첨)과 단축(S, 심장 최대 폭)을
@@ -153,8 +155,6 @@ const HeartSizeXray: React.FC = () => {
 
           <GuideStyles />
         </ToolGuideSection>
-
-        <AdSlot className="mt-8" />
       </div>
 
       <style>{`
