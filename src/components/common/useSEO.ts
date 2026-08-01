@@ -22,7 +22,7 @@ const setMetaByProperty = (property: string, content: string) => {
 
 export const useSEO = (title: string, description: string) => {
   useEffect(() => {
-    const fullTitle = `${title} | VETAPP`;
+    const fullTitle = `VETAPP | ${title}`;
     document.title = fullTitle;
 
     setMetaByName('description', description);

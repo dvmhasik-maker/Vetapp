@@ -9,7 +9,7 @@ import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
 const Echocardiography: React.FC = () => {
-  useSEO('수의학 심장초음파 계산기', '강아지와 고양이 심장초음파 데이터를 입력하여 좌심방/대동맥 비율(LA/Ao) 및 주요 심장 지표를 분석합니다.');
+  useSEO('심초음파', '강아지와 고양이 심장초음파 데이터를 입력하여 좌심방/대동맥 비율(LA/Ao) 및 주요 심장 지표를 분석합니다.');
   const {
     species,
     setSpecies,

@@ -9,7 +9,7 @@ import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
 const FluidTherapy: React.FC = () => {
-  useSEO('수의학 수액 요법 계산기', '환자의 체중과 탈수 정도에 따른 유지량, 결핍량, 손실량을 계산하여 안전하고 효과적인 수액 처방을 계획하세요.');
+  useSEO('수액', '환자의 체중과 탈수 정도에 따른 유지량, 결핍량, 손실량을 계산하여 안전하고 효과적인 수액 처방을 계획하세요.');
   const {
     patient,
     setPatient,

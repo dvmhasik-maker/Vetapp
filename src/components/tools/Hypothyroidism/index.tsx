@@ -9,7 +9,7 @@ import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
 const Hypothyroidism: React.FC = () => {
-  useSEO('강아지 갑상선 기능 저하증 진단 도구', '갑상선 호르몬 검사 수치와 임상 증상을 바탕으로 강아지 갑상선 기능 저하증 가능성을 체계적으로 평가하세요.');
+  useSEO('갑기저', '갑상선 호르몬 검사 수치와 임상 증상을 바탕으로 강아지 갑상선 기능 저하증 가능성을 체계적으로 평가하세요.');
   const {
     mode,
     setMode,

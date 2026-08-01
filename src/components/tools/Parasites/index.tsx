@@ -72,7 +72,7 @@ const ParasiteMedia: React.FC<{ url: string; videoUrl?: string; alt: string; des
 };
 
 const Parasites: React.FC = () => {
-  useSEO('반려동물 외부 기생충 및 구충 관리 도구', '반려동물의 생활 환경과 기생충 노출 위험을 분석하여 적절한 구충제 처방과 관리 가이드를 확인하세요.');
+  useSEO('기생충', '반려동물의 생활 환경과 기생충 노출 위험을 분석하여 적절한 구충제 처방과 관리 가이드를 확인하세요.');
   const {
     selectedParasite,
     resultRef,

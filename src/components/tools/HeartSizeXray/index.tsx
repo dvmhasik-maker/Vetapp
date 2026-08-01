@@ -13,7 +13,7 @@ import { useSEO } from '../../common/useSEO';
 
 const HeartSizeXray: React.FC = () => {
   useSEO(
-    '심장크기평가 (흉부 방사선) - VHS·VLAS 계산기',
+    '심장크기평가',
     '강아지와 고양이의 흉부 외측상 방사선 사진 위에서 랜드마크를 클릭해 VHS(척추심장크기)와 VLAS(척추좌심방크기)를 자동으로 계산합니다.'
   );
 

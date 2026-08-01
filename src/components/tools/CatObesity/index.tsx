@@ -11,7 +11,7 @@ import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
 const CatObesity = () => {
-  useSEO('고양이 비만도(FBMI) 계산기', '몸통 둘레와 뒷다리 길이만 입력하면 고양이의 체지방률(FBMI)을 계산해 저체중·정상체중·과체중을 바로 확인할 수 있습니다.');
+  useSEO('고양이비만도', '몸통 둘레와 뒷다리 길이만 입력하면 고양이의 체지방률(FBMI)을 계산해 저체중·정상체중·과체중을 바로 확인할 수 있습니다.');
   const {
     chestInput, setChestInput,
     legInput, setLegInput,

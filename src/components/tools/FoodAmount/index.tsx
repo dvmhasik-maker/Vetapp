@@ -9,7 +9,7 @@ import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
 const FoodAmount: React.FC = () => {
-  useSEO('반려동물 일일 에너지 요구량(DER) 계산기', '환자의 RER과 DER을 산출하고, 사료의 칼로리 함량을 기반으로 최적의 하루 급여량을 정확하게 계산합니다.');
+  useSEO('사료량', '환자의 RER과 DER을 산출하고, 사료의 칼로리 함량을 기반으로 최적의 하루 급여량을 정확하게 계산합니다.');
   const {
     species,
     setSpecies,

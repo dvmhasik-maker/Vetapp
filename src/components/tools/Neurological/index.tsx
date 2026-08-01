@@ -9,7 +9,7 @@ import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
 const Neurological: React.FC = () => {
-  useSEO('수의학 신경계 검사 도구', '반려동물의 신경계 검사 결과를 입력하여 국소화 진단 및 신경학적 평가를 지원합니다.');
+  useSEO('신경증상', '반려동물의 신경계 검사 결과를 입력하여 국소화 진단 및 신경학적 평가를 지원합니다.');
   const {
     patient,
     setPatient,

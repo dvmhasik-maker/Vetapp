@@ -10,7 +10,7 @@ import { useSEO } from '../../common/useSEO';
 
 const Atopy: React.FC = () => {
   useSEO(
-    '견종별 아토피 호발부위 분석',
+    '아토피',
     '수의사를 위한 견종별 개 아토피성 피부염(CAD) 호발부위 분석기. 임상 진단 시 감별 진단 및 보호자 교육용 자료.'
   );
 

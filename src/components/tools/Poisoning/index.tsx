@@ -8,7 +8,7 @@ import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
 const Poisoning: React.FC = () => {
-  useSEO('반려동물 독성 물질 중독 위험도 분석기', '섭취한 물질과 반려동물 체중에 따른 중독 위험성을 평가하고, 신속한 초기 대처 및 치료 가이드를 제공합니다.');
+  useSEO('중독', '섭취한 물질과 반려동물 체중에 따른 중독 위험성을 평가하고, 신속한 초기 대처 및 치료 가이드를 제공합니다.');
   const {
     species,
     setSpecies,

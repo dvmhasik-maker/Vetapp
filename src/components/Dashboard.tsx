@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import AdSlot from './common/AdSlot';
+import { useSEO } from './common/useSEO';
 
 interface Tool {
   id: string;
@@ -110,6 +111,7 @@ const tools: Tool[] = [
 
 const Dashboard: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
+  useSEO('스마트 수의 임상', 'VETAPP은 수의사를 위한 정밀 수액 계산, 쿠싱 증후군 진단 보조, 심초음파 지표 산출 등 임상 현장에 최적화된 스마트 도구를 제공합니다. 최신 학술 가이드라인을 기반으로 진료의 효율성을 높이세요.');
 
   return (
     <div className="dashboard-container">

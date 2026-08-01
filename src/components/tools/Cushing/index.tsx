@@ -9,7 +9,7 @@ import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
 const Cushing = () => {
-  useSEO('강아지 쿠싱 증후군 모니터링 도구', 'Trilostane 치료 중인 강아지의 ACTH 자극 시험 및 Pre-Pill Cortisol 결과를 해석하여 쿠싱 증후군 관리 효율을 높여보세요.');
+  useSEO('쿠싱', 'Trilostane 치료 중인 강아지의 ACTH 자극 시험 및 Pre-Pill Cortisol 결과를 해석하여 쿠싱 증후군 관리 효율을 높여보세요.');
   const {
     mode, setMode, patientInfo, handlePatientChange, values, setValues, setToxValue,
     executeAnalysis, result, setResult, resultRef, saveImg
