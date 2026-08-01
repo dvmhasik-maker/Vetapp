@@ -5,8 +5,10 @@ import { useNeuroLogic } from './useNeuroLogic';
 import NeuroForm from './NeuroForm';
 import NeuroResultView from './NeuroResultView';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
+import NeuroGuide from './NeuroGuide';
 
 const Neurological: React.FC = () => {
   useSEO('신경증상', '반려동물의 신경계 검사 결과를 입력하여 국소화 진단 및 신경학적 평가를 지원합니다.');
@@ -65,6 +67,10 @@ const Neurological: React.FC = () => {
         )}
 
         <AdSlot className="mt-8" />
+
+        <ToolGuideSection>
+          <NeuroGuide />
+        </ToolGuideSection>
       </div>
 
       <style>{`

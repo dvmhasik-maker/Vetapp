@@ -5,8 +5,10 @@ import { useAtopyLogic } from './useAtopyLogic';
 import AtopyForm from './components/AtopyForm';
 import AtopyResultView from './components/AtopyResultView';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
+import AtopyGuide from './components/AtopyGuide';
 
 const Atopy: React.FC = () => {
   useSEO(
@@ -65,6 +67,10 @@ const Atopy: React.FC = () => {
         )}
 
         <AdSlot className="mt-8" />
+
+        <ToolGuideSection>
+          <AtopyGuide />
+        </ToolGuideSection>
       </div>
 
       <style>{`

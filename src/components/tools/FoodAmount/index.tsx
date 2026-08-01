@@ -5,8 +5,10 @@ import { useFoodAmountLogic } from './useFoodAmountLogic';
 import { statusConfig } from './data';
 import ProductSearchSelect from './ProductSearchSelect';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
+import FoodGuide from './FoodGuide';
 
 const FoodAmount: React.FC = () => {
   useSEO('사료량', '환자의 RER과 DER을 산출하고, 사료의 칼로리 함량을 기반으로 최적의 하루 급여량을 정확하게 계산합니다.');
@@ -239,6 +241,10 @@ const FoodAmount: React.FC = () => {
         </div>
 
         <AdSlot className="mt-8" />
+
+        <ToolGuideSection>
+          <FoodGuide />
+        </ToolGuideSection>
       </div>
 
       <style>{`

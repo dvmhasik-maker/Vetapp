@@ -5,8 +5,10 @@ import { useFluidLogic } from './useFluidLogic';
 import FluidForm from './FluidForm';
 import FluidResultView from './FluidResultView';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
+import FluidGuide from './FluidGuide';
 
 const FluidTherapy: React.FC = () => {
   useSEO('수액', '환자의 체중과 탈수 정도에 따른 유지량, 결핍량, 손실량을 계산하여 안전하고 효과적인 수액 처방을 계획하세요.');
@@ -61,6 +63,10 @@ const FluidTherapy: React.FC = () => {
         {result && (
           <AdSlot className="mt-8" />
         )}
+
+        <ToolGuideSection>
+          <FluidGuide />
+        </ToolGuideSection>
       </div>
 
       <style>{`

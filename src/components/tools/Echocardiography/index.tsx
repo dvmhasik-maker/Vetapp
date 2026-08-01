@@ -5,8 +5,10 @@ import { useEchoLogic } from './useEchoLogic';
 import EchoForm from './EchoForm';
 import EchoResultView from './EchoResultView';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
+import EchoGuide from './EchoGuide';
 
 const Echocardiography: React.FC = () => {
   useSEO('심초음파', '강아지와 고양이 심장초음파 데이터를 입력하여 좌심방/대동맥 비율(LA/Ao) 및 주요 심장 지표를 분석합니다.');
@@ -70,6 +72,10 @@ const Echocardiography: React.FC = () => {
         )}
 
         <AdSlot className="mt-8" />
+
+        <ToolGuideSection>
+          <EchoGuide />
+        </ToolGuideSection>
       </div>
 
       <style>{`

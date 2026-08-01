@@ -5,8 +5,10 @@ import CushingForm from './CushingForm';
 import CushingResultView from './CushingResultView';
 import { CushingMode } from './types';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
+import CushingGuide from './CushingGuide';
 
 const Cushing = () => {
   useSEO('쿠싱', 'Trilostane 치료 중인 강아지의 ACTH 자극 시험 및 Pre-Pill Cortisol 결과를 해석하여 쿠싱 증후군 관리 효율을 높여보세요.');
@@ -82,6 +84,10 @@ const Cushing = () => {
         </div>
 
         <AdSlot className="mt-8" />
+
+        <ToolGuideSection>
+          <CushingGuide />
+        </ToolGuideSection>
       </div>
 
       <style>{`

@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { usePoisoningLogic } from './usePoisoningLogic';
 import { toxinDatabase } from './data';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
+import PoisoningGuide from './PoisoningGuide';
 
 const Poisoning: React.FC = () => {
   useSEO('중독', '섭취한 물질과 반려동물 체중에 따른 중독 위험성을 평가하고, 신속한 초기 대처 및 치료 가이드를 제공합니다.');
@@ -136,6 +138,10 @@ const Poisoning: React.FC = () => {
         )}
 
         <AdSlot className="mt-8" />
+
+        <ToolGuideSection>
+          <PoisoningGuide />
+        </ToolGuideSection>
       </div>
 
       <style>{`

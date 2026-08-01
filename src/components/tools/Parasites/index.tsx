@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { useParasitesLogic } from './useParasitesLogic';
 import { parasiteData } from './data';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
+import ParasiteGuide from './ParasiteGuide';
 
 const ParasiteMedia: React.FC<{ url: string; videoUrl?: string; alt: string; description: string; magnification: string }> = ({ url, videoUrl, alt, description, magnification }) => {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -183,6 +185,10 @@ const Parasites: React.FC = () => {
         )}
 
         <AdSlot className="mt-8" />
+
+        <ToolGuideSection>
+          <ParasiteGuide />
+        </ToolGuideSection>
       </div>
 
       <style>{`
