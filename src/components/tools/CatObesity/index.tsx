@@ -4,9 +4,9 @@ import { useCatObesityLogic } from './useCatObesityLogic';
 import CatObesityForm from './CatObesityForm';
 import CatObesityHeroCard from './CatObesityHeroCard';
 import CatObesityGuideline from './CatObesityGuideline';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
 import { GuideIntro, GuideSteps, GuideFormula, GuideNote, GuideStyles } from '../../common/GuideKit';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
@@ -61,7 +61,7 @@ const CatObesity = () => {
           </button>
         )}
 
-        <CollapsibleInfo title="측정 방법 안내 (FBMI)">
+        <ToolGuideSection>
           <GuideIntro>
             고양이를 <strong>서 있는 자세</strong>로, 고개는 들고 네 다리 모두 바닥과 수직이 되도록 한 상태에서 측정합니다.
           </GuideIntro>
@@ -97,7 +97,7 @@ const CatObesity = () => {
           </GuideNote>
 
           <GuideStyles />
-        </CollapsibleInfo>
+        </ToolGuideSection>
 
         <AdSlot className="mt-8" />
       </div>

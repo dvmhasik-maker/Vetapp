@@ -5,9 +5,9 @@ import { useHeartSizeLogic } from './useHeartSizeLogic';
 import ImageCanvas, { ImageCanvasHandle } from './ImageCanvas';
 import MeasurementPanel from './MeasurementPanel';
 import ResultView from './ResultView';
-import CollapsibleInfo from '../../common/CollapsibleInfo';
 import { GuideIntro, GuideSteps, GuideNote, GuideStyles } from '../../common/GuideKit';
 import ToolArticleLink from '../../common/ToolArticleLink';
+import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
 import { useSEO } from '../../common/useSEO';
 
@@ -109,7 +109,7 @@ const HeartSizeXray: React.FC = () => {
           </div>
         </div>
 
-        <CollapsibleInfo title="측정 방법 안내 (VHS·VLAS)">
+        <ToolGuideSection>
           <GuideIntro>
             <strong>VHS(Vertebral Heart Scale)</strong>는 심장의 장축(L, Carina~심첨)과 단축(S, 심장 최대 폭)을
             측정한 뒤, T4 흉추 앞쪽 경계부터 척추를 따라 두 길이를 척추 개수로 환산해 더한 값입니다.{' '}
@@ -152,7 +152,7 @@ const HeartSizeXray: React.FC = () => {
           </GuideNote>
 
           <GuideStyles />
-        </CollapsibleInfo>
+        </ToolGuideSection>
 
         <AdSlot className="mt-8" />
       </div>
