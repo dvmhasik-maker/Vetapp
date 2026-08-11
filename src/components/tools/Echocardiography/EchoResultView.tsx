@@ -1,5 +1,6 @@
 import React from 'react';
 import { EchoResult } from './types';
+import PulmonaryHTNReference from './PulmonaryHTNReference';
 
 interface EchoResultViewProps {
   result: EchoResult;
@@ -26,72 +27,75 @@ const EchoResultView: React.FC<EchoResultViewProps> = ({ result, resultRef }) =>
       const groupItems = result.items.filter(it => it.group === g);
       const style = groupStyles[g];
       return (
-        <div key={g} className="result-group-echo" style={{ background: style.color }}>
-          <h3 style={{ borderLeft: `5px solid ${style.border}` }}>{style.title}</h3>
-          <table className="result-table-echo">
-            <thead>
-              <tr>
-                <th>항목</th>
-                <th>정상범위</th>
-                <th>측정값</th>
-                <th>해석</th>
-              </tr>
-            </thead>
-            <tbody>
-              {groupItems.map((it, idx) => {
-                const n = it.val;
-                
-                // 정상범위 표시 포맷 (MV E wave, MV E/A ratio는 소수점 1자리 고정)
-                const fmtVal = (val: number) => {
-                  if (it.name === 'MV E wave' || it.name === 'MV E/A ratio') {
-                    return val.toFixed(1);
-                  }
-                  return val.toString();
-                };
+        <React.Fragment key={g}>
+          <div className="result-group-echo" style={{ background: style.color }}>
+            <h3 style={{ borderLeft: `5px solid ${style.border}` }}>{style.title}</h3>
+            <table className="result-table-echo">
+              <thead>
+                <tr>
+                  <th>항목</th>
+                  <th>정상범위</th>
+                  <th>측정값</th>
+                  <th>해석</th>
+                </tr>
+              </thead>
+              <tbody>
+                {groupItems.map((it, idx) => {
+                  const n = it.val;
 
-                const normalDisp = it.range 
-                  ? `${fmtVal(it.range[0])} ~ ${fmtVal(it.range[1])}` 
-                  : (it.normal !== null ? fmt(it.normal) : '-');
-                  
-                let color = '#64748b', txt = '-';
+                  // 정상범위 표시 포맷 (MV E wave, MV E/A ratio는 소수점 1자리 고정)
+                  const fmtVal = (val: number) => {
+                    if (it.name === 'MV E wave' || it.name === 'MV E/A ratio') {
+                      return val.toFixed(1);
+                    }
+                    return val.toString();
+                  };
 
-                if (!isNaN(n) && isFinite(n) && n !== 0) {
-                  // 1. 상태 텍스트 결정
-                  if (it.range) {
-                    if (n < it.range[0]) txt = it.lo;
-                    else if (n > it.range[1]) txt = it.hi;
-                    else txt = '정상';
-                  } else if (it.normal !== null) {
-                    if (n < it.normal) txt = it.lo;
-                    else if (n > it.normal) txt = it.hi;
-                    else txt = '정상';
-                  }
+                  const normalDisp = it.range
+                    ? `${fmtVal(it.range[0])} ~ ${fmtVal(it.range[1])}`
+                    : (it.normal !== null ? fmt(it.normal) : '-');
 
-                  // 2. 색상 결정 (텍스트가 '정상'이면 항상 초록색)
-                  if (txt === '정상') {
-                    color = '#27ae60'; // 정상: 초록색 (통일)
-                  } else if (txt !== '-') {
-                    // 비정상일 때: 측정값이 기준보다 낮으면 파란색, 높으면 빨간색
+                  let color = '#64748b', txt = '-';
+
+                  if (!isNaN(n) && isFinite(n) && n !== 0) {
+                    // 1. 상태 텍스트 결정
                     if (it.range) {
-                      color = (n < it.range[0]) ? '#2980b9' : '#c0392b';
+                      if (n < it.range[0]) txt = it.lo;
+                      else if (n > it.range[1]) txt = it.hi;
+                      else txt = '정상';
                     } else if (it.normal !== null) {
-                      color = (n < it.normal) ? '#2980b9' : '#c0392b';
+                      if (n < it.normal) txt = it.lo;
+                      else if (n > it.normal) txt = it.hi;
+                      else txt = '정상';
+                    }
+
+                    // 2. 색상 결정 (텍스트가 '정상'이면 항상 초록색)
+                    if (txt === '정상') {
+                      color = '#27ae60'; // 정상: 초록색 (통일)
+                    } else if (txt !== '-') {
+                      // 비정상일 때: 측정값이 기준보다 낮으면 파란색, 높으면 빨간색
+                      if (it.range) {
+                        color = (n < it.range[0]) ? '#2980b9' : '#c0392b';
+                      } else if (it.normal !== null) {
+                        color = (n < it.normal) ? '#2980b9' : '#c0392b';
+                      }
                     }
                   }
-                }
 
-                return (
-                  <tr key={idx}>
-                    <td>{it.name}</td>
-                    <td>{normalDisp}</td>
-                    <td style={{ color, fontWeight: 'bold' }}>{fmt(n)}</td>
-                    <td style={{ color }}>{txt}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                  return (
+                    <tr key={idx}>
+                      <td>{it.name}</td>
+                      <td>{normalDisp}</td>
+                      <td style={{ color, fontWeight: 'bold' }}>{fmt(n)}</td>
+                      <td style={{ color }}>{txt}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          {g === 'Pulmonary Hypertension' && <PulmonaryHTNReference />}
+        </React.Fragment>
       );
     });
   };

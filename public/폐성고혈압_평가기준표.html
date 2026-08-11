@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>폐성고혈압 심초음파 평가 기준표</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    margin: 0;
+    padding: 24px;
+    background: #f4f6f8;
+    color: #1e293b;
+  }
+  .sheet {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 36px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  h1 {
+    font-size: 21px;
+    font-weight: 800;
+    text-align: center;
+    margin: 0 0 4px;
+    color: #0f172a;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 22px;
+  }
+  h2 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #0369a1;
+    border-left: 4px solid #0369a1;
+    padding-left: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  th, td {
+    border: 1px solid #e2e8f0;
+    padding: 7px 10px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  th {
+    background: #0f172a;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  /* Table 1 - Matrix grid (미니멀 플랫) */
+  .matrix {
+    display: grid;
+    grid-template-columns: 90px repeat(4, 1fr);
+    grid-template-rows: 42px repeat(3, 52px);
+    gap: 3px;
+    font-size: 12.5px;
+  }
+  .matrix .corner {
+    position: relative;
+    background: #fff;
+    overflow: hidden;
+  }
+  .matrix .corner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 99.3px;
+    height: 1.4px;
+    background: #cbd5e1;
+    border-radius: 2px;
+    transform-origin: 0 0;
+    transform: rotate(25deg);
+  }
+  .matrix .corner .lbl-tr {
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #334155;
+  }
+  .matrix .corner .lbl-bl {
+    position: absolute;
+    left: 5px;
+    bottom: 3px;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #334155;
+  }
+  .matrix .col-head {
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border-radius: 4px;
+  }
+  .matrix .row-head {
+    background: #475569;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border-radius: 4px;
+    text-align: center;
+    padding: 2px 4px;
+  }
+  .matrix .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    border-radius: 4px;
+    font-size: 12.5px;
+  }
+  .matrix .low { background: #d1fae5; color: #065f46; }
+  .matrix .mid { background: #fef3c7; color: #92400e; }
+  .matrix .high { background: #fee2e2; color: #991b1b; }
+
+  /* Table 2 - 매트릭스와 어울리는 플랫 타일 그리드 */
+  .grid2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    font-size: 12px;
+  }
+  .grid2 .g2-head {
+    background: #0f172a;
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .grid2 .g2-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 6px;
+    border-radius: 4px;
+    min-height: 46px;
+    line-height: 1.4;
+  }
+  .grid2 .g2-1 { background: #f1f5f9; color: #1e293b; }
+  .grid2 .g2-2 { background: #e2e8f0; color: #1e293b; }
+  .grid2 .g2-3 { background: #f1f5f9; color: #1e293b; }
+  .grid2 .g2-empty { background: transparent; }
+
+  .section {
+    margin-bottom: 26px;
+  }
+  .note {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .legend {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 10px;
+    font-size: 11px;
+  }
+  .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .sheet { box-shadow: none; border-radius: 0; padding: 14px 18px; max-width: 100%; }
+    @page { size: A4 portrait; margin: 12mm; }
+  }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <h1>폐성고혈압(Pulmonary Hypertension) 심초음파 평가 기준</h1>
+    <div class="subtitle">TR 최대속도 + 해부학적 변화 기반 가능성 평가</div>
+
+    <div class="section">
+      <h2>표 1. TR 최대속도 &amp; 해부학적 변화 수에 따른 폐성고혈압 가능성</h2>
+      <div class="matrix">
+        <div class="corner"><span class="lbl-tr">변화 수</span><span class="lbl-bl">TR 속도</span></div>
+        <div class="col-head">0</div>
+        <div class="col-head">1</div>
+        <div class="col-head">2</div>
+        <div class="col-head">3</div>
+
+        <div class="row-head">3.0 이하</div>
+        <div class="cell low">Low</div>
+        <div class="cell low">Low</div>
+        <div class="cell mid">Inter-<br>mediate</div>
+        <div class="cell high">High</div>
+
+        <div class="row-head">3.0 ~ 3.4</div>
+        <div class="cell mid">Inter-<br>mediate</div>
+        <div class="cell mid">Inter-<br>mediate</div>
+        <div class="cell high">High</div>
+        <div class="cell high">High</div>
+
+        <div class="row-head">3.4 초과</div>
+        <div class="cell mid">Inter-<br>mediate</div>
+        <div class="cell high">High</div>
+        <div class="cell high">High</div>
+        <div class="cell high">High</div>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:#bbf7d0"></i>Low</span>
+        <span><i class="dot" style="background:#fef08a"></i>Intermediate</span>
+        <span><i class="dot" style="background:#fecaca"></i>High</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>표 2. 해부학적 위치별 폐성고혈압 시사 소견</h2>
+      <div class="grid2">
+        <div class="g2-head">해부학 위치 1</div>
+        <div class="g2-head">해부학 위치 2</div>
+        <div class="g2-head">해부학 위치 3</div>
+
+        <div class="g2-cell g2-1">심실중격 편평화<br>(특히 수축기)</div>
+        <div class="g2-cell g2-2">폐동맥 확장 (PA/Ao &gt; 1.0)</div>
+        <div class="g2-cell g2-3">우심방 확장</div>
+
+        <div class="g2-cell g2-1">좌심실 충만량 감소<br>또는 크기 감소</div>
+        <div class="g2-cell g2-2">PR 속도 &gt; 2.5m/s</div>
+        <div class="g2-cell g2-3">CVC 확장</div>
+
+        <div class="g2-cell g2-1">우심실 비대<br>(벽 비후, 심실 확장, 둘다)</div>
+        <div class="g2-cell g2-2">RPAD index &lt; 30%</div>
+        <div class="g2-cell g2-empty"></div>
+
+        <div class="g2-cell g2-1">우심실 수축 기능장애</div>
+        <div class="g2-cell g2-2">RVOT(=PV 속도) AT &lt; 52~58ms<br>or AT:ET ratio &lt; 0.30</div>
+        <div class="g2-cell g2-empty"></div>
+
+        <div class="g2-cell g2-empty"></div>
+        <div class="g2-cell g2-2">PV 파형에 Systolic notching</div>
+        <div class="g2-cell g2-empty"></div>
+      </div>
+      <div class="note">※ 표 1의 "해부학적 변화 수"는 위 표 2의 세 위치(좌심 / 폐동맥·우심실 / 우심방·CVC) 각 카테고리에서 1개 이상의 소견이 확인될 때 1개로 카운트합니다.</div>
+    </div>
+  </div>
+</body>
+</html>
