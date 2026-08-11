@@ -78,14 +78,14 @@ const NeuroForm: React.FC<NeuroFormProps> = ({
 
         <div className="cat-title">4. 자세 및 걸음 (Posture & Gait)</div>
         <div className="pair-grid">
-          {symptomData.gait.slice(0, 6).map(s => (
+          {symptomData.gaitDirectional.map(s => (
             <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
               <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
             </label>
           ))}
         </div>
         <div className="single-grid" style={{ marginTop: '10px' }}>
-          {symptomData.gait.slice(6).map(s => (
+          {symptomData.gaitSymmetric.map(s => (
             <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
               <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
             </label>
