@@ -66,8 +66,22 @@ const NeuroForm: React.FC<NeuroFormProps> = ({
             </label>
           ))}
         </div>
-        <div className="pair-grid">
+        <div className="pair-grid" style={{ marginTop: '10px' }}>
           {symptomData.eyePLR.map(s => (
+            <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
+              <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
+            </label>
+          ))}
+        </div>
+        <div className="single-grid" style={{ marginTop: '10px' }}>
+          {symptomData.eyeNystagmusCentral.map(s => (
+            <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
+              <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
+            </label>
+          ))}
+        </div>
+        <div className="pair-grid" style={{ marginTop: '10px' }}>
+          {symptomData.eyeNystagmusLateral.map(s => (
             <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
               <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
             </label>
