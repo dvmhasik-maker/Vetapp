@@ -3,7 +3,7 @@ import { BookMarked, ChevronDown } from 'lucide-react';
 
 const PulmonaryHTNReference: React.FC = () => {
   return (
-    <details className="ph-ref-accordion">
+    <details className="ph-ref-accordion" data-html2canvas-ignore="true">
       <summary className="ph-ref-summary">
         <span className="ph-ref-summary-left">
           <BookMarked size={16} />

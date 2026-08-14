@@ -58,25 +58,39 @@ const NeuroForm: React.FC<NeuroFormProps> = ({
           ))}
         </div>
 
-        <div className="cat-title">2. 위협 반사 (Menace Response)</div>
+        <div className="cat-title">2. 눈 (Eye)</div>
         <div className="pair-grid">
-          {symptomData.menace.map(s => (
+          {symptomData.eyeMenace.map(s => (
+            <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
+              <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
+            </label>
+          ))}
+        </div>
+        <div className="pair-grid">
+          {symptomData.eyePLR.map(s => (
             <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
               <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
             </label>
           ))}
         </div>
 
-        <div className="cat-title">3. 동공 빛 반사 (PLR)</div>
-        <div className="single-grid">
-          {symptomData.plr.map(s => (
+        <div className="cat-title">3. 자세 (Posture)</div>
+        <div className="pair-grid">
+          {symptomData.postureDirectional.map(s => (
+            <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
+              <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
+            </label>
+          ))}
+        </div>
+        <div className="single-grid" style={{ marginTop: '10px' }}>
+          {symptomData.postureSymmetric.map(s => (
             <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
               <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
             </label>
           ))}
         </div>
 
-        <div className="cat-title">4. 자세 및 걸음 (Posture & Gait)</div>
+        <div className="cat-title">4. 걸음걸이 (Gait)</div>
         <div className="pair-grid">
           {symptomData.gaitDirectional.map(s => (
             <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
@@ -92,16 +106,16 @@ const NeuroForm: React.FC<NeuroFormProps> = ({
           ))}
         </div>
 
-        <div className="cat-title">5. 고유자세반응 (Proprioception)</div>
+        <div className="cat-title">5. 자세반응 (Postural Reactions)</div>
         <div className="pair-grid">
-          {symptomData.proprioception.slice(0, 2).map(s => (
+          {symptomData.posturalReactionDirectional.map(s => (
             <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
               <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
             </label>
           ))}
         </div>
         <div className="single-grid" style={{ marginTop: '10px' }}>
-          {symptomData.proprioception.slice(2).map(s => (
+          {symptomData.posturalReactionGeneral.map(s => (
             <label key={s.id} className={`chk-label ${selectedSymptomIds.includes(s.id) ? 'checked' : ''}`}>
               <input type="checkbox" checked={selectedSymptomIds.includes(s.id)} onChange={() => toggleSymptom(s.id)} /> <span>{s.text}</span>
             </label>

@@ -4,45 +4,60 @@ export const symptomData: Record<string, Symptom[]> = {
   consciousness: [
     { id: '의식_이상', text: '의식 이상\n(Stupor/Coma/Depression)', base: ['전뇌', '뇌간'] }
   ],
-  menace: [
-    { id: '위협_왼쪽소실', text: '왼쪽 위협반사 저하/소실\n(Menace Response Deficit)', cross: ['전뇌'], ipsi: ['소뇌'], isMenaceFail: true },
-    { id: '위협_오른쪽소실', text: '오른쪽 위협반사 저하/소실\n(Menace Response Deficit)', cross: ['전뇌'], ipsi: ['소뇌'], isMenaceFail: true }
+  eyeMenace: [
+    { id: '눈_왼쪽위협반사소실', text: '왼쪽 위협반사 소실/저하\n(Menace Response Deficit)', cross: ['전뇌'], ipsi: ['소뇌'], isMenaceFail: true },
+    { id: '눈_오른쪽위협반사소실', text: '오른쪽 위협반사 소실/저하\n(Menace Response Deficit)', cross: ['전뇌'], ipsi: ['소뇌'], isMenaceFail: true }
   ],
-  plr: [
-    { id: 'PLR_이상', text: 'PLR 이상\n(Pupillary Light Reflex)', base: ['뇌간'] }
+  eyePLR: [
+    { id: '눈_왼쪽PLR구심성소실', text: '왼쪽 눈 직접 PLR 소실, 간접 정상\n(Afferent Defect - CN II)' },
+    { id: '눈_오른쪽PLR구심성소실', text: '오른쪽 눈 직접 PLR 소실, 간접 정상\n(Afferent Defect - CN II)' },
+    { id: '눈_왼쪽PLR원심성소실', text: '왼쪽 눈 직접+간접 PLR 모두 소실\n(Efferent Defect - CN III)', ipsi: ['뇌간'] },
+    { id: '눈_오른쪽PLR원심성소실', text: '오른쪽 눈 직접+간접 PLR 모두 소실\n(Efferent Defect - CN III)', ipsi: ['뇌간'] }
+  ],
+  postureDirectional: [
+    { id: '자세_왼쪽머리돌림', text: '왼쪽 머리 돌림\n(Head Turn)', ipsi: ['전뇌'] },
+    { id: '자세_오른쪽머리돌림', text: '오른쪽 머리 돌림\n(Head Turn)', ipsi: ['전뇌'] },
+    { id: '자세_왼쪽기운목', text: '왼쪽 기운목 (귀 처짐)\n(Head Tilt)', ipsi: ['뇌간', '소뇌'] },
+    { id: '자세_오른쪽기운목', text: '오른쪽 기운목 (귀 처짐)\n(Head Tilt)', ipsi: ['뇌간', '소뇌'] },
+    { id: '자세_왼쪽안면비대칭', text: '왼쪽 안면 처짐 (눈꺼풀/입술/귀)\n(Facial Asymmetry)', cross: ['전뇌'], ipsi: ['뇌간'] },
+    { id: '자세_오른쪽안면비대칭', text: '오른쪽 안면 처짐 (눈꺼풀/입술/귀)\n(Facial Asymmetry)', cross: ['전뇌'], ipsi: ['뇌간'] }
+  ],
+  postureSymmetric: [
+    { id: '자세_머리프레싱', text: '벽에 머리 대기\n(Head Pressing)', base: ['전뇌'] },
+    { id: '자세_사지신전강직_의식저하', text: '사지 신전강직 + 의식 저하/혼수\n(Decerebrate Rigidity)', base: ['뇌간'] },
+    { id: '자세_후궁반장_전지강직', text: '후궁반장 + 전지 신전강직 + 의식 유지\n(Decerebellate Rigidity)', base: ['소뇌'] },
+    { id: '자세_쉬프셔링턴', text: '전지 신전강직 + 후지 마비\n(Schiff-Sherrington)', base: ['T3-L3'] },
+    { id: '자세_사지벌어짐', text: '사지 기저부 벌어짐\n(Wide-based Stance)', base: ['소뇌'] },
+    { id: '자세_평지자세', text: '평지 자세 취함\n(Plantigrade Posture)', base: ['L6-S3'] }
   ],
   gaitDirectional: [
-    { id: '걸음_왼쪽휨', text: '몸이 왼쪽으로 휨\n(Body Lean)', ipsi: ['전뇌'] },
-    { id: '걸음_오른쪽휨', text: '몸이 오른쪽으로 휨\n(Body Lean)', ipsi: ['전뇌'] },
-    { id: '걸음_왼쪽턴', text: '왼쪽으로 머리 돌림\n(Head Turn)', ipsi: ['전뇌'] },
-    { id: '걸음_오른쪽턴', text: '오른쪽으로 머리 돌림\n(Head Turn)', ipsi: ['전뇌'] },
-    { id: '걸음_왼쪽선회_좁게', text: '왼쪽으로 좁게 도는 선회\n(Tight Circling - Vestibular)', ipsi: ['뇌간', '소뇌'] },
-    { id: '걸음_오른쪽선회_좁게', text: '오른쪽으로 좁게 도는 선회\n(Tight Circling - Vestibular)', ipsi: ['뇌간', '소뇌'] },
-    { id: '걸음_왼쪽선회_넓게', text: '왼쪽으로 넓게 도는 선회\n(Wide Circling - Forebrain)', ipsi: ['전뇌'] },
-    { id: '걸음_오른쪽선회_넓게', text: '오른쪽으로 넓게 도는 선회\n(Wide Circling - Forebrain)', ipsi: ['전뇌'] },
-    { id: '걸음_왼쪽전정실조', text: '왼쪽으로 기울며 쓰러짐\n(Vestibular Ataxia)', ipsi: ['뇌간', '소뇌'] },
-    { id: '걸음_오른쪽전정실조', text: '오른쪽으로 기울며 쓰러짐\n(Vestibular Ataxia)', ipsi: ['뇌간', '소뇌'] },
-    { id: '걸음_왼쪽기운목', text: '왼쪽으로 기운목 (귀 처짐)\n(Head Tilt)', ipsi: ['뇌간', '소뇌'] },
-    { id: '걸음_오른쪽기운목', text: '오른쪽으로 기운목 (귀 처짐)\n(Head Tilt)', ipsi: ['뇌간', '소뇌'] }
+    { id: '걸음_왼쪽선회_좁게', text: '왼쪽 좁은 선회\n(Tight Circling - Vestibular)', ipsi: ['뇌간', '소뇌'] },
+    { id: '걸음_오른쪽선회_좁게', text: '오른쪽 좁은 선회\n(Tight Circling - Vestibular)', ipsi: ['뇌간', '소뇌'] },
+    { id: '걸음_왼쪽선회_넓게', text: '왼쪽 넓은 선회\n(Wide Circling - Forebrain)', ipsi: ['전뇌'] },
+    { id: '걸음_오른쪽선회_넓게', text: '오른쪽 넓은 선회\n(Wide Circling - Forebrain)', ipsi: ['전뇌'] },
+    { id: '걸음_왼쪽전정실조', text: '왼쪽 전정성 실조 (기울며 쓰러짐)\n(Vestibular Ataxia)', ipsi: ['뇌간', '소뇌'] },
+    { id: '걸음_오른쪽전정실조', text: '오른쪽 전정성 실조 (기울며 쓰러짐)\n(Vestibular Ataxia)', ipsi: ['뇌간', '소뇌'] }
   ],
   gaitSymmetric: [
-    { id: '걸음_전뇌_프레싱', text: '벽에 머리 대기\n(Head Pressing)', base: ['전뇌'] },
     { id: '걸음_사지마비', text: '사지 마비/부전\n(Tetraparesis)', base: ['뇌간', 'C1-C5', 'C6-T2'] },
-    { id: '걸음_사지신전강직_의식저하', text: '사지 신전 강직 + 의식 저하/혼수\n(Decerebrate Rigidity)', base: ['뇌간'] },
-    { id: '걸음_소뇌_트레머', text: '의도 전율\n(Intention Tremor)', base: ['소뇌'] },
-    { id: '걸음_소뇌_실조', text: '소뇌성 실조 (과잉동작/휘청거림)\n(Cerebellar Ataxia)', base: ['소뇌'] },
-    { id: '걸음_소뇌_벌어짐', text: '사지 기저부 벌어짐\n(Wide-based Gait)', base: ['소뇌'] },
-    { id: '걸음_후궁반장_전지강직_의식유지', text: '후궁반장 + 전지 신전강직, 의식 유지\n(Decerebellate Rigidity)', base: ['소뇌'] },
-    { id: '걸음_쉬프셔링턴', text: '전지 신전강직 + 후지 마비\n(Schiff-Sherrington)', base: ['T3-L3'] },
+    { id: '걸음_의도전율', text: '의도 전율\n(Intention Tremor)', base: ['소뇌'] },
+    { id: '걸음_소뇌성실조', text: '소뇌성 실조 (과잉동작/휘청거림)\n(Cerebellar Ataxia)', base: ['소뇌'] },
     { id: '걸음_후지마비', text: '후지 마비/부전\n(Paraparesis)', base: ['T3-L3', 'L4-L6', 'L6-S3'] },
     { id: '걸음_일어섬_어려움', text: '일어서기 어려움\n(Difficulty Standing)', base: ['L6-S3'] },
-    { id: '걸음_평지자세', text: '평지 자세 취함\n(Plantigrade Posture)', base: ['L6-S3'] },
     { id: '걸음_뻣뻣_과장', text: '뻣뻣하고 과장된 걸음\n(Stiff/Exaggerated Gait)', base: ['골격근'] }
   ],
-  proprioception: [
-    { id: '고유_왼쪽소실', text: '왼쪽 고유자세반응 소실/저하\n(CP Deficit)', cross: ['전뇌'], ipsi: ['뇌간', 'C1-C5', 'C6-T2', '소뇌'] },
-    { id: '고유_오른쪽소실', text: '오른쪽 고유자세반응 소실/저하\n(CP Deficit)', cross: ['전뇌'], ipsi: ['뇌간', 'C1-C5', 'C6-T2', '소뇌'] },
-    { id: '고유_사지소실', text: '사지 전체 고유자세반응 소실\n(General CP Deficit)', base: ['뇌간', 'C1-C5', 'C6-T2'] }
+  posturalReactionDirectional: [
+    { id: '반응_왼쪽앞다리CP소실', text: '왼쪽 앞다리 고유자세반응 소실/저하\n(Forelimb CP Deficit)', cross: ['전뇌'], ipsi: ['뇌간', 'C1-C5', 'C6-T2', '소뇌'] },
+    { id: '반응_오른쪽앞다리CP소실', text: '오른쪽 앞다리 고유자세반응 소실/저하\n(Forelimb CP Deficit)', cross: ['전뇌'], ipsi: ['뇌간', 'C1-C5', 'C6-T2', '소뇌'] },
+    { id: '반응_왼쪽뒷다리CP소실', text: '왼쪽 뒷다리 고유자세반응 소실/저하\n(Hindlimb CP Deficit)', cross: ['전뇌'], ipsi: ['뇌간', 'C1-C5', 'C6-T2', 'T3-L3', 'L4-L6', 'L6-S3', '소뇌'] },
+    { id: '반응_오른쪽뒷다리CP소실', text: '오른쪽 뒷다리 고유자세반응 소실/저하\n(Hindlimb CP Deficit)', cross: ['전뇌'], ipsi: ['뇌간', 'C1-C5', 'C6-T2', 'T3-L3', 'L4-L6', 'L6-S3', '소뇌'] },
+    { id: '반응_왼쪽도약지연', text: '왼쪽 도약반응 지연/끌림\n(Hopping Deficit - C6-T2)', cross: ['전뇌'], ipsi: ['C6-T2'] },
+    { id: '반응_오른쪽도약지연', text: '오른쪽 도약반응 지연/끌림\n(Hopping Deficit - C6-T2)', cross: ['전뇌'], ipsi: ['C6-T2'] },
+    { id: '반응_왼쪽도약과잉', text: '왼쪽 도약반응 과잉동작\n(Hopping Hypermetria - Cerebellar)', ipsi: ['소뇌'] },
+    { id: '반응_오른쪽도약과잉', text: '오른쪽 도약반응 과잉동작\n(Hopping Hypermetria - Cerebellar)', ipsi: ['소뇌'] }
+  ],
+  posturalReactionGeneral: [
+    { id: '반응_사지전체CP소실', text: '사지 전체 고유자세반응 소실\n(General CP Deficit)', base: ['뇌간', 'C1-C5', 'C6-T2'] }
   ],
   misc: [
     { id: '기타_발작', text: '경련/발작\n(Seizure)', base: ['전뇌'] },

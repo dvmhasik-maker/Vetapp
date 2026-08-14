@@ -72,7 +72,7 @@ export const useNeuroLogic = () => {
 
       // 3. Ipsi (Ipsilateral)
       if (s.ipsi) {
-        const isLeftSymptom = s.id.includes('왼쪽') || s.id.includes('왼쪽서클') || s.id.includes('왼쪽휨') || s.id.includes('왼쪽턴');
+        const isLeftSymptom = s.id.includes('왼쪽');
         s.ipsi.forEach(t => {
           const side = isLeftSymptom ? '좌측 ' : '우측 ';
           scoreMap[side + t].score += 1;
