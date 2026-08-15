@@ -58,6 +58,24 @@ const CushingResultView: React.FC<CushingResultViewProps> = ({ result, resultRef
           {banner.note && <div className="rb-note">{banner.note}</div>}
         </div>
 
+        {/* 재검 결과에 따른 조치 */}
+        {result.mode === 'acth' && banner.recheckTable && (
+          <div className="recheck-card-cushing">
+            <div className="rc-title">
+              <span className="rc-icon">🔁</span>
+              <span>재검 결과에 따른 조치</span>
+            </div>
+            <div className="rc-rows">
+              {banner.recheckTable.map((row, idx) => (
+                <div key={idx} className={`rc-row theme-${row.theme}`}>
+                  <span className="rc-range">{row.range}</span>
+                  <span className="rc-action">{row.action}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="ref-label-poison">
           ※ 본 분석은 Ettinger's Textbook of Veterinary Internal Medicine 9th ed. 가이드라인을 기반으로 하며, 최종 판단은 수의사의 임상적 판단에 따릅니다.
         </div>
@@ -131,6 +149,63 @@ const CushingResultView: React.FC<CushingResultViewProps> = ({ result, resultRef
         .theme-red { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
         .theme-purple { background: #f5f3ff; border-color: #8b5cf6; color: #5b21b6; }
         .theme-yellow { background: #fefce8; border-color: #eab308; color: #854d0e; }
+
+        .recheck-card-cushing {
+          border-radius: 14px;
+          overflow: hidden;
+          margin-bottom: 1.5rem;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 4px 10px -2px rgba(0,0,0,0.08);
+        }
+        .rc-title {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: linear-gradient(135deg, #1e293b, #334155);
+          color: #fff;
+          padding: 12px 16px;
+          font-size: 0.9rem;
+          font-weight: 800;
+          letter-spacing: -0.2px;
+        }
+        .rc-icon { font-size: 1.1rem; }
+
+        .rc-rows { display: flex; flex-direction: column; background: #fff; }
+        .rc-row {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 12px 16px;
+          border-bottom: 1px solid #eef2f6;
+        }
+        .rc-row:last-child { border-bottom: none; }
+
+        .rc-range {
+          flex: 0 0 auto;
+          min-width: 108px;
+          text-align: center;
+          padding: 5px 10px;
+          border-radius: 999px;
+          font-size: 0.78rem;
+          font-weight: 800;
+          color: #fff;
+          white-space: nowrap;
+        }
+        .rc-action { font-size: 0.85rem; font-weight: 600; color: #1e293b; line-height: 1.5; }
+
+        .rc-row.theme-red { background: #fef2f2; }
+        .rc-row.theme-red .rc-range { background: #ef4444; }
+        .rc-row.theme-orange { background: #fffbeb; }
+        .rc-row.theme-orange .rc-range { background: #f59e0b; }
+        .rc-row.theme-green { background: #f0fdf4; }
+        .rc-row.theme-green .rc-range { background: #22c55e; }
+        .rc-row.theme-blue { background: #eff6ff; }
+        .rc-row.theme-blue .rc-range { background: #3b82f6; }
+
+        @media (max-width: 640px) {
+          .rc-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+          .rc-range { align-self: flex-start; }
+        }
 
         .ref-label-poison {
           margin-top: 25px;

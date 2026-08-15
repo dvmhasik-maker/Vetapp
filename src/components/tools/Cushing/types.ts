@@ -25,6 +25,7 @@ export interface CushingResult {
     label: string;
     actions: string[];
     note: string;
+    recheckTable?: { range: string; action: string; theme: 'green' | 'orange' | 'red' | 'blue' }[];
   };
   date: string;
 }
