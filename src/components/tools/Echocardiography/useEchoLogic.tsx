@@ -12,7 +12,7 @@ const initialPatientInfo: PatientInfo = {
 
 const initialDogInput: DogInput = {
   weight: '', LVOT_len: '', LVIDd: '', LVIDs: '', FS: '', EPSS: '',
-  LA_Ao: '', MPA_Ao: '', RPAD: '', TAPSE: '', PA_vel: '', PV_AT: '', PV_ET: '', PR_vel: '', MV_E: '', DTE: '',
+  LA_Ao: '', Ao: '', MPA_Ao: '', RPAD: '', TAPSE: '', PA_vel: '', PV_AT: '', PV_ET: '', PR_vel: '', MV_E: '', DTE: '',
   MV_A: '', MCO: '', MV_Eprime: '', MV_Sprime: '', MR_Vol: '',
   MR_V1V3: '', TR_vel: '', LVOT_VTI: '', AV_vel: '', LV_ET: '',
   LV_PEP: '', HR: '', IVRT: ''
@@ -64,7 +64,8 @@ export const useEchoLogic = () => {
     const mvEp = v(dogInput.MV_Eprime);
     const EEp = (mvEp > 0) ? (mvE * 100) / mvEp : 0;
     const tapse = v(dogInput.TAPSE);
-    const tapseIdx = (weight > 0 && tapse > 0) ? tapse / Math.pow(weight, 0.284) : 0;
+    const ao = v(dogInput.Ao);
+    const tapseAo = (ao > 0 && tapse > 0) ? tapse / ao : 0;
     const pvAT = v(dogInput.PV_AT);
     const pvET = v(dogInput.PV_ET);
     const atEtRatio = (pvET > 0) ? pvAT / pvET : 0;
@@ -76,7 +77,7 @@ export const useEchoLogic = () => {
 
     const items: EchoResultItem[] = [
       { group: 'Volume Overload', name: 'LVIDDN', val: LVIDDN, normal: 1.7, range: null, inv: false, lo: '정상', hi: 'DMVD 의심' },
-      { group: 'Volume Overload', name: 'MV E wave', val: mvE, normal: null, range: [0.7, 1.0], inv: false, lo: 'LV 충만기압 감소', hi: 'LV 충만기압 증가 (1.25이상→DMVD)' },
+      { group: 'Volume Overload', name: 'MV E wave', val: mvE, normal: null, range: [0.7, 1.0], inv: false, lo: 'LV 충만기압 감소', hi: 'LV 충만기압 증가 (1.25이상→DMVD)', loColor: '#e67e22' },
       { group: 'Volume Overload', name: 'MR Fraction(PISA)', val: mrFrac, normal: null, range: [5, 33], inv: false, lo: '정상', mid: '경미한 MR', hi: 'MR 존재', normalLabel: '< 5' },
       { group: 'Volume Overload', name: 'E/IVRT ratio', val: EIVRT, normal: 1.25, range: null, inv: false, lo: '정상', hi: 'LV 충만기압 증가 (2.5이상→DMVD)' },
       { group: 'Volume Overload', name: 'LA/Ao ratio', val: v(dogInput.LA_Ao), normal: 1.6, range: null, inv: false, lo: '정상', hi: 'LA 비대' },
@@ -92,24 +93,26 @@ export const useEchoLogic = () => {
       { group: 'Myocardial Failure', name: 'SV', val: SV, normal: normSV, range: null, inv: true, lo: '심박출량 저하', hi: '정상 이상' },
       { group: 'Myocardial Failure', name: 'CO', val: CO, normal: normCO, range: null, inv: true, lo: '심박출량 저하', hi: '정상 이상' },
       
-      { group: 'Diastolic Failure', name: 'MV E/A ratio', val: EA, normal: null, range: [1.0, 2.0], inv: false, lo: '이완기능부전 stage 1', hi: '이완기능부전 stage 3' },
-      { group: 'Diastolic Failure', name: 'DTE', val: v(dogInput.DTE), normal: null, range: [60, 100], inv: false, lo: '이완기능부전 stage 3', hi: '이완기능부전 stage 1' },
+      { group: 'Diastolic Failure', name: 'MV E/A ratio', val: EA, normal: null, range: [1.0, 2.0], inv: false, lo: '이완기능부전 stage 1', hi: '이완기능부전 stage 3', loColor: '#e67e22' },
+      { group: 'Diastolic Failure', name: 'DTE', val: v(dogInput.DTE), normal: null, range: [60, 100], inv: false, lo: '이완기능부전 stage 3', hi: '이완기능부전 stage 1', hiColor: '#e67e22' },
       { group: 'Diastolic Failure', name: "MV E/E' ratio", val: EEp, normal: 12.0, range: null, inv: false, lo: '정상', hi: '이완기능부전 stage 1b 이상' },
-      { group: 'Diastolic Failure', name: 'IVRT', val: ivrt, normal: null, range: [41, 65], inv: false, lo: '이완기능부전 stage 3', hi: '이완기능부전 stage 1' },
+      { group: 'Diastolic Failure', name: 'IVRT', val: ivrt, normal: null, range: [41, 65], inv: false, lo: '이완기능부전 stage 3', hi: '이완기능부전 stage 1', hiColor: '#e67e22' },
       
-      { group: 'Pulmonary Hypertension', name: 'MPA/Ao ratio', val: v(dogInput.MPA_Ao), normal: 1.15, range: null, inv: false, lo: '정상', hi: 'PAH 의심' },
-      // RPAD index 35%: 연구별 편차 있음 (21~38% 범위 보고, 예: Visser 2016 <29.5%가 TRPG>50mmHg 예측) — 현재값은 해당 범위 내
-      { group: 'Pulmonary Hypertension', name: 'RPAD index', val: v(dogInput.RPAD), normal: 35, range: null, inv: true, lo: 'PAH 의심', hi: '정상' },
-      // AT/ET ratio: 정상견 median≈0.43, PH견 median≈0.30 (Serres/RLD 코호트 등); ≤0.25는 PH 특이도 100%, >0.42는 PH 배제 가능성 높음
-      { group: 'Pulmonary Hypertension', name: 'PV AT/ET ratio', val: atEtRatio, normal: null, range: [0.25, 0.42], inv: true, lo: 'PAH 강력히 의심 (특이도 높음)', mid: 'PAH 가능성 있음 (추가 소견 확인)', hi: '정상 (PAH 배제 가능성 높음)', normalLabel: '> 0.42' },
+      // MPA/Ao: 1.0 미만 정상, 1.0~1.15 경미한 폐동맥 확장, 1.15 이상 명확한 폐동맥 확장
+      { group: 'Pulmonary Hypertension', name: 'MPA/Ao ratio', val: v(dogInput.MPA_Ao), normal: null, range: [1.0, 1.15], inv: false, lo: '정상', mid: '경미한 폐동맥 확장', hi: '명확한 폐동맥 확장', normalLabel: '< 1.0' },
+      // RPAD index 30%: <30%가 TRPG>50mmHg 예측 (Visser 등)
+      { group: 'Pulmonary Hypertension', name: 'RPAD index', val: v(dogInput.RPAD), normal: 30, range: null, inv: true, lo: 'PAH 의심', hi: '정상' },
+      // AT/ET ratio <0.30: TRPG>50mmHg 예측 특이도 0.97 (단일 컷오프, 기존 0.25/0.42 이중 기준보다 근거 명확)
+      { group: 'Pulmonary Hypertension', name: 'PV AT/ET ratio', val: atEtRatio, normal: 0.3, range: null, inv: true, lo: 'PAH 강력히 의심 (특이도 높음)', hi: '정상' },
       { group: 'Pulmonary Hypertension', name: 'TR 속도', val: v(dogInput.TR_vel), normal: null, range: [2.8, 3.4], inv: false, lo: '정상', mid: 'PAH 중등도 가능성 (추가 소견 확인)', hi: 'PAH 고확률 (수축기)', normalLabel: '< 2.8' },
       { group: 'Pulmonary Hypertension', name: 'PR 속도', val: v(dogInput.PR_vel), normal: 2.0, range: null, inv: false, lo: '정상', hi: 'PAH (이완기) / PDA' },
-      // TAPSE/BW^0.284 < 3.23: PH견에서 생존기간 단축과 독립적 연관 (Visser 등)
-      { group: 'Pulmonary Hypertension', name: 'TAPSE index (BW 보정)', val: tapseIdx, normal: 3.23, range: null, inv: true, lo: '우심실 수축기능 저하 (PH 예후 불량)', hi: '정상' },
+      // TAPSE:Ao > 0.65가 정상 (체중 대신 대동맥 직경으로 정규화, 체중 오차 영향 적고 중증 PH 감별에 검증됨)
+      { group: 'Pulmonary Hypertension', name: 'TAPSE:Ao', val: tapseAo, normal: 0.65, range: null, inv: true, lo: '우심실 수축기능 저하 (중증 PH 의심)', hi: '정상' },
 
-      // AS/PS: peak velocity로 진단 후 modified Bernoulli(ΔP=4V²)로 경증(≤50)/중등도(50~80)/중증(>80 mmHg) 등급화
-      { group: 'Valvular Stenosis', name: 'AV 속도 (대동맥협착)', val: v(dogInput.AV_vel), normal: null, range: [2.0, 4.47], inv: false, lo: '정상', mid: 'AS 의심 (경도~중등도)', hi: '중증 AS 의심', normalLabel: '< 2.0' },
-      { group: 'Valvular Stenosis', name: 'PV 속도 (폐동맥협착)', val: v(dogInput.PA_vel), normal: null, range: [2.0, 4.47], inv: false, lo: '정상', mid: 'PS 의심 (경도~중등도)', hi: '중증 PS 의심', normalLabel: '< 2.0' },
+      // AS: 정상<2.0, 경계 2.0~2.5, 경증 2.5~3.5, 중등도 3.5~4.5, 중증 >4.5 m/s (Bonagura/Crofton 등 SAS grading)
+      { group: 'Valvular Stenosis', name: 'AV 속도 (대동맥협착)', val: v(dogInput.AV_vel), normal: null, range: [2.0, 4.5], splits: [2.5, 3.5], midLabels: ['AS 의심 (경계/애매)', 'AS 의심 (경증)', 'AS 의심 (중등도)'], midColors: ['#f39c12', '#e67e22', '#d35400'], inv: false, lo: '정상', hi: '중증 AS 의심', normalLabel: '< 2.0' },
+      // PS: 정상<1.5, 경증 1.5~3.0, 중등도 3.0~4.0, 중증 >4.0 m/s (Bussadori 등 PS grading, SAS와 별도 기준)
+      { group: 'Valvular Stenosis', name: 'PV 속도 (폐동맥협착)', val: v(dogInput.PA_vel), normal: null, range: [1.5, 4.0], splits: [3.0], midLabels: ['PS 의심 (경증)', 'PS 의심 (중등도)'], midColors: ['#e67e22', '#d35400'], inv: false, lo: '정상', hi: '중증 PS 의심', normalLabel: '< 1.5' },
     ];
 
     setResult({

@@ -116,6 +116,7 @@ const EchoForm: React.FC<EchoFormProps> = ({
 
             <div className="cat-title">RPSAAO</div>
             <div className="vertical-form">
+              <div className="pf-horizontal"><label>Ao 직경 (cm)</label><input type="number" id="dog_Ao" value={dogInput.Ao} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>LA/Ao ratio</label><input type="number" id="dog_LA_Ao" value={dogInput.LA_Ao} onChange={handleDogChange} step="any" /></div>
             </div>
 

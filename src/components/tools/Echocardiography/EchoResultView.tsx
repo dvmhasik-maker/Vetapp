@@ -52,11 +52,15 @@ const EchoResultView: React.FC<EchoResultViewProps> = ({ result, resultRef }) =>
                     return val.toString();
                   };
 
+                  // 단일 기준치(normal) 항목은 lo/hi 중 '정상' 쪽을 보고 방향(< 또는 >)을 자동으로 붙여
+                  // range 항목의 "< X" / "> X" 표기와 형식을 통일한다 (항목 추가 시에도 자동 적용됨).
                   const normalDisp = it.normalLabel
                     ? it.normalLabel
                     : it.range
                     ? `${fmtVal(it.range[0])} ~ ${fmtVal(it.range[1])}`
-                    : (it.normal !== null ? fmt(it.normal) : '-');
+                    : it.normal !== null
+                    ? (it.lo.startsWith('정상') ? `< ${fmt(it.normal)}` : it.hi.startsWith('정상') ? `> ${fmt(it.normal)}` : fmt(it.normal))
+                    : '-';
 
                   let color = '#64748b', txt = '-';
 
@@ -65,24 +69,34 @@ const EchoResultView: React.FC<EchoResultViewProps> = ({ result, resultRef }) =>
                     if (it.range) {
                       if (n < it.range[0]) txt = it.lo;
                       else if (n > it.range[1]) txt = it.hi;
-                      else txt = it.mid ?? '정상';
+                      else if (it.midLabels && it.midLabels.length) {
+                        const splits = it.splits ?? [];
+                        let idx = splits.findIndex(s => n <= s);
+                        if (idx === -1) idx = splits.length;
+                        txt = it.midLabels[idx] ?? '정상';
+                      } else txt = it.mid ?? '정상';
                     } else if (it.normal !== null) {
                       if (n < it.normal) txt = it.lo;
                       else if (n > it.normal) txt = it.hi;
                       else txt = '정상';
                     }
 
-                    // 2. 색상 결정 (텍스트가 '정상'이면 항상 초록색)
-                    if (txt === '정상') {
-                      color = '#27ae60'; // 정상: 초록색 (통일)
+                    // 2. 색상 결정: 숫자가 낮은지/높은지가 아니라 중증도로 결정 (초록=정상 → 호박/주황=경증~중등도 → 빨강=중증).
+                    // '정상'으로 시작하는 라벨은 항상 초록 (예: '정상 이상', '정상 (배제 가능)'도 포함).
+                    if (txt.startsWith('정상')) {
+                      color = '#27ae60';
                     } else if (txt !== '-') {
-                      // 비정상일 때: 측정값이 기준보다 낮으면 파란색, 높으면 빨간색, 중간(mid) 단계는 주황색
                       if (it.range) {
-                        if (n < it.range[0]) color = '#2980b9';
-                        else if (n > it.range[1]) color = '#c0392b';
-                        else color = '#e67e22';
+                        if (n < it.range[0]) color = it.loColor ?? '#c0392b';
+                        else if (n > it.range[1]) color = it.hiColor ?? '#c0392b';
+                        else if (it.midColors && it.midColors.length) {
+                          const splits = it.splits ?? [];
+                          let idx = splits.findIndex(s => n <= s);
+                          if (idx === -1) idx = splits.length;
+                          color = it.midColors[idx] ?? '#e67e22';
+                        } else color = '#e67e22';
                       } else if (it.normal !== null) {
-                        color = (n < it.normal) ? '#2980b9' : '#c0392b';
+                        color = '#c0392b'; // 단일 기준치 항목은 비정상 방향(저하든 증가든)과 무관하게 빨강으로 통일
                       }
                     }
                   }

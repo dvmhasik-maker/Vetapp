@@ -15,6 +15,7 @@ export interface DogInput {
   FS: string;
   EPSS: string;
   LA_Ao: string;
+  Ao: string;
   MPA_Ao: string;
   RPAD: string;
   TAPSE: string;
@@ -88,6 +89,15 @@ export interface EchoResultItem {
   hi: string;
   mid?: string;
   normalLabel?: string;
+  // 추가 경계값으로 range 내부를 여러 구간(예: 경계/경증/중등도)으로 세분화할 때 사용.
+  // splits는 range[0]~range[1] 사이 오름차순 경계값, midLabels/midColors 길이는 splits.length + 1.
+  splits?: number[];
+  midLabels?: string[];
+  midColors?: string[];
+  // range의 lo/hi 양쪽이 모두 비정상이지만 중증도가 다른 양방향 항목(예: 이완기능부전 stage1 vs stage3)에서
+  // 어느 쪽이 더 경미한지 명시할 때 사용. 지정 없으면 기본값(중증=빨강)이 적용됨.
+  loColor?: string;
+  hiColor?: string;
 }
 
 export interface CatDiagnosis {
