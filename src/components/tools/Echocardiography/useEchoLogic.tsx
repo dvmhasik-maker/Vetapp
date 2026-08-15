@@ -84,8 +84,10 @@ export const useEchoLogic = () => {
       
       { group: 'Myocardial Failure', name: 'LVIDd', val: v(dogInput.LVIDd), normal: normLVIDd, range: null, inv: false, lo: '정상', hi: 'Preload 증가 / 수축능력 저하' },
       { group: 'Myocardial Failure', name: 'LVIDs', val: v(dogInput.LVIDs), normal: normLVIDs, range: null, inv: false, lo: '정상', hi: 'Afterload 증가 & 수축능력 저하' },
-      { group: 'Myocardial Failure', name: 'FS (%)', val: v(dogInput.FS), normal: 25, range: null, inv: true, lo: '수축능력 저하 (FS 감소)', hi: '정상' },
-      { group: 'Myocardial Failure', name: 'EPSS', val: v(dogInput.EPSS), normal: 0.65, range: null, inv: false, lo: '정상', hi: '수축능력 저하 (EPSS 증가)' },
+      // FS 정상 25~45%, <15% 중증 저하, 15~25% 경도~중등도 저하, >45% 과역동성(용적과부하 등에서 심근기능저하를 가릴 수 있음)
+      { group: 'Myocardial Failure', name: 'FS (%)', val: v(dogInput.FS), normal: null, range: [15, 45], splits: [25], midLabels: ['경도~중등도 저하 (FS 감소)', '정상'], inv: true, lo: '중증 저하 (FS 감소)', hi: '과역동성 (Hyperdynamic)', hiColor: '#e67e22', normalLabel: '25 ~ 45' },
+      // EPSS 정상 상한 0.6cm(6mm) — 0.65cm(6.5mm)는 도베르만 DCM 특이적 컷오프였음, 범용 기준은 0.6cm이 더 통상적
+      { group: 'Myocardial Failure', name: 'EPSS', val: v(dogInput.EPSS), normal: 0.6, range: null, inv: false, lo: '정상', hi: '수축능력 저하 (EPSS 증가)' },
       { group: 'Myocardial Failure', name: 'LV PEP/ET', val: PEPET, normal: 0.41, range: null, inv: false, lo: '정상', hi: '수축능력 저하' },
       { group: 'Myocardial Failure', name: 'Tei : LV IMP', val: TEI, normal: 0.48, range: null, inv: false, lo: '정상', hi: '수축능력 저하' },
       { group: 'Myocardial Failure', name: 'dP/dt', val: dPdt, normal: 1200, range: null, inv: true, lo: '수축능력 저하', hi: '정상' },
