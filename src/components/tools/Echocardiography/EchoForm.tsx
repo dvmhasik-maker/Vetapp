@@ -123,10 +123,9 @@ const EchoForm: React.FC<EchoFormProps> = ({
             <div className="vertical-form">
               <div className="pf-horizontal"><label>MPA/Ao ratio</label><input type="number" id="dog_MPA_Ao" value={dogInput.MPA_Ao} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>RPAD index (%)</label><input type="number" id="dog_RPAD" value={dogInput.RPAD} onChange={handleDogChange} step="any" /></div>
-              <div className="pf-horizontal"><label>TAPSE (cm)</label><input type="number" id="dog_TAPSE" value={dogInput.TAPSE} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>PV 속도 (m/s)</label><input type="number" id="dog_PA_vel" value={dogInput.PA_vel} onChange={handleDogChange} step="any" /></div>
-              <div className="pf-horizontal"><label>PV AT (ms)</label><input type="number" id="dog_PV_AT" value={dogInput.PV_AT} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>PV ET (ms)</label><input type="number" id="dog_PV_ET" value={dogInput.PV_ET} onChange={handleDogChange} step="any" /></div>
+              <div className="pf-horizontal"><label>PV AT (ms)</label><input type="number" id="dog_PV_AT" value={dogInput.PV_AT} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>PR 속도 (m/s)</label><input type="number" id="dog_PR_vel" value={dogInput.PR_vel} onChange={handleDogChange} step="any" /></div>
             </div>
 
@@ -141,6 +140,7 @@ const EchoForm: React.FC<EchoFormProps> = ({
               <div className="pf-horizontal"><label>MR Vol (mL)</label><input type="number" id="dog_MR_Vol" value={dogInput.MR_Vol} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>MR V1-V3 (ms)</label><input type="number" id="dog_MR_V1V3" value={dogInput.MR_V1V3} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>TR 속도 (m/s)</label><input type="number" id="dog_TR_vel" value={dogInput.TR_vel} onChange={handleDogChange} step="any" /></div>
+              <div className="pf-horizontal"><label>TAPSE (cm)</label><input type="number" id="dog_TAPSE" value={dogInput.TAPSE} onChange={handleDogChange} step="any" /></div>
             </div>
 
             <div className="cat-title">LA5C</div>
