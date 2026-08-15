@@ -87,6 +87,7 @@ export interface EchoResultItem {
   lo: string;
   hi: string;
   mid?: string;
+  normalLabel?: string;
 }
 
 export interface CatDiagnosis {

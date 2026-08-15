@@ -52,7 +52,9 @@ const EchoResultView: React.FC<EchoResultViewProps> = ({ result, resultRef }) =>
                     return val.toString();
                   };
 
-                  const normalDisp = it.range
+                  const normalDisp = it.normalLabel
+                    ? it.normalLabel
+                    : it.range
                     ? `${fmtVal(it.range[0])} ~ ${fmtVal(it.range[1])}`
                     : (it.normal !== null ? fmt(it.normal) : '-');
 
