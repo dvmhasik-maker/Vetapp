@@ -59,7 +59,6 @@ export const useEchoLogic = () => {
     const TEI = (lvET > 0) ? (v(dogInput.MCO) - lvET) / lvET : 0;
     const mrV1V3 = v(dogInput.MR_V1V3);
     const dPdt = (mrV1V3 > 0) ? 32000 / mrV1V3 : 0;
-    const LVIDs3BSA = (weight > 0) ? Math.pow(v(dogInput.LVIDs), 3) / (Math.pow(weight, 0.666) * 10.1 / 100) : 0;
     const mvA = v(dogInput.MV_A);
     const EA = (mvA > 0) ? mvE / mvA : 0;
     const mvEp = v(dogInput.MV_Eprime);
@@ -73,7 +72,7 @@ export const useEchoLogic = () => {
     const items: EchoResultItem[] = [
       { group: 'Volume Overload', name: 'LVIDDN', val: LVIDDN, normal: 1.7, range: null, inv: false, lo: '정상', hi: 'DMVD 의심' },
       { group: 'Volume Overload', name: 'MV E wave', val: mvE, normal: null, range: [0.7, 1.0], inv: false, lo: 'LV 충만기압 감소', hi: 'LV 충만기압 증가 (1.25이상→DMVD)' },
-      { group: 'Volume Overload', name: 'MR Fraction(PISA)', val: mrFrac, normal: 33, range: null, inv: false, lo: '정상', hi: 'MR 존재' },
+      { group: 'Volume Overload', name: 'MR Fraction(PISA)', val: mrFrac, normal: null, range: [5, 33], inv: false, lo: '정상', mid: '경미한 MR', hi: 'MR 존재' },
       { group: 'Volume Overload', name: 'E/IVRT ratio', val: EIVRT, normal: 1.25, range: null, inv: false, lo: '정상', hi: 'LV 충만기압 증가 (2.5이상→DMVD)' },
       { group: 'Volume Overload', name: 'LA/Ao ratio', val: v(dogInput.LA_Ao), normal: 1.6, range: null, inv: false, lo: '정상', hi: 'LA 비대' },
       
@@ -86,16 +85,16 @@ export const useEchoLogic = () => {
       { group: 'Myocardial Failure', name: 'SV', val: SV, normal: normSV, range: null, inv: true, lo: '심박출량 저하', hi: '정상 이상' },
       { group: 'Myocardial Failure', name: 'CO', val: CO, normal: normCO, range: null, inv: true, lo: '심박출량 저하', hi: '정상 이상' },
       
-      { group: 'Diastolic Failure', name: 'LVIDs3/BSA', val: LVIDs3BSA, normal: 30, range: null, inv: false, lo: '정상', hi: '수축능력 저하' },
       { group: 'Diastolic Failure', name: 'MV E/A ratio', val: EA, normal: null, range: [1.0, 2.0], inv: false, lo: '이완기능부전 stage 1', hi: '이완기능부전 stage 3' },
       { group: 'Diastolic Failure', name: 'DTE', val: v(dogInput.DTE), normal: null, range: [60, 100], inv: false, lo: '이완기능부전 stage 3', hi: '이완기능부전 stage 1' },
       { group: 'Diastolic Failure', name: "MV E/E' ratio", val: EEp, normal: 12.0, range: null, inv: false, lo: '정상', hi: '이완기능부전 stage 1b 이상' },
       { group: 'Diastolic Failure', name: 'IVRT', val: ivrt, normal: null, range: [41, 65], inv: false, lo: '이완기능부전 stage 3', hi: '이완기능부전 stage 1' },
       
       { group: 'Pulmonary Hypertension', name: 'MPA/Ao ratio', val: v(dogInput.MPA_Ao), normal: 1.15, range: null, inv: false, lo: '정상', hi: 'PAH 의심' },
+      // RPAD index 35%: 연구별 편차 있음 (21~38% 범위 보고, 예: Visser 2016 <29.5%가 TRPG>50mmHg 예측) — 현재값은 해당 범위 내
       { group: 'Pulmonary Hypertension', name: 'RPAD index', val: v(dogInput.RPAD), normal: 35, range: null, inv: true, lo: 'PAH 의심', hi: '정상' },
       { group: 'Pulmonary Hypertension', name: 'TR Fraction(area)', val: v(dogInput.TR_Frac), normal: 5, range: null, inv: false, lo: '정상', hi: 'TR 존재' },
-      { group: 'Pulmonary Hypertension', name: 'TR 속도', val: v(dogInput.TR_vel), normal: 2.5, range: null, inv: false, lo: '정상', hi: 'PAH (수축기)' },
+      { group: 'Pulmonary Hypertension', name: 'TR 속도', val: v(dogInput.TR_vel), normal: null, range: [2.8, 3.4], inv: false, lo: '정상', mid: 'PAH 중등도 가능성 (추가 소견 확인)', hi: 'PAH 고확률 (수축기)' },
       { group: 'Pulmonary Hypertension', name: 'PR 속도', val: v(dogInput.PR_vel), normal: 2.0, range: null, inv: false, lo: '정상', hi: 'PAH (이완기) / PDA' },
     ];
 
@@ -112,7 +111,7 @@ export const useEchoLogic = () => {
     const catThresh: any = {
       D2_IVSd: { max: 6 }, D2_LVPWd: { max: 6 }, D2_LVwall: { max: 6 },
       M_IVSd: { max: 0.6 }, M_LVPWd: { max: 0.6 }, M_LVIDd: { max: 1.8 }, M_LVIDs: { max: 0.9 },
-      FS: { min: 45 }, EPSS: { max: 0.04 }, LA_len: { max: 1.6 }, LA_Ao: { max: 1.5 }, M_LAFS: { min: 24 },
+      FS: { min: 45 }, EPSS: { max: 0.04 }, LA_len: { max: 1.6 }, LA_Ao: { max: 1.8 }, M_LAFS: { min: 24 },
       PA_vel: { max: 1.1 }, PR_vel: { max: 2.0 }, MV_E: { max: 0.8 }, MV_A: { max: 0.6 },
       MV_EA: { min: 1.0, max: 2.0 }, MV_Eprime: { min: 7.2 }, MV_Aprime: { min: 2.9 },
       MV_Sprime: { min: 4.4 }, MV_EAp: { min: 1.0 }, MV_EEp: { max: 8.07 },
@@ -174,12 +173,7 @@ export const useEchoLogic = () => {
 
       const lvidSHigh = v(currentValues.M_LVIDs) > catThresh.M_LVIDs.max;
       const epssHigh = v(currentValues.EPSS) > catThresh.EPSS.max;
-      if (lvidSHigh && epssHigh) diagnosis = 'DCM';
-
-      const trHigh = v(currentValues.TR_vel) > catThresh.TR_vel.max;
-      const fsLow = v(currentValues.FS) < catThresh.FS.min;
-      if (trHigh && fsLow) diagnosis = 'ARVC';
-      else if (trHigh) diagnosis = 'ARVC 의심';
+      if (lvidSHigh && epssHigh) diagnosis = 'DCM 의심 (burned-out HCM/RCM 감별 필요)';
     }
 
     const samPresent = catInput.SAM === '있음';
@@ -206,7 +200,7 @@ export const useEchoLogic = () => {
         case 'LA_len':
           return val >= 1.6 ? ['b2', 'c'] : ['b1'];
         case 'LA_Ao':
-          return val >= 1.5 ? ['b2', 'c'] : ['b1'];
+          return val >= 1.8 ? ['b2', 'c'] : ['b1'];
         case 'M_LAFS':
           return val <= 24 ? ['b2', 'c'] : ['b1'];
         case 'MV_EA':
@@ -227,7 +221,7 @@ export const useEchoLogic = () => {
       { id: 'M_IVSd', label: 'M: IVSd', b1: '≥ 0.6', b2: '≥ 0.7', c: '≥ 0.7' },
       { id: 'M_LVPWd', label: 'M: LVPWd', b1: '≥ 0.6', b2: '≥ 0.7', c: '≥ 0.7' },
       { id: 'LA_len', label: 'LA 길이', b1: '< 1.6', b2: '≥ 1.6', c: '≥ 1.6' },
-      { id: 'LA_Ao', label: 'LA/Ao ratio', b1: '< 1.5', b2: '≥ 1.5', c: '≥ 1.5' },
+      { id: 'LA_Ao', label: 'LA/Ao ratio', b1: '< 1.8', b2: '≥ 1.8', c: '≥ 1.8' },
       { id: 'M_LAFS', label: 'M: LAFS', b1: '> 24', b2: '≤ 24', c: '≤ 24' },
       { id: 'MV_EA', label: 'MV E/A ratio', b1: '< 1', b2: '≥ 1', c: '≥ 1' },
       { id: 'MV_Eprime', label: "MV E' wave", b1: '< 7.2', b2: '< 7.2', c: '< 7.2' },

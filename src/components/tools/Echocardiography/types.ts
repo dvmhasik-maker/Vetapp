@@ -91,6 +91,7 @@ export interface EchoResultItem {
   inv: boolean;
   lo: string;
   hi: string;
+  mid?: string;
 }
 
 export interface CatDiagnosis {

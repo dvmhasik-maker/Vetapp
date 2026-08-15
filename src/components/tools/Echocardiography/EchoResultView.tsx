@@ -62,7 +62,7 @@ const EchoResultView: React.FC<EchoResultViewProps> = ({ result, resultRef }) =>
                     if (it.range) {
                       if (n < it.range[0]) txt = it.lo;
                       else if (n > it.range[1]) txt = it.hi;
-                      else txt = '정상';
+                      else txt = it.mid ?? '정상';
                     } else if (it.normal !== null) {
                       if (n < it.normal) txt = it.lo;
                       else if (n > it.normal) txt = it.hi;
@@ -73,9 +73,11 @@ const EchoResultView: React.FC<EchoResultViewProps> = ({ result, resultRef }) =>
                     if (txt === '정상') {
                       color = '#27ae60'; // 정상: 초록색 (통일)
                     } else if (txt !== '-') {
-                      // 비정상일 때: 측정값이 기준보다 낮으면 파란색, 높으면 빨간색
+                      // 비정상일 때: 측정값이 기준보다 낮으면 파란색, 높으면 빨간색, 중간(mid) 단계는 주황색
                       if (it.range) {
-                        color = (n < it.range[0]) ? '#2980b9' : '#c0392b';
+                        if (n < it.range[0]) color = '#2980b9';
+                        else if (n > it.range[1]) color = '#c0392b';
+                        else color = '#e67e22';
                       } else if (it.normal !== null) {
                         color = (n < it.normal) ? '#2980b9' : '#c0392b';
                       }
