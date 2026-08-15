@@ -108,7 +108,7 @@ export const useEchoLogic = () => {
       { group: 'Pulmonary Hypertension', name: 'TAPSE index (BW 보정)', val: tapseIdx, normal: 3.23, range: null, inv: true, lo: '우심실 수축기능 저하 (PH 예후 불량)', hi: '정상' },
 
       // AS/PS: peak velocity로 진단 후 modified Bernoulli(ΔP=4V²)로 경증(≤50)/중등도(50~80)/중증(>80 mmHg) 등급화
-      { group: 'Valvular Stenosis', name: 'AV 속도 (대동맥협착)', val: v(dogInput.AV_vel), normal: null, range: [2.5, 4.47], inv: false, lo: '정상', mid: 'AS 의심 (경도~중등도)', hi: '중증 AS 의심' },
+      { group: 'Valvular Stenosis', name: 'AV 속도 (대동맥협착)', val: v(dogInput.AV_vel), normal: null, range: [2.0, 4.47], inv: false, lo: '정상', mid: 'AS 의심 (경도~중등도)', hi: '중증 AS 의심' },
       { group: 'Valvular Stenosis', name: 'PV 속도 (폐동맥협착)', val: v(dogInput.PA_vel), normal: null, range: [2.0, 4.47], inv: false, lo: '정상', mid: 'PS 의심 (경도~중등도)', hi: '중증 PS 의심' },
     ];
 
