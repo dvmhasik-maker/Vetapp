@@ -108,9 +108,7 @@ const EchoForm: React.FC<EchoFormProps> = ({
 
             <div className="cat-title">RPSALV</div>
             <div className="vertical-form">
-              <div className="pf-horizontal"><label>IVSd (cm)</label><input type="number" id="dog_IVSd" value={dogInput.IVSd} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>LVIDd (cm)</label><input type="number" id="dog_LVIDd" value={dogInput.LVIDd} onChange={handleDogChange} step="any" /></div>
-              <div className="pf-horizontal"><label>LVPWd (cm)</label><input type="number" id="dog_LVPWd" value={dogInput.LVPWd} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>LVIDs (cm)</label><input type="number" id="dog_LVIDs" value={dogInput.LVIDs} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>FS (%)</label><input type="number" id="dog_FS" value={dogInput.FS} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>EPSS (cm)</label><input type="number" id="dog_EPSS" value={dogInput.EPSS} onChange={handleDogChange} step="any" /></div>
@@ -118,7 +116,6 @@ const EchoForm: React.FC<EchoFormProps> = ({
 
             <div className="cat-title">RPSAAO</div>
             <div className="vertical-form">
-              <div className="pf-horizontal"><label>LA 길이 (cm)</label><input type="number" id="dog_LA_len" value={dogInput.LA_len} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>LA/Ao ratio</label><input type="number" id="dog_LA_Ao" value={dogInput.LA_Ao} onChange={handleDogChange} step="any" /></div>
             </div>
 
@@ -126,7 +123,10 @@ const EchoForm: React.FC<EchoFormProps> = ({
             <div className="vertical-form">
               <div className="pf-horizontal"><label>MPA/Ao ratio</label><input type="number" id="dog_MPA_Ao" value={dogInput.MPA_Ao} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>RPAD index (%)</label><input type="number" id="dog_RPAD" value={dogInput.RPAD} onChange={handleDogChange} step="any" /></div>
+              <div className="pf-horizontal"><label>TAPSE (cm)</label><input type="number" id="dog_TAPSE" value={dogInput.TAPSE} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>PV 속도 (m/s)</label><input type="number" id="dog_PA_vel" value={dogInput.PA_vel} onChange={handleDogChange} step="any" /></div>
+              <div className="pf-horizontal"><label>PV AT (ms)</label><input type="number" id="dog_PV_AT" value={dogInput.PV_AT} onChange={handleDogChange} step="any" /></div>
+              <div className="pf-horizontal"><label>PV ET (ms)</label><input type="number" id="dog_PV_ET" value={dogInput.PV_ET} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>PR 속도 (m/s)</label><input type="number" id="dog_PR_vel" value={dogInput.PR_vel} onChange={handleDogChange} step="any" /></div>
             </div>
 
@@ -137,19 +137,15 @@ const EchoForm: React.FC<EchoFormProps> = ({
               <div className="pf-horizontal"><label>MV A (m/s)</label><input type="number" id="dog_MV_A" value={dogInput.MV_A} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>MCO (ms)</label><input type="number" id="dog_MCO" value={dogInput.MCO} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>MV E' (cm/s)</label><input type="number" id="dog_MV_Eprime" value={dogInput.MV_Eprime} onChange={handleDogChange} step="any" /></div>
-              <div className="pf-horizontal"><label>MV A' (cm/s)</label><input type="number" id="dog_MV_Aprime" value={dogInput.MV_Aprime} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>MV S' (cm/s)</label><input type="number" id="dog_MV_Sprime" value={dogInput.MV_Sprime} onChange={handleDogChange} step="any" /></div>
-              <div className="pf-horizontal"><label>MR 속도 (m/s)</label><input type="number" id="dog_MR_vel" value={dogInput.MR_vel} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>MR Vol (mL)</label><input type="number" id="dog_MR_Vol" value={dogInput.MR_Vol} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>MR V1-V3 (ms)</label><input type="number" id="dog_MR_V1V3" value={dogInput.MR_V1V3} onChange={handleDogChange} step="any" /></div>
-              <div className="pf-horizontal"><label>TR Fraction (%)</label><input type="number" id="dog_TR_Frac" value={dogInput.TR_Frac} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>TR 속도 (m/s)</label><input type="number" id="dog_TR_vel" value={dogInput.TR_vel} onChange={handleDogChange} step="any" /></div>
             </div>
 
             <div className="cat-title">LA5C</div>
             <div className="vertical-form">
               <div className="pf-horizontal"><label>LVOT VTI (cm)</label><input type="number" id="dog_LVOT_VTI" value={dogInput.LVOT_VTI} onChange={handleDogChange} step="any" /></div>
-              <div className="pf-horizontal"><label>AV VTI (cm)</label><input type="number" id="dog_AV_VTI" value={dogInput.AV_VTI} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>AV 속도 (m/s)</label><input type="number" id="dog_AV_vel" value={dogInput.AV_vel} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>LV ET (ms)</label><input type="number" id="dog_LV_ET" value={dogInput.LV_ET} onChange={handleDogChange} step="any" /></div>
               <div className="pf-horizontal"><label>LV PEP (ms)</label><input type="number" id="dog_LV_PEP" value={dogInput.LV_PEP} onChange={handleDogChange} step="any" /></div>
@@ -274,7 +270,6 @@ const EchoForm: React.FC<EchoFormProps> = ({
               <div className="pf-horizontal"><label>PR 속도 (m/s)</label><input type="number" id="cat_PR_vel" value={catInput.PR_vel} onChange={handleCatChange} step="any" /></div>
               <div className="pf-horizontal"><label>MV E (m/s)</label><input type="number" id="cat_MV_E" value={catInput.MV_E} onChange={handleCatChange} step="any" /></div>
               <div className="pf-horizontal"><label>MV A (m/s)</label><input type="number" id="cat_MV_A" value={catInput.MV_A} onChange={handleCatChange} step="any" /></div>
-              <div className="pf-horizontal"><label>MCO (ms)</label><input type="number" id="cat_MCO" value={catInput.MCO} onChange={handleCatChange} step="any" /></div>
               <div className="pf-horizontal"><label>MV E' (cm/s)</label><input type="number" id="cat_MV_Eprime" value={catInput.MV_Eprime} onChange={handleCatChange} step="any" /></div>
               <div className="pf-horizontal"><label>MV A' (cm/s)</label><input type="number" id="cat_MV_Aprime" value={catInput.MV_Aprime} onChange={handleCatChange} step="any" /></div>
               <div className="pf-horizontal"><label>MV S' (cm/s)</label><input type="number" id="cat_MV_Sprime" value={catInput.MV_Sprime} onChange={handleCatChange} step="any" /></div>

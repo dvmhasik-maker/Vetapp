@@ -11,10 +11,10 @@ const initialPatientInfo: PatientInfo = {
 };
 
 const initialDogInput: DogInput = {
-  weight: '', LVOT_len: '', IVSd: '', LVIDd: '', LVPWd: '', LVIDs: '', FS: '', EPSS: '',
-  LA_len: '', LA_Ao: '', MPA_Ao: '', RPAD: '', PA_vel: '', PR_vel: '', MV_E: '', DTE: '',
-  MV_A: '', MCO: '', MV_Eprime: '', MV_Aprime: '', MV_Sprime: '', MR_vel: '', MR_Vol: '',
-  MR_V1V3: '', TR_Frac: '', TR_vel: '', LVOT_VTI: '', AV_VTI: '', AV_vel: '', LV_ET: '',
+  weight: '', LVOT_len: '', LVIDd: '', LVIDs: '', FS: '', EPSS: '',
+  LA_Ao: '', MPA_Ao: '', RPAD: '', TAPSE: '', PA_vel: '', PV_AT: '', PV_ET: '', PR_vel: '', MV_E: '', DTE: '',
+  MV_A: '', MCO: '', MV_Eprime: '', MV_Sprime: '', MR_Vol: '',
+  MR_V1V3: '', TR_vel: '', LVOT_VTI: '', AV_vel: '', LV_ET: '',
   LV_PEP: '', HR: '', IVRT: ''
 };
 
@@ -22,7 +22,7 @@ const initialCatInput: CatInput = {
   weight: '', LVform: [], SEC: '', D2_IVSd: '', D2_LVPWd: '', LVOT_len: '', LVOT_turb: '',
   SAM: '', D2_LVwall: '', PM: '', M_IVSd: '', M_LVIDd: '', M_LVPWd: '', M_LVIDs: '',
   FS: '', EPSS: '', LA_len: '', LA_Ao: '', M_LAFS: '', PA_turb: '', PA_vel: '', PR_vel: '',
-  MV_E: '', MV_A: '', MCO: '', MV_Eprime: '', MV_Aprime: '', MV_Sprime: '', MR_vel: '',
+  MV_E: '', MV_A: '', MV_Eprime: '', MV_Aprime: '', MV_Sprime: '', MR_vel: '',
   MR_VTI: '', TR_vel: '', LVOT_VTI: '', HR: '', AV_vel: '', ET: '', PEP: ''
 };
 
@@ -63,6 +63,11 @@ export const useEchoLogic = () => {
     const EA = (mvA > 0) ? mvE / mvA : 0;
     const mvEp = v(dogInput.MV_Eprime);
     const EEp = (mvEp > 0) ? (mvE * 100) / mvEp : 0;
+    const tapse = v(dogInput.TAPSE);
+    const tapseIdx = (weight > 0 && tapse > 0) ? tapse / Math.pow(weight, 0.284) : 0;
+    const pvAT = v(dogInput.PV_AT);
+    const pvET = v(dogInput.PV_ET);
+    const atEtRatio = (pvET > 0) ? pvAT / pvET : 0;
 
     const normLVIDd = (weight > 0) ? 1.53 * Math.pow(weight, 0.294) : null;
     const normLVIDs = (weight > 0) ? 0.95 * Math.pow(weight, 0.315) : null;
@@ -78,6 +83,8 @@ export const useEchoLogic = () => {
       
       { group: 'Myocardial Failure', name: 'LVIDd', val: v(dogInput.LVIDd), normal: normLVIDd, range: null, inv: false, lo: '정상', hi: 'Preload 증가 / 수축능력 저하' },
       { group: 'Myocardial Failure', name: 'LVIDs', val: v(dogInput.LVIDs), normal: normLVIDs, range: null, inv: false, lo: '정상', hi: 'Afterload 증가 & 수축능력 저하' },
+      { group: 'Myocardial Failure', name: 'FS (%)', val: v(dogInput.FS), normal: 25, range: null, inv: true, lo: '수축능력 저하 (FS 감소)', hi: '정상' },
+      { group: 'Myocardial Failure', name: 'EPSS', val: v(dogInput.EPSS), normal: 0.65, range: null, inv: false, lo: '정상', hi: '수축능력 저하 (EPSS 증가)' },
       { group: 'Myocardial Failure', name: 'LV PEP/ET', val: PEPET, normal: 0.41, range: null, inv: false, lo: '정상', hi: '수축능력 저하' },
       { group: 'Myocardial Failure', name: 'Tei : LV IMP', val: TEI, normal: 0.48, range: null, inv: false, lo: '정상', hi: '수축능력 저하' },
       { group: 'Myocardial Failure', name: 'dP/dt', val: dPdt, normal: 1200, range: null, inv: true, lo: '수축능력 저하', hi: '정상' },
@@ -93,9 +100,16 @@ export const useEchoLogic = () => {
       { group: 'Pulmonary Hypertension', name: 'MPA/Ao ratio', val: v(dogInput.MPA_Ao), normal: 1.15, range: null, inv: false, lo: '정상', hi: 'PAH 의심' },
       // RPAD index 35%: 연구별 편차 있음 (21~38% 범위 보고, 예: Visser 2016 <29.5%가 TRPG>50mmHg 예측) — 현재값은 해당 범위 내
       { group: 'Pulmonary Hypertension', name: 'RPAD index', val: v(dogInput.RPAD), normal: 35, range: null, inv: true, lo: 'PAH 의심', hi: '정상' },
-      { group: 'Pulmonary Hypertension', name: 'TR Fraction(area)', val: v(dogInput.TR_Frac), normal: 5, range: null, inv: false, lo: '정상', hi: 'TR 존재' },
+      // AT/ET ratio: 정상견 median≈0.43, PH견 median≈0.30 (Serres/RLD 코호트 등); ≤0.25는 PH 특이도 100%, >0.42는 PH 배제 가능성 높음
+      { group: 'Pulmonary Hypertension', name: 'PV AT/ET ratio', val: atEtRatio, normal: null, range: [0.25, 0.42], inv: true, lo: 'PAH 강력히 의심 (특이도 높음)', mid: 'PAH 가능성 있음 (추가 소견 확인)', hi: '정상 (PAH 배제 가능성 높음)' },
       { group: 'Pulmonary Hypertension', name: 'TR 속도', val: v(dogInput.TR_vel), normal: null, range: [2.8, 3.4], inv: false, lo: '정상', mid: 'PAH 중등도 가능성 (추가 소견 확인)', hi: 'PAH 고확률 (수축기)' },
       { group: 'Pulmonary Hypertension', name: 'PR 속도', val: v(dogInput.PR_vel), normal: 2.0, range: null, inv: false, lo: '정상', hi: 'PAH (이완기) / PDA' },
+      // TAPSE/BW^0.284 < 3.23: PH견에서 생존기간 단축과 독립적 연관 (Visser 등)
+      { group: 'Pulmonary Hypertension', name: 'TAPSE index (BW 보정)', val: tapseIdx, normal: 3.23, range: null, inv: true, lo: '우심실 수축기능 저하 (PH 예후 불량)', hi: '정상' },
+
+      // AS/PS: peak velocity로 진단 후 modified Bernoulli(ΔP=4V²)로 경증(≤50)/중등도(50~80)/중증(>80 mmHg) 등급화
+      { group: 'Valvular Stenosis', name: 'AV 속도 (대동맥협착)', val: v(dogInput.AV_vel), normal: null, range: [2.5, 4.47], inv: false, lo: '정상', mid: 'AS 의심 (경도~중등도)', hi: '중증 AS 의심' },
+      { group: 'Valvular Stenosis', name: 'PV 속도 (폐동맥협착)', val: v(dogInput.PA_vel), normal: null, range: [2.0, 4.47], inv: false, lo: '정상', mid: 'PS 의심 (경도~중등도)', hi: '중증 PS 의심' },
     ];
 
     setResult({
@@ -111,7 +125,7 @@ export const useEchoLogic = () => {
     const catThresh: any = {
       D2_IVSd: { max: 6 }, D2_LVPWd: { max: 6 }, D2_LVwall: { max: 6 },
       M_IVSd: { max: 0.6 }, M_LVPWd: { max: 0.6 }, M_LVIDd: { max: 1.8 }, M_LVIDs: { max: 0.9 },
-      FS: { min: 45 }, EPSS: { max: 0.04 }, LA_len: { max: 1.6 }, LA_Ao: { max: 1.8 }, M_LAFS: { min: 24 },
+      FS: { min: 45 }, EPSS: { max: 0.4 }, LA_len: { max: 1.6 }, LA_Ao: { max: 1.8 }, M_LAFS: { min: 24 },
       PA_vel: { max: 1.1 }, PR_vel: { max: 2.0 }, MV_E: { max: 0.8 }, MV_A: { max: 0.6 },
       MV_EA: { min: 1.0, max: 2.0 }, MV_Eprime: { min: 7.2 }, MV_Aprime: { min: 2.9 },
       MV_Sprime: { min: 4.4 }, MV_EAp: { min: 1.0 }, MV_EEp: { max: 8.07 },
@@ -182,7 +196,8 @@ export const useEchoLogic = () => {
 
     let dxLabel = diagnosis;
     if (diagnosis === 'HCM') {
-      const formPrefix = catInput.LVform.length ? catInput.LVform.join(', ') + ' ' : '';
+      const pmNote = (catInput.PM && catInput.PM !== 'Normal') ? `PM ${catInput.PM} ` : '';
+      const formPrefix = (catInput.LVform.length ? catInput.LVform.join(', ') + ' ' : '') + pmNote;
       dxLabel = formPrefix + (isHOCM ? 'HOCM' : 'HCM');
     }
 
@@ -273,6 +288,7 @@ export const useEchoLogic = () => {
         thrombosisRisk: catInput.SEC === '있음' ? '⚠️ 혈전 발생 가능성 높음' : catInput.SEC === '없음' ? '✅ 혈전 발생 가능성 낮음' : '',
         lvotTurbulence: catInput.LVOT_turb === '있음' ? '⚠️ LVOT Turbulence 있음' : '',
         samPresent: catInput.SAM === '있음' ? '⚠️ SAM (LVOT 폐쇄) 있음' : '',
+        pvTurbulence: catInput.PA_turb === '있음' ? '⚠️ PV Turbulence 있음' : '',
         finalStage
       },
       catStageRows: stageRows,

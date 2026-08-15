@@ -10,32 +10,28 @@ export interface PatientInfo {
 export interface DogInput {
   weight: string;
   LVOT_len: string;
-  IVSd: string;
   LVIDd: string;
-  LVPWd: string;
   LVIDs: string;
   FS: string;
   EPSS: string;
-  LA_len: string;
   LA_Ao: string;
   MPA_Ao: string;
   RPAD: string;
+  TAPSE: string;
   PA_vel: string;
+  PV_AT: string;
+  PV_ET: string;
   PR_vel: string;
   MV_E: string;
   DTE: string;
   MV_A: string;
   MCO: string;
   MV_Eprime: string;
-  MV_Aprime: string;
   MV_Sprime: string;
-  MR_vel: string;
   MR_Vol: string;
   MR_V1V3: string;
-  TR_Frac: string;
   TR_vel: string;
   LVOT_VTI: string;
-  AV_VTI: string;
   AV_vel: string;
   LV_ET: string;
   LV_PEP: string;
@@ -68,7 +64,6 @@ export interface CatInput {
   PR_vel: string;
   MV_E: string;
   MV_A: string;
-  MCO: string;
   MV_Eprime: string;
   MV_Aprime: string;
   MV_Sprime: string;
@@ -99,6 +94,7 @@ export interface CatDiagnosis {
   thrombosisRisk?: string;
   lvotTurbulence?: string;
   samPresent?: string;
+  pvTurbulence?: string;
   finalStage?: string;
 }
 

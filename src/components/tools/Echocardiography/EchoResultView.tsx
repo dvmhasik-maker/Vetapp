@@ -15,12 +15,13 @@ const EchoResultView: React.FC<EchoResultViewProps> = ({ result, resultRef }) =>
   };
 
   const renderDogResults = () => {
-    const groups = ['Volume Overload', 'Myocardial Failure', 'Diastolic Failure', 'Pulmonary Hypertension'];
+    const groups = ['Volume Overload', 'Myocardial Failure', 'Diastolic Failure', 'Pulmonary Hypertension', 'Valvular Stenosis'];
     const groupStyles: any = {
       'Volume Overload': { color: '#eff6ff', border: '#3b82f6', title: 'Volume Overload' },
       'Myocardial Failure': { color: '#fff1f2', border: '#f43f5e', title: 'Myocardial Failure' },
       'Diastolic Failure': { color: '#f5f3ff', border: '#8b5cf6', title: 'Diastolic Failure' },
-      'Pulmonary Hypertension': { color: '#f0fdf4', border: '#22c55e', title: 'Pulmonary Hypertension' }
+      'Pulmonary Hypertension': { color: '#f0fdf4', border: '#22c55e', title: 'Pulmonary Hypertension' },
+      'Valvular Stenosis': { color: '#fffbeb', border: '#f59e0b', title: 'Valvular Stenosis' }
     };
 
     return groups.map(g => {
@@ -147,6 +148,7 @@ const EchoResultView: React.FC<EchoResultViewProps> = ({ result, resultRef }) =>
           {dx.thrombosisRisk && <div className="dx-sub-echo">{dx.thrombosisRisk}</div>}
           {dx.lvotTurbulence && <div className="dx-sub-echo danger">{dx.lvotTurbulence}</div>}
           {dx.samPresent && <div className="dx-sub-echo danger">{dx.samPresent}</div>}
+          {dx.pvTurbulence && <div className="dx-sub-echo danger">{dx.pvTurbulence}</div>}
         </div>
 
         <div className="result-group-echo" style={{ background: '#eff6ff' }}>
