@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { RotateCcw, Undo2, Upload, Calculator, SkipForward, LockKeyhole } from 'lucide-react';
 import { Step } from './types';
 
@@ -40,15 +40,33 @@ const MeasurementPanel: React.FC<MeasurementPanelProps> = ({
   onUpload, onUndo, onReset, onSkipVLAS, onCalculate, onConfirmPosition
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   if (!imageSrc) {
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDragging(false);
+      const file = e.dataTransfer.files?.[0];
+      if (file && file.type.startsWith('image/')) onUpload(file);
+    };
+
     return (
-      <div className="tool-card-container hsx-upload">
+      <div
+        className={`tool-card-container hsx-upload ${isDragging ? 'dragging' : ''}`}
+        onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+        onDragLeave={() => setIsDragging(false)}
+        onDrop={handleDrop}
+      >
         <div className="tool-card-title">방사선 사진 업로드</div>
-        <p className="hsx-upload-desc">강아지·고양이의 흉부 외측상(lateral) 방사선 사진(JPG/PNG)을 업로드하세요.</p>
-        <button type="button" className="btn-primary-action" onClick={() => fileInputRef.current?.click()}>
-          <Upload size={18} /> 이미지 선택
-        </button>
+        <div className="hsx-upload-dropzone" onClick={() => fileInputRef.current?.click()}>
+          <Upload size={28} className="hsx-upload-icon" />
+          <p className="hsx-upload-desc">
+            흉부 외측상 방사선 사진(JPG/PNG)을 드래그하거나 클릭해서 업로드하세요.
+          </p>
+          <button type="button" className="btn-primary-action" onClick={e => { e.stopPropagation(); fileInputRef.current?.click(); }}>
+            <Upload size={18} /> 이미지 선택
+          </button>
+        </div>
         <input
           ref={fileInputRef}
           type="file"
@@ -61,7 +79,24 @@ const MeasurementPanel: React.FC<MeasurementPanelProps> = ({
           }}
         />
         <style>{`
-          .hsx-upload-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.6; }
+          .hsx-upload-dropzone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+            padding: 28px 16px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+          }
+          .hsx-upload-dropzone:hover { border-color: #94a3b8; background: #f1f5f9; }
+          .hsx-upload.dragging .hsx-upload-dropzone { border-color: #3498db; background: #eff6ff; }
+          .hsx-upload-icon { color: #94a3b8; }
+          .hsx-upload.dragging .hsx-upload-icon { color: #3498db; }
+          .hsx-upload-desc { font-size: 0.9rem; color: var(--text-muted); margin: 0; line-height: 1.6; }
         `}</style>
       </div>
     );
