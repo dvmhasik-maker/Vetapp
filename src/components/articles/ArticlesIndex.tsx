@@ -103,6 +103,33 @@ const articles = [
     bg: '#f7fee7',
     border: '#d9f99d',
   },
+  {
+    path: '/articles/senior-wellness',
+    title: '노령동물 건강검진 프로토콜 완전 가이드',
+    description: '시니어 검진 주기, 최소 데이터베이스(MDB) 구성, 견종·묘종별 우선 스크리닝 항목',
+    tag: '예방의학',
+    color: '#6366f1',
+    bg: '#eef2ff',
+    border: '#c7d2fe',
+  },
+  {
+    path: '/articles/pre-anesthetic',
+    title: '마취 전 검사와 위험도 평가 가이드',
+    description: 'ASA 신체상태 분류, 마취 전 최소 검사 항목, 금식 기준과 고위험 환자 프로토콜 조정',
+    tag: '마취',
+    color: '#7c3aed',
+    bg: '#f5f3ff',
+    border: '#ddd6fe',
+  },
+  {
+    path: '/articles/pain-management',
+    title: '동물병원 통증 평가와 다중모드 진통 관리 가이드',
+    description: '통증 평가 스케일 활용법, 급성·만성 통증 감별, 다중모드 진통 설계 원칙',
+    tag: '통증관리',
+    color: '#e11d48',
+    bg: '#fff1f2',
+    border: '#fecdd3',
+  },
 ];
 
 const tools = [

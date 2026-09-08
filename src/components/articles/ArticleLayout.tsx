@@ -6,8 +6,8 @@ import { useSEO } from '../common/useSEO';
 interface ArticleLayoutProps {
   title: string;
   description: string;
-  toolPath: string;
-  toolName: string;
+  toolPath?: string;
+  toolName?: string;
   children: React.ReactNode;
 }
 
@@ -38,12 +38,14 @@ const ArticleLayout: React.FC<ArticleLayoutProps> = ({ title, description, toolP
         </div>
       </div>
 
-      <div className="article-tool-cta">
-        <p>이 가이드와 연관된 임상 계산 도구를 사용해 보세요.</p>
-        <Link to={toolPath} className="cta-btn">
-          <ExternalLink size={16} /> {toolName} 도구 바로가기
-        </Link>
-      </div>
+      {toolPath && toolName && (
+        <div className="article-tool-cta">
+          <p>이 가이드와 연관된 임상 계산 도구를 사용해 보세요.</p>
+          <Link to={toolPath} className="cta-btn">
+            <ExternalLink size={16} /> {toolName} 도구 바로가기
+          </Link>
+        </div>
+      )}
 
       <style>{`
         /* ── 히어로 ── */

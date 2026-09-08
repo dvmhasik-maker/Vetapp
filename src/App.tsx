@@ -33,6 +33,9 @@ import PoisoningArticle from './components/articles/PoisoningArticle';
 import FoodAmountArticle from './components/articles/FoodAmountArticle';
 import HeartSizeXrayArticle from './components/articles/HeartSizeXrayArticle';
 import CatObesityArticle from './components/articles/CatObesityArticle';
+import SeniorWellnessArticle from './components/articles/SeniorWellnessArticle';
+import PreAnestheticArticle from './components/articles/PreAnestheticArticle';
+import PainManagementArticle from './components/articles/PainManagementArticle';
 
 function App() {
   return (
@@ -72,6 +75,9 @@ function App() {
         <Route path="/articles/food-amount" element={<FoodAmountArticle />} />
         <Route path="/articles/heart-size-xray" element={<HeartSizeXrayArticle />} />
         <Route path="/articles/cat-obesity" element={<CatObesityArticle />} />
+        <Route path="/articles/senior-wellness" element={<SeniorWellnessArticle />} />
+        <Route path="/articles/pre-anesthetic" element={<PreAnestheticArticle />} />
+        <Route path="/articles/pain-management" element={<PainManagementArticle />} />
       </Routes>
     </Router>
   );

@@ -30,7 +30,10 @@ const routes = [
   '/articles/poisoning',
   '/articles/food-amount',
   '/articles/heart-size-xray',
-  '/articles/cat-obesity'
+  '/articles/cat-obesity',
+  '/articles/senior-wellness',
+  '/articles/pre-anesthetic',
+  '/articles/pain-management'
 ]
 
 export default defineConfig(({ command }) => ({
