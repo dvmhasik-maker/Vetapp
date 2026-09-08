@@ -68,7 +68,7 @@ const Atopy: React.FC = () => {
 
         <AdSlot className="mt-8" />
 
-        <ToolGuideSection>
+        <ToolGuideSection reviewedDate="2026-09-08">
           <AtopyGuide />
         </ToolGuideSection>
       </div>

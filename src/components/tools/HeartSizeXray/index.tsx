@@ -6,6 +6,7 @@ import ImageCanvas, { ImageCanvasHandle } from './ImageCanvas';
 import MeasurementPanel from './MeasurementPanel';
 import ResultView from './ResultView';
 import { GuideIntro, GuideSteps, GuideNote, GuideStyles } from '../../common/GuideKit';
+import GuideFAQ from '../../common/GuideFAQ';
 import ToolArticleLink from '../../common/ToolArticleLink';
 import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
@@ -111,7 +112,7 @@ const HeartSizeXray: React.FC = () => {
 
         <AdSlot className="mt-8" />
 
-        <ToolGuideSection>
+        <ToolGuideSection reviewedDate="2026-09-08">
           <GuideIntro>
             <strong>VHS(Vertebral Heart Scale)</strong>는 심장의 장축(L, Carina~심첨)과 단축(S, 심장 최대 폭)을
             측정한 뒤, T4 흉추 앞쪽 경계부터 척추를 따라 두 길이를 척추 개수로 환산해 더한 값입니다.{' '}
@@ -152,6 +153,23 @@ const HeartSizeXray: React.FC = () => {
           <GuideNote>
             견종·개체별 흉곽 형태 편차가 있으므로, 본 도구의 결과는 스크리닝 참고용입니다.
           </GuideNote>
+
+          <GuideFAQ
+            items={[
+              {
+                q: 'VHS 수치가 정상이면 심장병이 없다고 봐도 되나요?',
+                a: 'VHS는 심장의 전체적인 크기를 스크리닝하는 지표로, 심비대가 뚜렷하지 않은 초기 판막 질환이나 심근 질환은 VHS가 정상 범위에 있어도 배제할 수 없습니다. 심잡음 등 다른 임상 소견이 있다면 심초음파 등 추가 검사가 필요합니다.',
+              },
+              {
+                q: 'VHS와 VLAS를 같이 봐야 하는 이유는 무엇인가요?',
+                a: 'VHS는 심장 전체 크기를, VLAS는 좌심방 크기를 특이적으로 반영합니다. 승모판 폐쇄부전(MMVD) 등 좌심방 확장이 먼저 나타나는 질환에서는 VHS가 아직 경계선인데 VLAS만 먼저 증가하는 경우가 있어 두 지표를 함께 확인하는 것이 조기 발견에 유리합니다.',
+              },
+              {
+                q: '흉부 방사선 촬영 자세가 결과에 영향을 주나요?',
+                a: '네. 흉추가 회전되거나 흡기가 불충분한 상태로 촬영되면 척추 간격과 심장 그림자가 왜곡되어 VHS/VLAS 값이 부정확해질 수 있습니다. 정확한 측방향(lateral) 자세와 충분한 흡기 상태에서 촬영된 영상을 사용하는 것이 중요합니다.',
+              },
+            ]}
+          />
 
           <GuideStyles />
         </ToolGuideSection>

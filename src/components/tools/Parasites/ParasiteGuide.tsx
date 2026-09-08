@@ -1,4 +1,5 @@
 import React from 'react';
+import GuideFAQ from '../../common/GuideFAQ';
 
 const ParasiteGuide: React.FC = () => {
   return (
@@ -38,6 +39,23 @@ const ParasiteGuide: React.FC = () => {
           <li><strong>고양이 퍼메트린 중독:</strong> 강아지 전용 외부기생충약에 포함된 퍼메트린은 고양이에게 치명적이므로 절대 혼용 금지.</li>
         </ul>
       </section>
+
+      <GuideFAQ
+        items={[
+          {
+            q: '실내에서만 키우는 고양이도 심장사상충 예방이 필요한가요?',
+            a: '네. 모기는 방충망 틈이나 사람 옷에 붙어 실내로 유입될 수 있고, 고양이는 감염 시 소량의 사상충만으로도 급사와 연관된 중증 호흡기 증상(HARD)을 일으킬 수 있어 실내묘도 연중 예방이 권장됩니다.',
+          },
+          {
+            q: '분변 검사에서 음성이면 기생충이 없다고 확신할 수 있나요?',
+            a: '아닙니다. 충란 배출이 간헐적이거나 감염 초기(전기, prepatent period)에는 위음성이 나올 수 있습니다. 임상 증상이 있는데 1회 음성이라면 시간 간격을 두고 재검사하거나 항원 검사를 병행하는 것이 안전합니다.',
+          },
+          {
+            q: '다묘/다견 가정에서 한 마리만 감염되면 다른 개체도 치료해야 하나요?',
+            a: '지알디아, 회충 등 분변-경구 경로로 전파되는 기생충은 같은 환경을 공유하는 개체 간 전파 가능성이 높으므로, 증상이 없어도 함께 검사하거나 동시에 구충하는 것이 재감염을 막는 데 효과적입니다.',
+          },
+        ]}
+      />
 
       <div className="guide-reference">
         <p>※ 참고 문헌: Companion Animal Parasite Council (CAPC) Official Guidelines. 2024.</p>

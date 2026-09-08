@@ -36,10 +36,17 @@ const About: React.FC = () => {
               <ShieldAlert size={20} className="text-blue-500" />
               <h3>운영진 및 전문성</h3>
             </div>
+            <div className="author-card">
+              <div className="author-info">
+                <p className="author-name">윤하식 원장</p>
+                <p className="author-credentials">수의사면허 제14393호</p>
+                <p className="author-credentials">2013년부터 여의도 동물병원 운영 (임상 경력 13년+)</p>
+              </div>
+            </div>
             <p>
-              VETAPP은 임상 수의사와 소프트웨어 엔지니어가 함께 개발합니다. 
-              우리는 현장 수의사들이 직면하는 실질적인 문제들을 해결하기 위해 끊임없이 소통하며, 
-              모든 도구는 수의학 교과서 및 최신 학술 가이드라인을 기반으로 설계됩니다.
+              VETAPP의 모든 임상 계산 로직과 진단 가이드라인은 위 임상 수의사가 직접 검토하며,
+              현장에서 실제로 마주하는 문제들을 소프트웨어 엔지니어와 함께 도구로 구현합니다.
+              모든 콘텐츠는 수의학 교과서 및 최신 학술 가이드라인을 기반으로 설계되고 정기적으로 갱신됩니다.
             </p>
           </section>
 
@@ -137,6 +144,26 @@ const About: React.FC = () => {
           font-size: 0.95rem;
           line-height: 1.7;
           color: #475569;
+        }
+
+        .author-card {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 1rem 1.25rem;
+          margin-bottom: 1rem;
+        }
+        .author-name {
+          font-size: 1rem;
+          font-weight: 700;
+          color: #1e293b;
+          margin: 0 0 4px;
+        }
+        .author-credentials {
+          font-size: 0.85rem;
+          color: #64748b;
+          margin: 2px 0;
+          line-height: 1.5;
         }
 
         .features-grid {

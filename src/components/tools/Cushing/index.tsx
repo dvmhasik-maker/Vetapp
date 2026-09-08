@@ -85,7 +85,7 @@ const Cushing = () => {
 
         <AdSlot className="mt-8" />
 
-        <ToolGuideSection>
+        <ToolGuideSection reviewedDate="2026-09-08">
           <CushingGuide />
         </ToolGuideSection>
       </div>

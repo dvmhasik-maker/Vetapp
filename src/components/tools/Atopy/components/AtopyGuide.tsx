@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sparkles, BrainCircuit, ShieldCheck, Stethoscope } from 'lucide-react';
+import GuideFAQ from '../../../common/GuideFAQ';
 
 const AtopyGuide: React.FC = () => {
   return (
@@ -41,6 +42,23 @@ const AtopyGuide: React.FC = () => {
           치료 반응성이 좋을 때 약물을 무조건 중단하기보다, 최소 용량으로 가려움증을 억제하는 '유지 관리 계획'을 세우는 것이 환자의 삶의 질을 높이는 핵심입니다.
         </p>
       </section>
+
+      <GuideFAQ
+        items={[
+          {
+            q: '아토피와 식이 알레르기는 증상만으로 구분할 수 있나요?',
+            a: '두 질환의 임상 증상은 매우 유사해 증상만으로는 구분이 어렵습니다. 확실한 감별을 위해서는 8주 이상의 제한 항원 또는 가수분해 식이를 이용한 식이 제한 시험(elimination diet trial)이 필요합니다.',
+          },
+          {
+            q: '알레르기 검사(혈액/피부 검사)로 원인 알레르겐을 100% 알 수 있나요?',
+            a: '아닙니다. 알레르기 검사는 감작 여부를 확인하는 보조 도구이며 위양성·위음성이 존재합니다. 검사 결과는 임상 증상 및 병력과 함께 해석해야 하고, 주로 알레르겐 특이 면역요법(ASIT) 처방 시 항원 선택에 활용됩니다.',
+          },
+          {
+            q: '아포퀠 등 약물을 장기간 사용해도 안전한가요?',
+            a: '대부분 장기 사용 시 안전성이 확인되어 있으나, 정기적인 혈액 검사를 통한 모니터링과 함께 이차 감염(농피증, 말라세지아) 여부를 주기적으로 점검하며 최소 유효 용량으로 유지하는 것이 권장됩니다.',
+          },
+        ]}
+      />
 
       <div className="guide-reference">
         <p>※ 참고 문헌: Favrot C, et al. A prospective study on the clinical features of chronic canine atopic dermatitis. Vet Dermatol. 2010. 최신 가이드라인에 기반하여 작성되었습니다.</p>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertCircle, FileCheck, Info } from 'lucide-react';
+import GuideFAQ from '../../common/GuideFAQ';
 
 const CushingGuide: React.FC = () => {
   return (
@@ -31,6 +32,23 @@ const CushingGuide: React.FC = () => {
           <li><strong>치명적 부작용:</strong> 투약 후 기력 저하, 식욕 부진, 구토가 나타나면 즉시 투약을 중단하고 부신피질기능저하증(애디슨) 여부를 확인하십시오.</li>
         </ul>
       </section>
+
+      <GuideFAQ
+        items={[
+          {
+            q: '스트레스나 다른 질환이 있어도 LDDST 결과가 정확한가요?',
+            a: '아니요. 스트레스, 통증, 당뇨병 등 다른 전신 질환이 있으면 위양성(가짜 쿠싱 소견)이 흔하게 나타납니다. 검사 전 최소 며칠간 안정된 상태를 확인하고, 결과가 애매하면 임상 증상과 함께 재해석하거나 재검사를 고려해야 합니다.',
+          },
+          {
+            q: '트릴로스탄 투약 후 언제부터 효과가 나타나나요?',
+            a: '보통 투약 2주 이내에 음수량·식욕 등 임상 증상이 먼저 호전되기 시작하며, 완전한 효과 판정은 첫 ACTH 자극 검사(투약 2~4주 후)를 기준으로 합니다. 증상 개선이 없다면 용량 조절 전에 진단 자체를 재검토해야 합니다.',
+          },
+          {
+            q: '부신 종양(AT)과 뇌하수체 의존성(PDH)은 어떻게 구분하나요?',
+            a: 'LDDST 패턴, 내인성 ACTH 농도, 복부 초음파상 부신 크기 및 좌우 비대칭 여부를 종합해 감별합니다. 확진이 필요한 경우 복부 CT 등 영상 검사를 추가로 진행하기도 합니다.',
+          },
+        ]}
+      />
 
       <div className="guide-reference">
         <p>※ 참고 문헌: Behrend EN, et al. 2012 ACVIM consensus statement for spontaneous canine hyperadrenocorticism (updated 2024).</p>

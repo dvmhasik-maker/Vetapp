@@ -1,5 +1,6 @@
 import React from 'react';
 import { Activity, Thermometer, AlertCircle, Search } from 'lucide-react';
+import GuideFAQ from '../../common/GuideFAQ';
 
 const HypoGuide: React.FC = () => {
   return (
@@ -39,6 +40,23 @@ const HypoGuide: React.FC = () => {
           <li><strong>평가:</strong> 호르몬 수치뿐만 아니라, 보호자가 보고하는 임상 증상(활력, 식욕, 피부 개선)의 개선 여부를 종합하여 용량을 최종 결정합니다.</li>
         </ul>
       </section>
+
+      <GuideFAQ
+        items={[
+          {
+            q: '고양이도 갑상선기능저하증이 흔한가요?',
+            a: '개와 달리 고양이의 자연발생 갑상선기능저하증은 매우 드뭅니다. 대부분 갑상선기능항진증 치료(수술적 절제, 방사성 요오드 치료)의 후유증으로 발생하는 의원성 사례이므로, 감별 접근이 다릅니다.',
+          },
+          {
+            q: '체중 증가 외에 갑상선기능저하증을 의심할 만한 증상은?',
+            a: '무기력, 추위를 잘 타는 증상, 서맥, 신경 증상(안면마비, 전정 증상), 번식 장애 등이 함께 나타날 수 있습니다. 피부 증상만으로는 진단이 어려워 전신 증상을 함께 살펴야 합니다.',
+          },
+          {
+            q: 'Levothyroxine 투약을 평생 지속해야 하나요?',
+            a: '대부분의 경우 원인이 갑상선 자체의 비가역적 손상이므로 평생 보충이 필요합니다. 다만 ESS로 인한 일시적 저하였다면 원인 질환 치료 후 호르몬 수치가 자연 회복될 수 있어 재평가가 중요합니다.',
+          },
+        ]}
+      />
 
       <div className="guide-reference">
         <p>※ 참고 문헌: Ettinger SJ, Feldman EC, et al. Textbook of Veterinary Internal Medicine. 최신 임상 가이드라인과 Consensus Statement를 기반으로 작성되었습니다.</p>

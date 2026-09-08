@@ -64,7 +64,7 @@ const FluidTherapy: React.FC = () => {
           <AdSlot className="mt-8" />
         )}
 
-        <ToolGuideSection>
+        <ToolGuideSection reviewedDate="2026-09-08">
           <FluidGuide />
         </ToolGuideSection>
       </div>

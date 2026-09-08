@@ -1,4 +1,5 @@
 import React from 'react';
+import GuideFAQ from '../../common/GuideFAQ';
 
 const EchoGuide: React.FC = () => {
   return (
@@ -30,6 +31,23 @@ const EchoGuide: React.FC = () => {
           <li><strong>Stage D:</strong> 표준 치료에 반응하지 않는 말기 심부전.</li>
         </ul>
       </section>
+
+      <GuideFAQ
+        items={[
+          {
+            q: 'Stage B1과 B2를 나누는 기준이 헷갈립니다.',
+            a: 'B2는 심잡음과 함께 좌심방/좌심실 확장의 방사선학적·초음파적 증거가 모두 있고, LA/Ao ≥ 1.6, 정규화 LVIDd ≥ 1.7 등 ACVIM 컨센서스의 구체적 수치 기준을 만족해야 합니다. 수치가 경계선에 있다면 단일 검사보다 추적 관찰을 통한 변화 추이가 더 중요합니다.',
+          },
+          {
+            q: 'FS(단축률)만으로 심장 수축력을 판단해도 되나요?',
+            a: 'FS는 전부하·후부하에 영향을 크게 받아 판막 질환이나 승모판 폐쇄부전이 있는 환자에서는 실제 심근 수축력보다 과대평가될 수 있습니다. EPSS, LV 벽 운동 등 다른 지표와 함께 종합적으로 해석해야 합니다.',
+          },
+          {
+            q: '무증상 환자에서 B2 단계로 진단되면 바로 투약을 시작하나요?',
+            a: 'EPIC 연구 결과에 따라 무증상 B2 단계에서도 피모벤단(Pimobendan) 투약이 심부전 발생을 지연시키는 것으로 알려져 있어, 진단 기준을 충족하면 증상 발현 전이라도 치료 시작을 고려합니다.',
+          },
+        ]}
+      />
 
       <div className="guide-reference">
         <p>※ 참고 문헌: Keene BW, et al. ACVIM consensus guidelines for the diagnosis and treatment of myxomatous mitral valve disease in dogs. 2019.</p>

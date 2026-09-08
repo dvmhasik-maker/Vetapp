@@ -1,4 +1,5 @@
 import React from 'react';
+import GuideFAQ from '../../common/GuideFAQ';
 
 const NeuroGuide: React.FC = () => {
   return (
@@ -295,6 +296,23 @@ const NeuroGuide: React.FC = () => {
           후지 마비 환자에서 심부 통증 감각(Deep Pain Perception)의 소실은 매우 불량한 예후를 의미하며, 즉각적인 외과적 개입이 필요할 수 있는 응급 상황입니다. 심부통증 경로는 척수 백질의 가장 깊은 곳에 위치하므로, 이 반응이 소실되었다는 것은 척수의 바깥쪽부터 안쪽까지 넓은 영역에 병변이 있다는 뜻입니다.
         </p>
       </section>
+
+      <GuideFAQ
+        items={[
+          {
+            q: '병원에 오기 전 보호자가 관찰해두면 진단에 도움이 되는 정보는?',
+            a: '증상이 언제부터 시작됐는지, 갑자기 나타났는지 점진적으로 악화됐는지, 좌우 어느 쪽이 더 심한지, 의식이 명료했는지 여부가 병변의 진행 형태(급성/만성)와 위치를 좁히는 데 매우 중요한 단서가 됩니다.',
+          },
+          {
+            q: '통증 때문에 다리를 절 때와 신경학적 파행을 어떻게 구분하나요?',
+            a: '정형외과적 파행은 보행 리듬이 일정하고 관절 촉진 시 통증 반응이 국소적인 반면, 신경학적 파행은 발등을 끄는 소리(knuckling), 발톱 마모, 자세 반응 검사(고유수용성 반응)의 저하가 함께 동반되는 경우가 많아 이 검사로 감별합니다.',
+          },
+          {
+            q: '신경학적 검사만으로 확진이 가능한가요?',
+            a: '신경학적 검사는 병변의 위치와 진행 형태를 좁히는 국소화(localization) 단계이며, 확진을 위해서는 MRI/CT 등 영상 검사나 뇌척수액 검사가 추가로 필요한 경우가 대부분입니다.',
+          },
+        ]}
+      />
 
       <div className="guide-reference">
         <p>※ 참고 문헌: Dewey CW, da Costa RC, eds. Practical Guide to Canine and Feline Neurology. 3rd ed.; Merck/MSD Veterinary Manual - The Neurologic Examination of Animals; 이한림, 최수영. 신경계 검사: 척수 1·2, 뇌신경검사 1·2. VETIS Vol.11-14, 이안동물영상의학센터.</p>

@@ -5,6 +5,7 @@ import CatObesityForm from './CatObesityForm';
 import CatObesityHeroCard from './CatObesityHeroCard';
 import CatObesityGuideline from './CatObesityGuideline';
 import { GuideIntro, GuideSteps, GuideFormula, GuideNote, GuideStyles } from '../../common/GuideKit';
+import GuideFAQ from '../../common/GuideFAQ';
 import ToolArticleLink from '../../common/ToolArticleLink';
 import ToolGuideSection from '../../common/ToolGuideSection';
 import AdSlot from '../../common/AdSlot';
@@ -63,7 +64,7 @@ const CatObesity = () => {
 
         <AdSlot className="mt-8" />
 
-        <ToolGuideSection>
+        <ToolGuideSection reviewedDate="2026-09-08">
           <GuideIntro>
             고양이를 <strong>서 있는 자세</strong>로, 고개는 들고 네 다리 모두 바닥과 수직이 되도록 한 상태에서 측정합니다.
           </GuideIntro>
@@ -97,6 +98,23 @@ const CatObesity = () => {
           <GuideNote>
             본 도구는 참고용 스크리닝 지표이며, 최종 비만 진단은 BCS(신체충실지수) 등 다른 임상 소견과 함께 수의사가 판단해야 합니다.
           </GuideNote>
+
+          <GuideFAQ
+            items={[
+              {
+                q: 'FBMI와 BCS(신체충실지수) 중 어떤 지표를 우선해야 하나요?',
+                a: 'FBMI는 줄자 측정값만으로 체지방률을 추정하는 스크리닝 도구로, 촉진 기반의 BCS보다 재현성이 높은 편입니다. 다만 근육량이 극단적으로 많거나 적은 개체에서는 오차가 커질 수 있어, 두 지표를 함께 활용하고 차이가 크면 촉진 소견(갈비뼈·허리선·복부 처짐)을 우선하는 것이 안전합니다.',
+              },
+              {
+                q: '장모종 고양이도 정확하게 측정할 수 있나요?',
+                a: '털 길이 때문에 줄자 측정 시 실제 체형보다 두껍게 측정될 수 있습니다. 털을 살짝 눌러가며 몸통 둘레를 측정하거나, 가능하다면 짧은 털 부위를 기준으로 삼는 것이 오차를 줄이는 데 도움이 됩니다.',
+              },
+              {
+                q: '뒷다리 길이는 어느 자세에서 측정해야 하나요?',
+                a: '고양이가 자연스럽게 서 있는 자세에서 무릎 관절이 과도하게 굽혀지지 않도록 측정하는 것이 중요합니다. 다리가 굽은 상태로 측정하면 실제보다 짧게 측정되어 FBMI가 과대평가될 수 있습니다.',
+              },
+            ]}
+          />
 
           <GuideStyles />
         </ToolGuideSection>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertTriangle, Info, ClipboardList } from 'lucide-react';
+import GuideFAQ from '../../common/GuideFAQ';
 
 const FluidGuide: React.FC = () => {
   return (
@@ -39,6 +40,23 @@ const FluidGuide: React.FC = () => {
           <li><strong>임상 징후 확인:</strong> 비강 분비물(장액성), 결막 부종, 기침 발생 여부 확인.</li>
         </ul>
       </section>
+
+      <GuideFAQ
+        items={[
+          {
+            q: '심장병이나 신장병이 있는 환자는 수액 속도를 어떻게 조절해야 하나요?',
+            a: '심부전·만성 신부전 환자는 과수액 위험이 높아 표준 유지량보다 보수적인 속도(예: 유지량의 60~80% 수준)로 시작하고, 체중·호흡수·청진 소견을 자주 재평가하며 조절하는 것이 원칙입니다.',
+          },
+          {
+            q: '탈수량 교정은 반드시 24시간 안에 끝내야 하나요?',
+            a: '급성 탈수는 보통 12~24시간에 걸쳐 교정하지만, 심장·신장 기능이 저하된 환자나 만성적으로 진행된 탈수는 이보다 느리게(24~48시간) 나누어 교정해 순환 부담을 줄이는 것이 안전합니다.',
+          },
+          {
+            q: '어떤 수액제를 선택해야 하는지 헷갈립니다.',
+            a: '대부분의 초기 소생 및 유지에는 등장성 결정질액(Lactated Ringer\'s 등)을 사용하며, 저알부민혈증이 심하거나 대량 실혈이 있는 경우 콜로이드나 혈액제제 병용을 고려합니다. 전해질 이상(고칼륨혈증 등)이 있다면 그에 맞는 수액제로 조정해야 합니다.',
+          },
+        ]}
+      />
 
       <div className="guide-reference">
         <p>※ 참고 문헌: 2024 AAHA/AAFP Fluid Therapy Guidelines for Dogs and Cats. 최신 임상 가이드라인을 반영하고 있습니다.</p>
